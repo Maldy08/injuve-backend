@@ -5,15 +5,18 @@ const path = require("path");
 const multer = require('multer');
 const csv = require('csv-parser');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const mongoUrl = process.env.MONGO_URI;
+const SECRET_KEY = process.env.SECRET_KEY;
 const { MongoClient } = require("mongodb");
 
 const numeroALetras = require('./helpers/numeros-letras');
 const formatearFechaTexto = require('./helpers/formatear-fecha-texto');
-const SECRET_KEY = 'clave-secreta-muy-segura'; // cámbiala en producción
+
 
 const app = express();
 const cors = require('cors');
-const mongoUrl = "mongodb://localhost:27017";
+
 const dbName = "injuve";
 const colConceptos = "mnom12";
 const colEmpleados = "mnom01";
