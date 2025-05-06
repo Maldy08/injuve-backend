@@ -199,6 +199,15 @@ app.get("/recibos/:empleado", async (req, res) => {
   }
 });
 
+app.get("/hola", async (req, res) => {
+
+  res.json({
+    message: "Hola, mundo!"
+  });
+}
+);
+
+
 
 async function getDatosNomina(empleado, periodo) {
   const client = await MongoClient.connect(mongoUrl);
