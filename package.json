@@ -1,0 +1,17 @@
+{
+  "name": "reporte_nomina_jsreport",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "express": "^4.21.2",
+    "handlebars": "^4.7.7",
+    "jsonwebtoken": "^9.0.2",
+    "jsreport": "^3.13.0",
+    "mongodb": "^5.9.2",
+    "multer": "^1.4.5-lts.2"
+  }
+}

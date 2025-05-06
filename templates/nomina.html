@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recibo de Nómina</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 11px; margin: 30px; }
+    h3 { text-align: center; margin-bottom: 20px; }
+    .datos {
+      border: 1px solid black;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .datos p { margin: 3px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    .totales {
+      margin-top: 15px;
+    }
+    .totales td {
+      padding: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div style="position: relative; height: 85px; margin-bottom: 10px;">
+  <!-- Logo izquierdo -->
+  <img src="http://localhost:3001/public/logo.png"
+       style="max-width: 170px; height: auto;" alt="logo" />
+
+  <!-- Texto centrado -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.2;
+    width: max-content;
+  ">
+    <div><strong>GOBIERNO DEL ESTADO DE BAJA CALIFORNIA</strong></div>
+    <div><strong>INSTITUTO DE LA JUVENTUD DEL ESTADO DE BAJA CALIFORNIA</strong></div>
+    <div><strong>RECIBO DE NÓMINA</strong></div>
+    <div>Blvd. López Mateos S/N Fracc. Calis</div>
+    <div>R.F.C.: IJE110711724</div>
+  </div>
+</div>
+  
+
+
+<div class="datos"
+     style="display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+            border: 1px solid #999;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;">
+  <!-- Columna 1 -->
+  <div style="flex: 1; padding-right: 10px;">
+    <p><strong>NOMBRE:</strong> {{empleado.NOMBRE}} {{empleado.APPAT}} {{empleado.APMAT}}</p>
+    <p><strong>EMPLEADO:</strong> {{empleado.EMPLEADO}}</p>
+    <p><strong>DEPARTAMENTO:</strong> <span style="text-transform: uppercase;">Departamento del empleado</span></p>
+  </div>
+
+  <!-- Columna 2 -->
+  <div style="flex: 1; padding-right: 10px;">
+    <p><strong>PUESTO ESPECÍFICO:</strong> PUESTO DEL EMPLEADO</p>
+    <p><strong>NIVEL:</strong> {{empleado.NIVEL}}</p>
+    <p><strong>CURP:</strong> {{empleado.CURP}}</p>
+    <p><strong>RFC:</strong> {{empleado.RFC}}</p>
+  </div>
+
+  <!-- Columna 3 -->
+  <div style="flex: 1;">
+    <p><strong>PERIODO:</strong> {{periodo}}</p>
+    <p><strong>PERIODO PAGADO:</strong> {{fechaPago}}</p>
+    <p><strong>DIAS LABORADOS:</strong> 14</p>
+  </div>
+  <div style="flex: 1;">
+    <p><strong>SALARIO DIARIO:</strong> {{empleado.SUELDO}}</p>
+    <p><strong>AFILIACION:</strong> {{empleado.REGIMSS}}</p>
+  </div>
+</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>CLAVE</th>
+        <th>DESCRIPCIÓN</th>
+        <th style="text-align: center;">DÍAS</th>
+        <th style="text-align: center;">PERCEPCIONES</th>
+        <th style="text-align: center;">PRESTACIONES</th>
+        <th style="text-align: center;">DEDUCCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each conceptos}}
+      <tr>
+        <td>{{this.PERCDESC}}</td>
+        <td>{{this.DESCRIPCION}}</td>
+        <td style="text-align: center;">{{this.DIASTRA}}</td>
+        <td style="text-align: right;">{{this.percepcion}}</td>
+        <td style="text-align: right;">{{this.prestacion}}</td>
+        <td style="text-align: right;">{{this.deduccion}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" style="text-align: left;"><strong>TOTALES</strong></td>
+        <td style="text-align: right;"><strong>${{totales.percepciones}}</strong></td>
+        <td style="text-align: right;"><strong>${{totales.prestaciones}}</strong></td>
+        <td style="text-align: right;"><strong>${{totales.deducciones}}</strong></td>
+      </tr>
+      <td colspan="6" style="text-align: end; padding: 10px; border: none; font-size: 12px;"><strong>NETO A RECIBIR: ${{totales.neto}}</strong></td>
+    </tfoot>
+  </table>
+  <div style="border-top: 3px solid black; padding-top: 8px; margin-top: 25px;">
+    <p style="margin: 0; font-weight: bold;">CANTIDAD CON LETRA</p>
+    <p style="margin: 0;">Son {{cantidadLetras}} M.N.</p>
+  </div>
+  <div style="border: 1px solid black; border-radius: 8px; padding: 12px; margin-top: 25px; font-size: 11px;">
+    <p style="text-align: justify; margin: 0;">
+      Recibí del Instituto de la Juventud del Estado de Baja California, la cantidad indicada en el presente recibo que,
+      cubre a la fecha de pago el importe de mis percepciones, prestaciones que por derecho me corresponden, con horario
+      laboral de 8:00 a.m. a 3:00 p.m. de lunes a viernes, con los respectivos tiempos para tomar alimentos y/o descansar,
+      sin que me adeude alguna cantidad, habiéndome hecho los descuentos conforme a la ley y los de carácter privado,
+      Recibo de conformidad, no reservándome ninguna reclamación posterior.
+    </p>
+  
+    <div style="margin-top: 40px; text-align: center;">
+      <div style="border-top: 2px solid black; width: 50%; margin: 0 auto; padding-top: 4px;">
+        <strong>FIRMA DEL EMPLEADO</strong>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
