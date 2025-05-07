@@ -4,7 +4,7 @@ const { enviarReciboPorCorreo } = require('../controllers/send-email.controller'
 
 /**
  * @swagger
- * /enviar-recibo:
+ * /api/send-email/enviar-recibo:
  *   post:
  *     summary: Envía un recibo de nómina por correo electrónico.
  *     description: Este endpoint permite enviar un recibo de nómina en formato PDF al correo electrónico de un empleado.
@@ -20,11 +20,11 @@ const { enviarReciboPorCorreo } = require('../controllers/send-email.controller'
  *               empleado:
  *                 type: string
  *                 description: ID del empleado.
- *                 example: "12345"
+ *                 example: "3"
  *               periodo:
  *                 type: string
  *                 description: Periodo de nómina.
- *                 example: "2025-05"
+ *                 example: "1"
  *               correo:
  *                 type: string
  *                 description: Correo electrónico del empleado.

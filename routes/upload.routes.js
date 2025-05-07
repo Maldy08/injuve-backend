@@ -9,7 +9,7 @@ const { subirCSV } = require('../controllers/upload.controller');
 const upload = multer({ dest: path.join(__dirname, '../uploads') });
 /**
  * @swagger
- * /upload/{coleccion}:
+ * /api/upload/{coleccion}:
  *   post:
  *     summary: Sube un archivo CSV a una colección específica.
  *     description: Este endpoint permite subir un archivo CSV para procesarlo y almacenarlo en una colección específica.
