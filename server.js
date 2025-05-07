@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const nominaRoutes = require('./routes/nomina.routes');
 const pdfRoutes = require('./routes/pdf.routes');
-
+const sendEmailRoutes = require('./routes/send-email.routes');
 const app = express();
 
 // Middlewares globales
@@ -18,11 +18,17 @@ app.use(cors());
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+const { swaggerUi, specs } = require('./swagger');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/nomina', nominaRoutes);
 app.use('/api/pdf', pdfRoutes);
+app.use('/api/send-email', sendEmailRoutes);
+
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {

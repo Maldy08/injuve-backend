@@ -1,4 +1,5 @@
 
+
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
@@ -14,14 +15,21 @@ exports.subirCSV = (req, res) => {
 
   const registros = [];
 
+  // Mapeo de campos numéricos por colección
+  const camposNumericos = {
+    mnom12: ['EMPLEADO', 'PERIODO', 'PERCDESC', 'IMPORTE', 'TIPONOM', 'RECIBO', 'DIASTRA', 'NIVEL', 'CLUES'],
+    mnom01: ['EMPLEADO', 'DEPTO', 'CAT', 'PROGRAMA', 'SUBPROGRAMA', 'META', 'ACCION', 'MPIO', 'NIVEL', 'PUESTO', 'SUELDO']
+  };
+
+  const campos = camposNumericos[coleccion] || [];
+
   fs.createReadStream(archivoCSV.path)
     .pipe(csv({ separator: ',' }))
     .on('data', (row) => {
-      // Normalizar campos numéricos
-      const camposNumericos = ['EMPLEADO', 'PERIODO', 'PERCDESC', 'IMPORTE', 'TIPONOM', 'RECIBO', 'DIASTRA', 'NIVEL', 'CLUES'];
-      camposNumericos.forEach((campo) => {
+      campos.forEach((campo) => {
         if (row[campo]) {
-          const num = Number(row[campo].replace(/,/g, ''));
+          const limpio = row[campo].replace(/[$,%]/g, '').replace(/,/g, '').trim();
+          const num = Number(limpio);
           if (!isNaN(num)) row[campo] = num;
         }
       });
@@ -31,12 +39,14 @@ exports.subirCSV = (req, res) => {
     .on('end', async () => {
       try {
         const db = getDb();
+        await db.collection(coleccion).deleteMany({}); // Opcional: limpia antes de insertar
         await db.collection(coleccion).insertMany(registros);
 
-        fs.unlinkSync(archivoCSV.path); // Eliminar archivo temporal
+        fs.unlinkSync(archivoCSV.path); // Limpia archivo temporal
 
         res.send(`✅ ${registros.length} registros insertados en "${coleccion}"`);
       } catch (err) {
+        console.error(err);
         res.status(500).send('❌ Error al insertar en MongoDB: ' + err.message);
       }
     })

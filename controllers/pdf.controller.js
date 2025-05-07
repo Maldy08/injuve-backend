@@ -1,8 +1,9 @@
 
 const path = require('path');
 const fs = require('fs');
-const jsreport = require('jsreport')();
+
 const getDatosNomina = require('../helpers/get-datos-nomina');
+const { initJsReport } = require('../helpers/jsreport.helper');
 
 // GET /api/pdf/:empleado/:periodo
 exports.generarPDF = async (req, res) => {
@@ -14,6 +15,7 @@ exports.generarPDF = async (req, res) => {
   }
 
   try {
+    const jsreport = await initJsReport(); 
     const data = await getDatosNomina(empleado, periodo);
     const templateHtml = fs.readFileSync(path.join(__dirname, '../templates/nomina.html')).toString();
 
@@ -34,3 +36,4 @@ exports.generarPDF = async (req, res) => {
     res.status(500).json({ error: "Error al generar el PDF" });
   }
 };
+

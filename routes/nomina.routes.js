@@ -6,6 +6,6 @@ const { obtenerResumen, obtenerJson } = require('../controllers/nomina.controlle
 router.get('/recibos/:empleado', obtenerResumen);
 
 // Devuelve el JSON completo del recibo de un periodo específico
-router.get('/json/:empleado/:periodo', obtenerJson);
+router.get('/recibos/json/:empleado/:periodo', obtenerJson);
 
 module.exports = router;
