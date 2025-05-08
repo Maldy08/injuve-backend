@@ -18,7 +18,10 @@ exports.subirCSV = (req, res) => {
   // Mapeo de campos numéricos por colección
   const camposNumericos = {
     mnom12: ['EMPLEADO', 'PERIODO', 'PERCDESC', 'IMPORTE', 'TIPONOM', 'RECIBO', 'DIASTRA', 'NIVEL', 'CLUES'],
-    mnom01: ['EMPLEADO', 'DEPTO', 'CAT', 'PROGRAMA', 'SUBPROGRAMA', 'META', 'ACCION', 'MPIO', 'NIVEL', 'PUESTO', 'SUELDO']
+    mnom01: ['EMPLEADO', 'DEPTO', 'CAT', 'PROGRAMA', 'SUBPROGRAMA', 'META', 'ACCION', 'MPIO', 'NIVEL', 'PUESTO', 'SUELDO'],
+    mnom03: ['CATEGORIA'],
+    mnom04: ['DEPTO', 'SUBPROGRAMA', 'DEPTOCONTAB', 'PROGRAMA', 'CUENTA', 'EMPLEADO'],
+    mnom90: ['PUESTO']
   };
 
   const campos = camposNumericos[coleccion] || [];
