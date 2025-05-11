@@ -65,6 +65,7 @@ exports.obtenerJson = async (req, res) => {
 
     const conceptosRaw = await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
     const empleadoData = await db.collection('mnom01').findOne({ EMPLEADO: empleado });
+    const deptoData = await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO });
 
     const percepciones = conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13);
     const prestaciones = conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500);
@@ -84,6 +85,7 @@ exports.obtenerJson = async (req, res) => {
     res.json({
       empleado: empleadoData,
       periodo,
+      depto: deptoData.DESCRIPCION,
       fechaPago: `${formatearFechaTexto(conceptosRaw[0]?.FECHDES)} al ${formatearFechaTexto(conceptosRaw[0]?.FECHHAS)}`,
       conceptos,
       totales: {
@@ -99,3 +101,63 @@ exports.obtenerJson = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.recibos = async (req, res) => {
+  try {
+    const db = getDb();
+
+    const resumen = await db.collection('mnom12').aggregate([
+      {
+        $group: {
+          _id: { EMPLEADO: "$EMPLEADO", PERIODO: "$PERIODO" },
+          percepciones: {
+            $sum: {
+              $cond: [{ $lt: ["$PERCDESC", 500] }, "$IMPORTE", 0]
+            }
+          },
+          deducciones: {
+            $sum: {
+              $cond: [{ $gte: ["$PERCDESC", 500] }, "$IMPORTE", 0]
+            }
+          }
+        }
+      },
+      {
+        $addFields: {
+          neto: { $subtract: ["$percepciones", "$deducciones"] }
+        }
+      },
+      {
+        $lookup: {
+          from: "mnom01",
+          let: { empId: "$_id.EMPLEADO" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$EMPLEADO", "$$empId"] } } },
+            { $limit: 1 }
+          ],
+          as: "empleado_info"
+        }
+      },
+      { $unwind: "$empleado_info" },
+      {
+        $project: {
+          _id: 0,
+          EMPLEADO: "$_id.EMPLEADO",
+          NOMBRE: "$empleado_info.NOMBRE",
+          PERIODO: "$_id.PERIODO",
+          RESUMEN: {
+            PERCEPCIONES: { $round: ["$percepciones", 2] },
+            DEDUCCIONES: { $round: ["$deducciones", 2] },
+            NETO: { $round: ["$neto", 2] }
+          }
+        }
+      },
+      { $sort: { EMPLEADO: 1, PERIODO: -1 } }
+    ]).toArray();
+
+    res.json(resumen);
+  } catch (error) {
+    console.error('Error al obtener resumen de nómina:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}

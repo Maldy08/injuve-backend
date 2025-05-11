@@ -36,29 +36,24 @@
   </style>
 </head>
 <body>
-<div style="position: relative; height: 85px; margin-bottom: 10px;">
-  <!-- Logo izquierdo -->
-  <img src="http://localhost:3001/public/logo.png"
-       style="max-width: 170px; height: auto;" alt="logo" />
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
 
-  <!-- Texto centrado -->
-  <div style="
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.2;
-    width: max-content;
-  ">
-    <div><strong>GOBIERNO DEL ESTADO DE BAJA CALIFORNIA</strong></div>
-    <div><strong>INSTITUTO DE LA JUVENTUD DEL ESTADO DE BAJA CALIFORNIA</strong></div>
-    <div><strong>RECIBO DE NÓMINA</strong></div>
-    <div>Blvd. López Mateos S/N Fracc. Calis</div>
-    <div>R.F.C.: IJE110711724</div>
+    <!-- Logo izquierda -->
+    <img src="http://localhost:3001/public/logo.png" alt="Logo Juventud BC" style="max-height: 70px; max-width: 170px;" />
+  
+    <!-- Texto centrado -->
+    <div style="text-align: center; flex-grow: 1;">
+      <div style="font-weight: bold; font-size: 14px;">GOBIERNO DEL ESTADO DE BAJA CALIFORNIA</div>
+      <div style="font-weight: bold; font-size: 12px;">INSTITUTO DE LA JUVENTUD DEL ESTADO DE BAJA CALIFORNIA</div>
+      <div style="font-weight: bold;">RECIBO DE NÓMINA</div>
+      <div>Blvd. López Mateos S/N Fracc. Calis</div>
+      <div>R.F.C.: IJE110711724</div>
+    </div>
+  
+    <!-- Logo derecha -->
+    <img src="http://localhost:3001/public/logo-juventudbc.png" alt="Logo Gobierno BC" style="max-height: 70px; max-width: 170px;" />
+  
   </div>
-</div>
   
 
 
@@ -75,12 +70,12 @@
   <div style="flex: 1; padding-right: 10px;">
     <p><strong>NOMBRE:</strong> {{empleado.NOMBRE}} {{empleado.APPAT}} {{empleado.APMAT}}</p>
     <p><strong>EMPLEADO:</strong> {{empleado.EMPLEADO}}</p>
-    <p><strong>DEPARTAMENTO:</strong> <span style="text-transform: uppercase;">Departamento del empleado</span></p>
+    <p><strong>DEPARTAMENTO:</strong> <span style="text-transform: uppercase;">{{ departamento }}</span></p>
   </div>
 
   <!-- Columna 2 -->
   <div style="flex: 1; padding-right: 10px;">
-    <p><strong>PUESTO ESPECÍFICO:</strong> PUESTO DEL EMPLEADO</p>
+    <p><strong>PUESTO ESPECÍFICO:</strong> {{ puesto }}</p>
     <p><strong>NIVEL:</strong> {{empleado.NIVEL}}</p>
     <p><strong>CURP:</strong> {{empleado.CURP}}</p>
     <p><strong>RFC:</strong> {{empleado.RFC}}</p>
