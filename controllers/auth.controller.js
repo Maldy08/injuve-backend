@@ -9,8 +9,20 @@ exports.login = async (req, res) => {
   }
 
   try {
+    let empleado;
     const db = getDb();
-    const empleado = await db.collection('mnom01').findOne({ RFC: rfc.toUpperCase() });
+    const accesos = await db.collection('accesos').findOne({ RFC: rfc.toUpperCase() });
+    if (!accesos) {
+      return res.status(401).json({ error: 'Acceso no autorizado' });
+    }
+
+    const tipo = accesos.TIPO;
+    if(tipo == 1) {
+       empleado = await db.collection('mnom01').findOne({ RFC: rfc.toUpperCase() });
+    }
+    if(tipo == 2) {
+       empleado = await db.collection('mnom01h').findOne({ RFC: rfc.toUpperCase() });
+    }
 
     if (!empleado) {
       return res.status(401).json({ error: 'RFC no encontrado' });
@@ -34,7 +46,8 @@ exports.login = async (req, res) => {
         APPAT: empleado.APPAT,
         APMAT: empleado.APMAT,
         RFC: empleado.RFC,
-        CURP: empleado.CURP
+        CURP: empleado.CURP,
+        TIPO: accesos.TIPO,
       }
     });
   } catch (err) {

@@ -1,9 +1,9 @@
 
 
 const fs = require('fs');
-const path = require('path');
 const csv = require('csv-parser');
 const { getDb } = require('../helpers/mongo.helper');
+const  camposNumericos  = require('../helpers/tablas-conversion-camposnumericos');
 
 exports.subirCSV = (req, res) => {
   const coleccion = req.params.coleccion;
@@ -14,16 +14,6 @@ exports.subirCSV = (req, res) => {
   }
 
   const registros = [];
-
-  // Mapeo de campos numéricos por colección
-  const camposNumericos = {
-    mnom12: ['EMPLEADO', 'PERIODO', 'PERCDESC', 'IMPORTE', 'TIPONOM', 'RECIBO', 'DIASTRA', 'NIVEL', 'CLUES'],
-    mnom01: ['EMPLEADO', 'DEPTO', 'CAT', 'PROGRAMA', 'SUBPROGRAMA', 'META', 'ACCION', 'MPIO', 'NIVEL', 'PUESTO', 'SUELDO'],
-    mnom03: ['CATEGORIA'],
-    mnom04: ['DEPTO', 'SUBPROGRAMA', 'DEPTOCONTAB', 'PROGRAMA', 'CUENTA', 'EMPLEADO'],
-    mnom90: ['PUESTO']
-  };
-
   const campos = camposNumericos[coleccion] || [];
 
   fs.createReadStream(archivoCSV.path)

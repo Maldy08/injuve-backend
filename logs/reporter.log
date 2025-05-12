@@ -9706,3 +9706,1364 @@ Expecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 
 2025-05-11T22:59:55.208Z - debug: Running chrome with params {"timeout":59977,"margin":{},"printBackground":true} rootId=ph5l394rkag2iho, id=ph5l394rkag2iho
 2025-05-11T22:59:55.211Z - debug: Skipping storing report. rootId=ph5l394rkag2iho, id=ph5l394rkag2iho
 2025-05-11T22:59:55.211Z - info: Rendering request 10 finished in 135 ms rootId=ph5l394rkag2iho, id=ph5l394rkag2iho
+2025-05-12T14:47:51.146Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T14:47:51.149Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T14:47:51.161Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T14:47:51.194Z - info: Found 35 extension(s)
+2025-05-12T14:47:51.436Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T14:47:51.437Z - debug: Discovered 35 extensions
+2025-05-12T14:47:51.471Z - info: Using extension authentication@3.4.0
+2025-05-12T14:47:52.718Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T14:47:52.718Z - info: Using extension base@3.0.1
+2025-05-12T14:47:52.723Z - info: Using extension child-templates@3.1.0
+2025-05-12T14:47:52.728Z - info: Using extension cli@3.2.3
+2025-05-12T14:47:52.746Z - info: Using extension components@3.3.1
+2025-05-12T14:47:52.753Z - info: Using extension data@3.1.0
+2025-05-12T14:47:52.758Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T14:47:52.758Z - info: Using extension freeze@3.0.1
+2025-05-12T14:47:52.764Z - info: Using extension fs-store@3.2.5
+2025-05-12T14:47:53.654Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T14:47:53.655Z - info: Using extension handlebars@3.2.1
+2025-05-12T14:47:53.660Z - info: Using extension import-export@3.2.0
+2025-05-12T14:47:54.338Z - info: Using extension jsrender@3.0.0
+2025-05-12T14:47:54.342Z - info: Using extension licensing@3.0.3
+2025-05-12T14:47:54.482Z - info: Using extension localization@3.2.2
+2025-05-12T14:47:54.486Z - info: Using extension npm@3.2.0
+2025-05-12T14:47:54.493Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T14:47:54.501Z - info: Using extension reports@3.1.1
+2025-05-12T14:47:54.511Z - info: Using extension tags@3.1.1
+2025-05-12T14:47:54.521Z - info: Using extension text@3.0.0
+2025-05-12T14:47:54.525Z - info: Using extension version-control@3.1.2
+2025-05-12T14:47:54.589Z - info: Using extension assets@3.6.1
+2025-05-12T14:47:54.653Z - info: Using extension authorization@3.3.0
+2025-05-12T14:47:54.678Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T14:47:54.678Z - info: Using extension browser-client@3.1.2
+2025-05-12T14:47:54.696Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T14:47:54.705Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T14:47:54.706Z - info: Using extension docx@3.7.2
+2025-05-12T14:47:54.712Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T14:47:56.541Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T14:47:56.542Z - info: Using extension pptx@3.4.0
+2025-05-12T14:47:56.551Z - info: Using extension scheduling@3.0.3
+2025-05-12T14:47:56.721Z - info: Using extension scripts@3.4.1
+2025-05-12T14:47:56.725Z - info: Using extension static-pdf@3.0.1
+2025-05-12T14:47:56.728Z - info: Using extension studio@3.9.3
+2025-05-12T14:47:57.485Z - info: Using extension xlsx@3.5.0
+2025-05-12T14:47:57.653Z - info: Using extension public-templates@3.0.0
+2025-05-12T14:47:57.658Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T14:47:57.659Z - info: Using extension sample-template@3.2.1
+2025-05-12T14:47:57.667Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T14:47:57.674Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T14:47:57.674Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T14:47:57.708Z - debug: studio default theme is: light
+2025-05-12T14:47:57.718Z - info: Verifying license key free
+2025-05-12T14:47:57.719Z - info: Using free license
+2025-05-12T14:47:57.725Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T14:47:57.727Z - info: Migration successful
+2025-05-12T14:47:57.727Z - debug: Creating samples is disabled
+2025-05-12T14:47:57.728Z - info: Initializing worker threads
+2025-05-12T14:47:57.728Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T14:47:58.274Z - info: 2 worker threads initialized in 546ms
+2025-05-12T14:47:58.275Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T14:47:58.276Z - info: reporter initialized
+2025-05-12T15:25:55.475Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T15:25:55.477Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:25:55.485Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:25:55.529Z - info: Found 35 extension(s)
+2025-05-12T15:25:55.601Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T15:25:55.602Z - debug: Discovered 35 extensions
+2025-05-12T15:25:55.632Z - info: Using extension authentication@3.4.0
+2025-05-12T15:25:55.967Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T15:25:55.968Z - info: Using extension base@3.0.1
+2025-05-12T15:25:55.972Z - info: Using extension child-templates@3.1.0
+2025-05-12T15:25:55.975Z - info: Using extension cli@3.2.3
+2025-05-12T15:25:55.983Z - info: Using extension components@3.3.1
+2025-05-12T15:25:55.987Z - info: Using extension data@3.1.0
+2025-05-12T15:25:55.989Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T15:25:55.990Z - info: Using extension freeze@3.0.1
+2025-05-12T15:25:55.992Z - info: Using extension fs-store@3.2.5
+2025-05-12T15:25:56.260Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T15:25:56.261Z - info: Using extension handlebars@3.2.1
+2025-05-12T15:25:56.263Z - info: Using extension import-export@3.2.0
+2025-05-12T15:25:56.451Z - info: Using extension jsrender@3.0.0
+2025-05-12T15:25:56.452Z - info: Using extension licensing@3.0.3
+2025-05-12T15:25:56.501Z - info: Using extension localization@3.2.2
+2025-05-12T15:25:56.503Z - info: Using extension npm@3.2.0
+2025-05-12T15:25:56.506Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T15:25:56.508Z - info: Using extension reports@3.1.1
+2025-05-12T15:25:56.511Z - info: Using extension tags@3.1.1
+2025-05-12T15:25:56.514Z - info: Using extension text@3.0.0
+2025-05-12T15:25:56.516Z - info: Using extension version-control@3.1.2
+2025-05-12T15:25:56.540Z - info: Using extension assets@3.6.1
+2025-05-12T15:25:56.559Z - info: Using extension authorization@3.3.0
+2025-05-12T15:25:56.566Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T15:25:56.566Z - info: Using extension browser-client@3.1.2
+2025-05-12T15:25:56.573Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T15:25:56.576Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T15:25:56.576Z - info: Using extension docx@3.7.2
+2025-05-12T15:25:56.579Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T15:25:57.161Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T15:25:57.161Z - info: Using extension pptx@3.4.0
+2025-05-12T15:25:57.164Z - info: Using extension scheduling@3.0.3
+2025-05-12T15:25:57.223Z - info: Using extension scripts@3.4.1
+2025-05-12T15:25:57.225Z - info: Using extension static-pdf@3.0.1
+2025-05-12T15:25:57.226Z - info: Using extension studio@3.9.3
+2025-05-12T15:25:57.473Z - info: Using extension xlsx@3.5.0
+2025-05-12T15:25:57.521Z - info: Using extension public-templates@3.0.0
+2025-05-12T15:25:57.523Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T15:25:57.524Z - info: Using extension sample-template@3.2.1
+2025-05-12T15:25:57.527Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T15:25:57.531Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T15:25:57.531Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T15:25:57.545Z - debug: studio default theme is: light
+2025-05-12T15:25:57.552Z - info: Verifying license key free
+2025-05-12T15:25:57.553Z - info: Using free license
+2025-05-12T15:25:57.557Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T15:25:57.558Z - info: Migration successful
+2025-05-12T15:25:57.559Z - debug: Creating samples is disabled
+2025-05-12T15:25:57.559Z - info: Initializing worker threads
+2025-05-12T15:25:57.560Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T15:25:57.825Z - info: 2 worker threads initialized in 266ms
+2025-05-12T15:25:57.826Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T15:25:57.826Z - info: reporter initialized
+2025-05-12T15:29:19.593Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T15:29:19.595Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:29:19.598Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:29:19.615Z - info: Found 35 extension(s)
+2025-05-12T15:29:19.648Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T15:29:19.649Z - debug: Discovered 35 extensions
+2025-05-12T15:29:19.678Z - info: Using extension authentication@3.4.0
+2025-05-12T15:29:19.808Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T15:29:19.808Z - info: Using extension base@3.0.1
+2025-05-12T15:29:19.810Z - info: Using extension child-templates@3.1.0
+2025-05-12T15:29:19.811Z - info: Using extension cli@3.2.3
+2025-05-12T15:29:19.814Z - info: Using extension components@3.3.1
+2025-05-12T15:29:19.816Z - info: Using extension data@3.1.0
+2025-05-12T15:29:19.817Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T15:29:19.817Z - info: Using extension freeze@3.0.1
+2025-05-12T15:29:19.819Z - info: Using extension fs-store@3.2.5
+2025-05-12T15:29:19.906Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T15:29:19.907Z - info: Using extension handlebars@3.2.1
+2025-05-12T15:29:19.908Z - info: Using extension import-export@3.2.0
+2025-05-12T15:29:19.978Z - info: Using extension jsrender@3.0.0
+2025-05-12T15:29:19.979Z - info: Using extension licensing@3.0.3
+2025-05-12T15:29:19.996Z - info: Using extension localization@3.2.2
+2025-05-12T15:29:19.997Z - info: Using extension npm@3.2.0
+2025-05-12T15:29:19.999Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T15:29:20.000Z - info: Using extension reports@3.1.1
+2025-05-12T15:29:20.002Z - info: Using extension tags@3.1.1
+2025-05-12T15:29:20.004Z - info: Using extension text@3.0.0
+2025-05-12T15:29:20.005Z - info: Using extension version-control@3.1.2
+2025-05-12T15:29:20.013Z - info: Using extension assets@3.6.1
+2025-05-12T15:29:20.021Z - info: Using extension authorization@3.3.0
+2025-05-12T15:29:20.023Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T15:29:20.024Z - info: Using extension browser-client@3.1.2
+2025-05-12T15:29:20.025Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T15:29:20.027Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T15:29:20.027Z - info: Using extension docx@3.7.2
+2025-05-12T15:29:20.029Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T15:29:20.263Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T15:29:20.263Z - info: Using extension pptx@3.4.0
+2025-05-12T15:29:20.265Z - info: Using extension scheduling@3.0.3
+2025-05-12T15:29:20.293Z - info: Using extension scripts@3.4.1
+2025-05-12T15:29:20.294Z - info: Using extension static-pdf@3.0.1
+2025-05-12T15:29:20.295Z - info: Using extension studio@3.9.3
+2025-05-12T15:29:20.388Z - info: Using extension xlsx@3.5.0
+2025-05-12T15:29:20.406Z - info: Using extension public-templates@3.0.0
+2025-05-12T15:29:20.407Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T15:29:20.407Z - info: Using extension sample-template@3.2.1
+2025-05-12T15:29:20.409Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T15:29:20.410Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T15:29:20.410Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T15:29:20.418Z - debug: studio default theme is: light
+2025-05-12T15:29:20.425Z - info: Verifying license key free
+2025-05-12T15:29:20.426Z - info: Using free license
+2025-05-12T15:29:20.428Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T15:29:20.429Z - info: Migration successful
+2025-05-12T15:29:20.429Z - debug: Creating samples is disabled
+2025-05-12T15:29:20.430Z - info: Initializing worker threads
+2025-05-12T15:29:20.430Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T15:29:20.590Z - info: 2 worker threads initialized in 160ms
+2025-05-12T15:29:20.590Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T15:29:20.591Z - info: reporter initialized
+2025-05-12T15:30:23.197Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T15:30:23.200Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:30:23.203Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T15:30:23.218Z - info: Found 35 extension(s)
+2025-05-12T15:30:23.242Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T15:30:23.244Z - debug: Discovered 35 extensions
+2025-05-12T15:30:23.279Z - info: Using extension authentication@3.4.0
+2025-05-12T15:30:23.416Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T15:30:23.416Z - info: Using extension base@3.0.1
+2025-05-12T15:30:23.419Z - info: Using extension child-templates@3.1.0
+2025-05-12T15:30:23.420Z - info: Using extension cli@3.2.3
+2025-05-12T15:30:23.422Z - info: Using extension components@3.3.1
+2025-05-12T15:30:23.423Z - info: Using extension data@3.1.0
+2025-05-12T15:30:23.424Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T15:30:23.425Z - info: Using extension freeze@3.0.1
+2025-05-12T15:30:23.426Z - info: Using extension fs-store@3.2.5
+2025-05-12T15:30:23.522Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T15:30:23.523Z - info: Using extension handlebars@3.2.1
+2025-05-12T15:30:23.524Z - info: Using extension import-export@3.2.0
+2025-05-12T15:30:23.595Z - info: Using extension jsrender@3.0.0
+2025-05-12T15:30:23.596Z - info: Using extension licensing@3.0.3
+2025-05-12T15:30:23.611Z - info: Using extension localization@3.2.2
+2025-05-12T15:30:23.613Z - info: Using extension npm@3.2.0
+2025-05-12T15:30:23.615Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T15:30:23.616Z - info: Using extension reports@3.1.1
+2025-05-12T15:30:23.619Z - info: Using extension tags@3.1.1
+2025-05-12T15:30:23.621Z - info: Using extension text@3.0.0
+2025-05-12T15:30:23.622Z - info: Using extension version-control@3.1.2
+2025-05-12T15:30:23.630Z - info: Using extension assets@3.6.1
+2025-05-12T15:30:23.637Z - info: Using extension authorization@3.3.0
+2025-05-12T15:30:23.640Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T15:30:23.640Z - info: Using extension browser-client@3.1.2
+2025-05-12T15:30:23.642Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T15:30:23.644Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T15:30:23.644Z - info: Using extension docx@3.7.2
+2025-05-12T15:30:23.646Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T15:30:23.836Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T15:30:23.836Z - info: Using extension pptx@3.4.0
+2025-05-12T15:30:23.838Z - info: Using extension scheduling@3.0.3
+2025-05-12T15:30:23.863Z - info: Using extension scripts@3.4.1
+2025-05-12T15:30:23.864Z - info: Using extension static-pdf@3.0.1
+2025-05-12T15:30:23.864Z - info: Using extension studio@3.9.3
+2025-05-12T15:30:23.947Z - info: Using extension xlsx@3.5.0
+2025-05-12T15:30:23.965Z - info: Using extension public-templates@3.0.0
+2025-05-12T15:30:23.966Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T15:30:23.966Z - info: Using extension sample-template@3.2.1
+2025-05-12T15:30:23.968Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T15:30:23.969Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T15:30:23.969Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T15:30:23.977Z - debug: studio default theme is: light
+2025-05-12T15:30:23.983Z - info: Verifying license key free
+2025-05-12T15:30:23.984Z - info: Using free license
+2025-05-12T15:30:23.988Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T15:30:23.989Z - info: Migration successful
+2025-05-12T15:30:23.989Z - debug: Creating samples is disabled
+2025-05-12T15:30:23.990Z - info: Initializing worker threads
+2025-05-12T15:30:23.990Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T15:30:24.151Z - info: 2 worker threads initialized in 161ms
+2025-05-12T15:30:24.152Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T15:30:24.153Z - info: reporter initialized
+2025-05-12T16:13:38.275Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T16:13:38.279Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:13:38.286Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:13:38.330Z - info: Found 35 extension(s)
+2025-05-12T16:13:38.331Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T16:13:38.333Z - debug: Discovered 35 extensions
+2025-05-12T16:13:38.524Z - info: Using extension authentication@3.4.0
+2025-05-12T16:13:38.526Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T16:13:38.527Z - info: Using extension base@3.0.1
+2025-05-12T16:13:38.527Z - info: Using extension child-templates@3.1.0
+2025-05-12T16:13:38.528Z - info: Using extension cli@3.2.3
+2025-05-12T16:13:38.529Z - info: Using extension components@3.3.1
+2025-05-12T16:13:38.529Z - info: Using extension data@3.1.0
+2025-05-12T16:13:38.530Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T16:13:38.530Z - info: Using extension freeze@3.0.1
+2025-05-12T16:13:38.530Z - info: Using extension fs-store@3.2.5
+2025-05-12T16:13:38.532Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T16:13:38.532Z - info: Using extension handlebars@3.2.1
+2025-05-12T16:13:38.533Z - info: Using extension import-export@3.2.0
+2025-05-12T16:13:38.535Z - info: Using extension jsrender@3.0.0
+2025-05-12T16:13:38.535Z - info: Using extension licensing@3.0.3
+2025-05-12T16:13:38.537Z - info: Using extension localization@3.2.2
+2025-05-12T16:13:38.537Z - info: Using extension npm@3.2.0
+2025-05-12T16:13:38.539Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T16:13:38.540Z - info: Using extension reports@3.1.1
+2025-05-12T16:13:38.542Z - info: Using extension tags@3.1.1
+2025-05-12T16:13:38.542Z - info: Using extension text@3.0.0
+2025-05-12T16:13:38.542Z - info: Using extension version-control@3.1.2
+2025-05-12T16:13:38.543Z - info: Using extension assets@3.6.1
+2025-05-12T16:13:38.544Z - info: Using extension authorization@3.3.0
+2025-05-12T16:13:38.545Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T16:13:38.545Z - info: Using extension browser-client@3.1.2
+2025-05-12T16:13:38.546Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T16:13:38.547Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T16:13:38.547Z - info: Using extension docx@3.7.2
+2025-05-12T16:13:38.548Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T16:13:38.549Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T16:13:38.549Z - info: Using extension pptx@3.4.0
+2025-05-12T16:13:38.550Z - info: Using extension scheduling@3.0.3
+2025-05-12T16:13:38.551Z - info: Using extension scripts@3.4.1
+2025-05-12T16:13:38.552Z - info: Using extension static-pdf@3.0.1
+2025-05-12T16:13:38.552Z - info: Using extension studio@3.9.3
+2025-05-12T16:13:38.571Z - info: Using extension xlsx@3.5.0
+2025-05-12T16:13:38.572Z - info: Using extension public-templates@3.0.0
+2025-05-12T16:13:38.572Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T16:13:38.572Z - info: Using extension sample-template@3.2.1
+2025-05-12T16:13:38.573Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T16:13:38.574Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T16:13:38.574Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T16:13:38.577Z - debug: studio default theme is: light
+2025-05-12T16:13:38.580Z - info: Verifying license key free
+2025-05-12T16:13:38.580Z - info: Using free license
+2025-05-12T16:13:38.581Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T16:13:38.582Z - info: Migration successful
+2025-05-12T16:13:38.582Z - debug: Creating samples is disabled
+2025-05-12T16:13:38.582Z - info: Initializing worker threads
+2025-05-12T16:13:38.582Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T16:13:39.095Z - info: 2 worker threads initialized in 513ms
+2025-05-12T16:13:39.096Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T16:13:39.097Z - info: reporter initialized
+2025-05-12T16:13:39.168Z - info: Render request 1 queued for execution and waiting for available worker rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:39.467Z - info: Starting rendering request 1 rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:39.467Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:39.467Z - debug: Inline data specified. rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:39.468Z - debug: Base url not specified, skipping its injection. rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:39.468Z - debug: Rendering engine handlebars rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:41.276Z - debug: Executing recipe chrome-pdf rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.147Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.472Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/95add9f0-a163-4ebb-b2a1-72d2049e4d90-chrome-pdf.html rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.472Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/95add9f0-a163-4ebb-b2a1-72d2049e4d90-chrome-pdf.html rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.473Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.473Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.473Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.473Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.473Z - debug: Running chrome with params {"timeout":57889,"margin":{},"printBackground":true} rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.539Z - debug: Skipping storing report. rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:42.540Z - info: Rendering request 1 finished in 3371 ms rootId=hxvnte4lblruarp, id=hxvnte4lblruarp
+2025-05-12T16:13:50.686Z - info: Render request 2 queued for execution and waiting for available worker rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:50.723Z - info: Starting rendering request 2 rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:50.724Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:50.724Z - debug: Inline data specified. rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:50.724Z - debug: Base url not specified, skipping its injection. rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:50.724Z - debug: Rendering engine handlebars rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.280Z - debug: Executing recipe chrome-pdf rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.509Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.618Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/e3da51cc-1ed6-4b6d-8ed4-356f325306a2-chrome-pdf.html rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.618Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/e3da51cc-1ed6-4b6d-8ed4-356f325306a2-chrome-pdf.html rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.619Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.619Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.619Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.619Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.620Z - debug: Running chrome with params {"timeout":59402,"margin":{},"printBackground":true} rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.663Z - debug: Skipping storing report. rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:13:51.663Z - info: Rendering request 2 finished in 978 ms rootId=7778i81nt3m8uue, id=7778i81nt3m8uue
+2025-05-12T16:14:10.811Z - info: Render request 3 queued for execution and waiting for available worker rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.814Z - info: Starting rendering request 3 rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.814Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.814Z - debug: Inline data specified. rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.814Z - debug: Base url not specified, skipping its injection. rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.814Z - debug: Rendering engine handlebars rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.885Z - debug: Executing recipe chrome-pdf rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.885Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.985Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/4e6569d0-ed0c-48ec-b204-4d7bc0b3a5c1-chrome-pdf.html rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.985Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/4e6569d0-ed0c-48ec-b204-4d7bc0b3a5c1-chrome-pdf.html rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.985Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.986Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.986Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.986Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.986Z - debug: Running chrome with params {"timeout":59989,"margin":{},"printBackground":true} rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.994Z - debug: Skipping storing report. rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:14:10.995Z - info: Rendering request 3 finished in 184 ms rootId=2tpa6tevsk1e6o6, id=2tpa6tevsk1e6o6
+2025-05-12T16:46:12.614Z - info: Render request 4 queued for execution and waiting for available worker rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.624Z - info: Starting rendering request 4 rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.624Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.624Z - debug: Inline data specified. rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.625Z - debug: Base url not specified, skipping its injection. rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.625Z - debug: Rendering engine handlebars rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.665Z - debug: Executing recipe chrome-pdf rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.666Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.986Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/892aad72-1576-4104-8d01-28c25762b4ed-chrome-pdf.html rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.987Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/892aad72-1576-4104-8d01-28c25762b4ed-chrome-pdf.html rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.987Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.987Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.987Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.987Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:12.988Z - debug: Running chrome with params {"timeout":59975,"margin":{},"printBackground":true} rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:13.034Z - debug: Skipping storing report. rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:46:13.034Z - info: Rendering request 4 finished in 422 ms rootId=qmnvyu9vc2dwo4q, id=qmnvyu9vc2dwo4q
+2025-05-12T16:47:08.150Z - info: Render request 5 queued for execution and waiting for available worker rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.157Z - info: Starting rendering request 5 rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.159Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.159Z - debug: Inline data specified. rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.159Z - debug: Base url not specified, skipping its injection. rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.160Z - debug: Rendering engine handlebars rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.266Z - debug: Executing recipe chrome-pdf rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.266Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.266Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/4fc9aeec-f2b1-4362-a7b8-194d6df94d46-chrome-pdf.html rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.366Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.366Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.366Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/4fc9aeec-f2b1-4362-a7b8-194d6df94d46-chrome-pdf.html rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.366Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.366Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.367Z - debug: Running chrome with params {"timeout":59969,"margin":{},"printBackground":true} rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.376Z - debug: Skipping storing report. rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:47:08.377Z - info: Rendering request 5 finished in 228 ms rootId=99ab2bhl8q69lnf, id=99ab2bhl8q69lnf
+2025-05-12T16:56:09.687Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T16:56:09.689Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:56:09.695Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:56:09.730Z - info: Found 35 extension(s)
+2025-05-12T16:56:09.770Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T16:56:09.772Z - debug: Discovered 35 extensions
+2025-05-12T16:56:09.803Z - info: Using extension authentication@3.4.0
+2025-05-12T16:56:10.153Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T16:56:10.153Z - info: Using extension base@3.0.1
+2025-05-12T16:56:10.156Z - info: Using extension child-templates@3.1.0
+2025-05-12T16:56:10.157Z - info: Using extension cli@3.2.3
+2025-05-12T16:56:10.163Z - info: Using extension components@3.3.1
+2025-05-12T16:56:10.165Z - info: Using extension data@3.1.0
+2025-05-12T16:56:10.166Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T16:56:10.167Z - info: Using extension freeze@3.0.1
+2025-05-12T16:56:10.168Z - info: Using extension fs-store@3.2.5
+2025-05-12T16:56:10.388Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T16:56:10.388Z - info: Using extension handlebars@3.2.1
+2025-05-12T16:56:10.390Z - info: Using extension import-export@3.2.0
+2025-05-12T16:56:10.548Z - info: Using extension jsrender@3.0.0
+2025-05-12T16:56:10.549Z - info: Using extension licensing@3.0.3
+2025-05-12T16:56:10.587Z - info: Using extension localization@3.2.2
+2025-05-12T16:56:10.588Z - info: Using extension npm@3.2.0
+2025-05-12T16:56:10.590Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T16:56:10.595Z - info: Using extension reports@3.1.1
+2025-05-12T16:56:10.600Z - info: Using extension tags@3.1.1
+2025-05-12T16:56:10.607Z - info: Using extension text@3.0.0
+2025-05-12T16:56:10.608Z - info: Using extension version-control@3.1.2
+2025-05-12T16:56:10.629Z - info: Using extension assets@3.6.1
+2025-05-12T16:56:10.640Z - info: Using extension authorization@3.3.0
+2025-05-12T16:56:10.646Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T16:56:10.646Z - info: Using extension browser-client@3.1.2
+2025-05-12T16:56:10.651Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T16:56:10.653Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T16:56:10.654Z - info: Using extension docx@3.7.2
+2025-05-12T16:56:10.656Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T16:56:11.111Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T16:56:11.111Z - info: Using extension pptx@3.4.0
+2025-05-12T16:56:11.114Z - info: Using extension scheduling@3.0.3
+2025-05-12T16:56:11.169Z - info: Using extension scripts@3.4.1
+2025-05-12T16:56:11.170Z - info: Using extension static-pdf@3.0.1
+2025-05-12T16:56:11.171Z - info: Using extension studio@3.9.3
+2025-05-12T16:56:11.444Z - info: Using extension xlsx@3.5.0
+2025-05-12T16:56:11.483Z - info: Using extension public-templates@3.0.0
+2025-05-12T16:56:11.485Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T16:56:11.485Z - info: Using extension sample-template@3.2.1
+2025-05-12T16:56:11.488Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T16:56:11.495Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T16:56:11.495Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T16:56:11.505Z - debug: studio default theme is: light
+2025-05-12T16:56:11.515Z - info: Verifying license key free
+2025-05-12T16:56:11.516Z - info: Using free license
+2025-05-12T16:56:11.519Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T16:56:11.520Z - info: Migration successful
+2025-05-12T16:56:11.520Z - debug: Creating samples is disabled
+2025-05-12T16:56:11.521Z - info: Initializing worker threads
+2025-05-12T16:56:11.521Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T16:56:11.772Z - info: 2 worker threads initialized in 251ms
+2025-05-12T16:56:11.773Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T16:56:11.773Z - info: reporter initialized
+2025-05-12T16:56:13.723Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T16:56:13.723Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:56:13.725Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T16:56:13.737Z - info: Found 35 extension(s)
+2025-05-12T16:56:13.739Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T16:56:13.739Z - debug: Discovered 35 extensions
+2025-05-12T16:56:13.765Z - info: Using extension authentication@3.4.0
+2025-05-12T16:56:13.767Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T16:56:13.767Z - info: Using extension base@3.0.1
+2025-05-12T16:56:13.768Z - info: Using extension child-templates@3.1.0
+2025-05-12T16:56:13.768Z - info: Using extension cli@3.2.3
+2025-05-12T16:56:13.768Z - info: Using extension components@3.3.1
+2025-05-12T16:56:13.769Z - info: Using extension data@3.1.0
+2025-05-12T16:56:13.769Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T16:56:13.769Z - info: Using extension freeze@3.0.1
+2025-05-12T16:56:13.769Z - info: Using extension fs-store@3.2.5
+2025-05-12T16:56:13.771Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T16:56:13.771Z - info: Using extension handlebars@3.2.1
+2025-05-12T16:56:13.771Z - info: Using extension import-export@3.2.0
+2025-05-12T16:56:13.772Z - info: Using extension jsrender@3.0.0
+2025-05-12T16:56:13.772Z - info: Using extension licensing@3.0.3
+2025-05-12T16:56:13.773Z - info: Using extension localization@3.2.2
+2025-05-12T16:56:13.773Z - info: Using extension npm@3.2.0
+2025-05-12T16:56:13.774Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T16:56:13.774Z - info: Using extension reports@3.1.1
+2025-05-12T16:56:13.776Z - info: Using extension tags@3.1.1
+2025-05-12T16:56:13.776Z - info: Using extension text@3.0.0
+2025-05-12T16:56:13.777Z - info: Using extension version-control@3.1.2
+2025-05-12T16:56:13.777Z - info: Using extension assets@3.6.1
+2025-05-12T16:56:13.778Z - info: Using extension authorization@3.3.0
+2025-05-12T16:56:13.778Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T16:56:13.778Z - info: Using extension browser-client@3.1.2
+2025-05-12T16:56:13.779Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T16:56:13.780Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T16:56:13.780Z - info: Using extension docx@3.7.2
+2025-05-12T16:56:13.780Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T16:56:13.781Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T16:56:13.781Z - info: Using extension pptx@3.4.0
+2025-05-12T16:56:13.782Z - info: Using extension scheduling@3.0.3
+2025-05-12T16:56:13.783Z - info: Using extension scripts@3.4.1
+2025-05-12T16:56:13.783Z - info: Using extension static-pdf@3.0.1
+2025-05-12T16:56:13.783Z - info: Using extension studio@3.9.3
+2025-05-12T16:56:13.790Z - info: Using extension xlsx@3.5.0
+2025-05-12T16:56:13.791Z - info: Using extension public-templates@3.0.0
+2025-05-12T16:56:13.791Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T16:56:13.792Z - info: Using extension sample-template@3.2.1
+2025-05-12T16:56:13.792Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T16:56:13.793Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T16:56:13.793Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T16:56:13.796Z - debug: studio default theme is: light
+2025-05-12T16:56:13.798Z - info: Verifying license key free
+2025-05-12T16:56:13.799Z - info: Using free license
+2025-05-12T16:56:13.799Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T16:56:13.800Z - info: Migration successful
+2025-05-12T16:56:13.800Z - debug: Creating samples is disabled
+2025-05-12T16:56:13.800Z - info: Initializing worker threads
+2025-05-12T16:56:13.800Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T16:56:13.961Z - info: 2 worker threads initialized in 161ms
+2025-05-12T16:56:13.961Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T16:56:13.962Z - info: reporter initialized
+2025-05-12T16:56:14.024Z - info: Render request 1 queued for execution and waiting for available worker rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.092Z - info: Starting rendering request 1 rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.092Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.093Z - debug: Inline data specified. rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.093Z - debug: Base url not specified, skipping its injection. rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.093Z - debug: Rendering engine handlebars rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:14.738Z - debug: Executing recipe chrome-pdf rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.060Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.162Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/b8b6d8a5-9d5e-4ca9-9dfd-c991d5ca61b5-chrome-pdf.html rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.263Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/b8b6d8a5-9d5e-4ca9-9dfd-c991d5ca61b5-chrome-pdf.html rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.263Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.263Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.264Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.264Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.264Z - debug: Running chrome with params {"timeout":59283,"margin":{},"printBackground":true} rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.279Z - debug: Skipping storing report. rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:15.279Z - info: Rendering request 1 finished in 1256 ms rootId=z9s4j4k1po896fc, id=z9s4j4k1po896fc
+2025-05-12T16:56:20.580Z - info: Render request 2 queued for execution and waiting for available worker rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:20.619Z - info: Starting rendering request 2 rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:20.619Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:20.619Z - debug: Inline data specified. rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:20.619Z - debug: Base url not specified, skipping its injection. rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:20.619Z - debug: Rendering engine handlebars rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.174Z - debug: Executing recipe chrome-pdf rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.393Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.500Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/e205e980-f71a-48cc-86f6-783f98608cb9-chrome-pdf.html rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.500Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/e205e980-f71a-48cc-86f6-783f98608cb9-chrome-pdf.html rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.501Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.501Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.501Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.501Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.502Z - debug: Running chrome with params {"timeout":59400,"margin":{},"printBackground":true} rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.545Z - debug: Skipping storing report. rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:21.545Z - info: Rendering request 2 finished in 968 ms rootId=ehsoaesthsddq4s, id=ehsoaesthsddq4s
+2025-05-12T16:56:49.731Z - info: Render request 3 queued for execution and waiting for available worker rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.734Z - info: Starting rendering request 3 rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.734Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.735Z - debug: Inline data specified. rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.735Z - debug: Base url not specified, skipping its injection. rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.735Z - debug: Rendering engine handlebars rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.804Z - debug: Executing recipe chrome-pdf rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.805Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.904Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/d77606cf-7d8a-438d-86a8-844f007e50a5-chrome-pdf.html rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.905Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/d77606cf-7d8a-438d-86a8-844f007e50a5-chrome-pdf.html rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.905Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.905Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.905Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.906Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.906Z - debug: Running chrome with params {"timeout":59989,"margin":{},"printBackground":true} rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.915Z - debug: Skipping storing report. rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T16:56:49.915Z - info: Rendering request 3 finished in 184 ms rootId=ls0dnzixdotjhw8, id=ls0dnzixdotjhw8
+2025-05-12T17:24:27.396Z - info: Render request 4 queued for execution and waiting for available worker rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.405Z - info: Starting rendering request 4 rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.406Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.406Z - debug: Inline data specified. rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.406Z - debug: Base url not specified, skipping its injection. rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.406Z - debug: Rendering engine handlebars rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.492Z - debug: Executing recipe chrome-pdf rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.492Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.703Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/f65399e4-0dd1-41db-8fe3-5c7948a5e2bd-chrome-pdf.html rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.703Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/f65399e4-0dd1-41db-8fe3-5c7948a5e2bd-chrome-pdf.html rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.704Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.704Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.786Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.787Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.787Z - debug: Running chrome with params {"timeout":59974,"margin":{},"printBackground":true} rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.787Z - debug: Skipping storing report. rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T17:24:27.788Z - info: Rendering request 4 finished in 393 ms rootId=js3ueh4rhpdrlyx, id=js3ueh4rhpdrlyx
+2025-05-12T18:14:22.298Z - info: Render request 5 queued for execution and waiting for available worker rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.339Z - info: Starting rendering request 5 rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.339Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.340Z - debug: Inline data specified. rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.340Z - debug: Base url not specified, skipping its injection. rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.340Z - debug: Rendering engine handlebars rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.389Z - debug: Executing recipe chrome-pdf rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.498Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.822Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/ea75f498-d074-4e96-a777-eb5929f13dcf-chrome-pdf.html rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.822Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.822Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.822Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/ea75f498-d074-4e96-a777-eb5929f13dcf-chrome-pdf.html rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.823Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.823Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.823Z - debug: Running chrome with params {"timeout":59915,"margin":{},"printBackground":true} rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.884Z - debug: Skipping storing report. rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:22.884Z - info: Rendering request 5 finished in 591 ms rootId=3zqq0feumgo32ug, id=3zqq0feumgo32ug
+2025-05-12T18:14:25.958Z - info: Render request 6 queued for execution and waiting for available worker rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:25.967Z - info: Starting rendering request 6 rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:25.967Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:25.968Z - debug: Inline data specified. rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:25.970Z - debug: Base url not specified, skipping its injection. rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:25.970Z - debug: Rendering engine handlebars rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.069Z - debug: Executing recipe chrome-pdf rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.069Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.069Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/79574766-3d9f-4614-8ec9-25e9d7a6e18d-chrome-pdf.html rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.178Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/79574766-3d9f-4614-8ec9-25e9d7a6e18d-chrome-pdf.html rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.179Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.180Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.180Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.180Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.180Z - debug: Running chrome with params {"timeout":59978,"margin":{},"printBackground":true} rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.192Z - debug: Skipping storing report. rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:26.193Z - info: Rendering request 6 finished in 234 ms rootId=qit7zx1sx9c8tyv, id=qit7zx1sx9c8tyv
+2025-05-12T18:14:43.246Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T18:14:43.248Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:14:43.257Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:14:43.288Z - info: Found 35 extension(s)
+2025-05-12T18:14:43.337Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T18:14:43.339Z - debug: Discovered 35 extensions
+2025-05-12T18:14:43.370Z - info: Using extension authentication@3.4.0
+2025-05-12T18:14:43.685Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T18:14:43.685Z - info: Using extension base@3.0.1
+2025-05-12T18:14:43.696Z - info: Using extension child-templates@3.1.0
+2025-05-12T18:14:43.698Z - info: Using extension cli@3.2.3
+2025-05-12T18:14:43.704Z - info: Using extension components@3.3.1
+2025-05-12T18:14:43.706Z - info: Using extension data@3.1.0
+2025-05-12T18:14:43.708Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T18:14:43.708Z - info: Using extension freeze@3.0.1
+2025-05-12T18:14:43.710Z - info: Using extension fs-store@3.2.5
+2025-05-12T18:14:43.953Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T18:14:43.954Z - info: Using extension handlebars@3.2.1
+2025-05-12T18:14:43.955Z - info: Using extension import-export@3.2.0
+2025-05-12T18:14:44.126Z - info: Using extension jsrender@3.0.0
+2025-05-12T18:14:44.127Z - info: Using extension licensing@3.0.3
+2025-05-12T18:14:44.162Z - info: Using extension localization@3.2.2
+2025-05-12T18:14:44.163Z - info: Using extension npm@3.2.0
+2025-05-12T18:14:44.165Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T18:14:44.169Z - info: Using extension reports@3.1.1
+2025-05-12T18:14:44.174Z - info: Using extension tags@3.1.1
+2025-05-12T18:14:44.179Z - info: Using extension text@3.0.0
+2025-05-12T18:14:44.181Z - info: Using extension version-control@3.1.2
+2025-05-12T18:14:44.211Z - info: Using extension assets@3.6.1
+2025-05-12T18:14:44.231Z - info: Using extension authorization@3.3.0
+2025-05-12T18:14:44.238Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T18:14:44.238Z - info: Using extension browser-client@3.1.2
+2025-05-12T18:14:44.243Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T18:14:44.246Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T18:14:44.247Z - info: Using extension docx@3.7.2
+2025-05-12T18:14:44.249Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T18:14:44.742Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T18:14:44.743Z - info: Using extension pptx@3.4.0
+2025-05-12T18:14:44.745Z - info: Using extension scheduling@3.0.3
+2025-05-12T18:14:44.794Z - info: Using extension scripts@3.4.1
+2025-05-12T18:14:44.795Z - info: Using extension static-pdf@3.0.1
+2025-05-12T18:14:44.796Z - info: Using extension studio@3.9.3
+2025-05-12T18:14:45.101Z - info: Using extension xlsx@3.5.0
+2025-05-12T18:14:45.147Z - info: Using extension public-templates@3.0.0
+2025-05-12T18:14:45.149Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T18:14:45.150Z - info: Using extension sample-template@3.2.1
+2025-05-12T18:14:45.153Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T18:14:45.155Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T18:14:45.155Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T18:14:45.166Z - debug: studio default theme is: light
+2025-05-12T18:14:45.174Z - info: Verifying license key free
+2025-05-12T18:14:45.175Z - info: Using free license
+2025-05-12T18:14:45.178Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T18:14:45.178Z - info: Migration successful
+2025-05-12T18:14:45.179Z - debug: Creating samples is disabled
+2025-05-12T18:14:45.179Z - info: Initializing worker threads
+2025-05-12T18:14:45.180Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T18:14:45.431Z - info: 2 worker threads initialized in 252ms
+2025-05-12T18:14:45.432Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T18:14:45.433Z - info: reporter initialized
+2025-05-12T18:14:46.037Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T18:14:46.037Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:14:46.038Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:14:46.051Z - info: Found 35 extension(s)
+2025-05-12T18:14:46.052Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T18:14:46.053Z - debug: Discovered 35 extensions
+2025-05-12T18:14:46.078Z - info: Using extension authentication@3.4.0
+2025-05-12T18:14:46.079Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T18:14:46.080Z - info: Using extension base@3.0.1
+2025-05-12T18:14:46.080Z - info: Using extension child-templates@3.1.0
+2025-05-12T18:14:46.081Z - info: Using extension cli@3.2.3
+2025-05-12T18:14:46.081Z - info: Using extension components@3.3.1
+2025-05-12T18:14:46.081Z - info: Using extension data@3.1.0
+2025-05-12T18:14:46.082Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T18:14:46.082Z - info: Using extension freeze@3.0.1
+2025-05-12T18:14:46.083Z - info: Using extension fs-store@3.2.5
+2025-05-12T18:14:46.084Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T18:14:46.085Z - info: Using extension handlebars@3.2.1
+2025-05-12T18:14:46.085Z - info: Using extension import-export@3.2.0
+2025-05-12T18:14:46.086Z - info: Using extension jsrender@3.0.0
+2025-05-12T18:14:46.086Z - info: Using extension licensing@3.0.3
+2025-05-12T18:14:46.087Z - info: Using extension localization@3.2.2
+2025-05-12T18:14:46.087Z - info: Using extension npm@3.2.0
+2025-05-12T18:14:46.088Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T18:14:46.089Z - info: Using extension reports@3.1.1
+2025-05-12T18:14:46.090Z - info: Using extension tags@3.1.1
+2025-05-12T18:14:46.090Z - info: Using extension text@3.0.0
+2025-05-12T18:14:46.090Z - info: Using extension version-control@3.1.2
+2025-05-12T18:14:46.091Z - info: Using extension assets@3.6.1
+2025-05-12T18:14:46.092Z - info: Using extension authorization@3.3.0
+2025-05-12T18:14:46.092Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T18:14:46.092Z - info: Using extension browser-client@3.1.2
+2025-05-12T18:14:46.092Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T18:14:46.093Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T18:14:46.093Z - info: Using extension docx@3.7.2
+2025-05-12T18:14:46.094Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T18:14:46.095Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T18:14:46.095Z - info: Using extension pptx@3.4.0
+2025-05-12T18:14:46.095Z - info: Using extension scheduling@3.0.3
+2025-05-12T18:14:46.096Z - info: Using extension scripts@3.4.1
+2025-05-12T18:14:46.096Z - info: Using extension static-pdf@3.0.1
+2025-05-12T18:14:46.097Z - info: Using extension studio@3.9.3
+2025-05-12T18:14:46.104Z - info: Using extension xlsx@3.5.0
+2025-05-12T18:14:46.105Z - info: Using extension public-templates@3.0.0
+2025-05-12T18:14:46.105Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T18:14:46.106Z - info: Using extension sample-template@3.2.1
+2025-05-12T18:14:46.106Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T18:14:46.107Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T18:14:46.107Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T18:14:46.109Z - debug: studio default theme is: light
+2025-05-12T18:14:46.111Z - info: Verifying license key free
+2025-05-12T18:14:46.112Z - info: Using free license
+2025-05-12T18:14:46.113Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T18:14:46.113Z - info: Migration successful
+2025-05-12T18:14:46.113Z - debug: Creating samples is disabled
+2025-05-12T18:14:46.113Z - info: Initializing worker threads
+2025-05-12T18:14:46.113Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T18:14:46.274Z - info: 2 worker threads initialized in 161ms
+2025-05-12T18:14:46.274Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T18:14:46.274Z - info: reporter initialized
+2025-05-12T18:14:46.334Z - info: Render request 1 queued for execution and waiting for available worker rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:46.416Z - info: Starting rendering request 1 rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:46.416Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:46.417Z - debug: Inline data specified. rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:46.417Z - debug: Base url not specified, skipping its injection. rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:46.417Z - debug: Rendering engine handlebars rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.154Z - debug: Executing recipe chrome-pdf rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.369Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.470Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/cbedcae0-5756-4c93-afd6-1dbde19b9755-chrome-pdf.html rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.471Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.471Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/cbedcae0-5756-4c93-afd6-1dbde19b9755-chrome-pdf.html rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.472Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.571Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.571Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.571Z - debug: Running chrome with params {"timeout":59177,"margin":{},"printBackground":true} rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.575Z - debug: Skipping storing report. rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:14:47.576Z - info: Rendering request 1 finished in 1243 ms rootId=8xustk8975je5kn, id=8xustk8975je5kn
+2025-05-12T18:15:20.588Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T18:15:20.590Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:15:20.593Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:15:20.607Z - info: Found 35 extension(s)
+2025-05-12T18:15:20.629Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T18:15:20.631Z - debug: Discovered 35 extensions
+2025-05-12T18:15:20.660Z - info: Using extension authentication@3.4.0
+2025-05-12T18:15:20.795Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T18:15:20.796Z - info: Using extension base@3.0.1
+2025-05-12T18:15:20.799Z - info: Using extension child-templates@3.1.0
+2025-05-12T18:15:20.801Z - info: Using extension cli@3.2.3
+2025-05-12T18:15:20.804Z - info: Using extension components@3.3.1
+2025-05-12T18:15:20.806Z - info: Using extension data@3.1.0
+2025-05-12T18:15:20.807Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T18:15:20.807Z - info: Using extension freeze@3.0.1
+2025-05-12T18:15:20.808Z - info: Using extension fs-store@3.2.5
+2025-05-12T18:15:20.904Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T18:15:20.904Z - info: Using extension handlebars@3.2.1
+2025-05-12T18:15:20.906Z - info: Using extension import-export@3.2.0
+2025-05-12T18:15:21.002Z - info: Using extension jsrender@3.0.0
+2025-05-12T18:15:21.004Z - info: Using extension licensing@3.0.3
+2025-05-12T18:15:21.021Z - info: Using extension localization@3.2.2
+2025-05-12T18:15:21.022Z - info: Using extension npm@3.2.0
+2025-05-12T18:15:21.024Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T18:15:21.025Z - info: Using extension reports@3.1.1
+2025-05-12T18:15:21.027Z - info: Using extension tags@3.1.1
+2025-05-12T18:15:21.028Z - info: Using extension text@3.0.0
+2025-05-12T18:15:21.029Z - info: Using extension version-control@3.1.2
+2025-05-12T18:15:21.040Z - info: Using extension assets@3.6.1
+2025-05-12T18:15:21.050Z - info: Using extension authorization@3.3.0
+2025-05-12T18:15:21.055Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T18:15:21.055Z - info: Using extension browser-client@3.1.2
+2025-05-12T18:15:21.057Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T18:15:21.060Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T18:15:21.061Z - info: Using extension docx@3.7.2
+2025-05-12T18:15:21.063Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T18:15:21.296Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T18:15:21.296Z - info: Using extension pptx@3.4.0
+2025-05-12T18:15:21.298Z - info: Using extension scheduling@3.0.3
+2025-05-12T18:15:21.325Z - info: Using extension scripts@3.4.1
+2025-05-12T18:15:21.326Z - info: Using extension static-pdf@3.0.1
+2025-05-12T18:15:21.327Z - info: Using extension studio@3.9.3
+2025-05-12T18:15:21.416Z - info: Using extension xlsx@3.5.0
+2025-05-12T18:15:21.437Z - info: Using extension public-templates@3.0.0
+2025-05-12T18:15:21.438Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T18:15:21.438Z - info: Using extension sample-template@3.2.1
+2025-05-12T18:15:21.439Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T18:15:21.440Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T18:15:21.441Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T18:15:21.447Z - debug: studio default theme is: light
+2025-05-12T18:15:21.456Z - info: Verifying license key free
+2025-05-12T18:15:21.457Z - info: Using free license
+2025-05-12T18:15:21.461Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T18:15:21.462Z - info: Migration successful
+2025-05-12T18:15:21.462Z - debug: Creating samples is disabled
+2025-05-12T18:15:21.463Z - info: Initializing worker threads
+2025-05-12T18:15:21.464Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T18:15:21.630Z - info: 2 worker threads initialized in 167ms
+2025-05-12T18:15:21.630Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T18:15:21.631Z - info: reporter initialized
+2025-05-12T18:15:22.244Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T18:15:22.245Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:15:22.246Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T18:15:22.259Z - info: Found 35 extension(s)
+2025-05-12T18:15:22.260Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T18:15:22.261Z - debug: Discovered 35 extensions
+2025-05-12T18:15:22.287Z - info: Using extension authentication@3.4.0
+2025-05-12T18:15:22.289Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T18:15:22.289Z - info: Using extension base@3.0.1
+2025-05-12T18:15:22.289Z - info: Using extension child-templates@3.1.0
+2025-05-12T18:15:22.290Z - info: Using extension cli@3.2.3
+2025-05-12T18:15:22.290Z - info: Using extension components@3.3.1
+2025-05-12T18:15:22.291Z - info: Using extension data@3.1.0
+2025-05-12T18:15:22.291Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T18:15:22.291Z - info: Using extension freeze@3.0.1
+2025-05-12T18:15:22.291Z - info: Using extension fs-store@3.2.5
+2025-05-12T18:15:22.293Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T18:15:22.293Z - info: Using extension handlebars@3.2.1
+2025-05-12T18:15:22.294Z - info: Using extension import-export@3.2.0
+2025-05-12T18:15:22.294Z - info: Using extension jsrender@3.0.0
+2025-05-12T18:15:22.294Z - info: Using extension licensing@3.0.3
+2025-05-12T18:15:22.295Z - info: Using extension localization@3.2.2
+2025-05-12T18:15:22.295Z - info: Using extension npm@3.2.0
+2025-05-12T18:15:22.296Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T18:15:22.297Z - info: Using extension reports@3.1.1
+2025-05-12T18:15:22.297Z - info: Using extension tags@3.1.1
+2025-05-12T18:15:22.298Z - info: Using extension text@3.0.0
+2025-05-12T18:15:22.298Z - info: Using extension version-control@3.1.2
+2025-05-12T18:15:22.299Z - info: Using extension assets@3.6.1
+2025-05-12T18:15:22.300Z - info: Using extension authorization@3.3.0
+2025-05-12T18:15:22.300Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T18:15:22.301Z - info: Using extension browser-client@3.1.2
+2025-05-12T18:15:22.301Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T18:15:22.302Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T18:15:22.302Z - info: Using extension docx@3.7.2
+2025-05-12T18:15:22.303Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T18:15:22.303Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T18:15:22.304Z - info: Using extension pptx@3.4.0
+2025-05-12T18:15:22.304Z - info: Using extension scheduling@3.0.3
+2025-05-12T18:15:22.305Z - info: Using extension scripts@3.4.1
+2025-05-12T18:15:22.305Z - info: Using extension static-pdf@3.0.1
+2025-05-12T18:15:22.305Z - info: Using extension studio@3.9.3
+2025-05-12T18:15:22.313Z - info: Using extension xlsx@3.5.0
+2025-05-12T18:15:22.314Z - info: Using extension public-templates@3.0.0
+2025-05-12T18:15:22.314Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T18:15:22.314Z - info: Using extension sample-template@3.2.1
+2025-05-12T18:15:22.314Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T18:15:22.315Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T18:15:22.315Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T18:15:22.318Z - debug: studio default theme is: light
+2025-05-12T18:15:22.321Z - info: Verifying license key free
+2025-05-12T18:15:22.321Z - info: Using free license
+2025-05-12T18:15:22.322Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T18:15:22.322Z - info: Migration successful
+2025-05-12T18:15:22.322Z - debug: Creating samples is disabled
+2025-05-12T18:15:22.322Z - info: Initializing worker threads
+2025-05-12T18:15:22.322Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T18:15:22.503Z - info: 2 worker threads initialized in 181ms
+2025-05-12T18:15:22.503Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T18:15:22.504Z - info: reporter initialized
+2025-05-12T18:15:22.530Z - info: Render request 1 queued for execution and waiting for available worker rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:22.574Z - info: Starting rendering request 1 rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:22.575Z - info: Rendering anonymous template { recipe: chrome-pdf, engine: handlebars } rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:22.575Z - debug: Inline data specified. rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:22.575Z - debug: Base url not specified, skipping its injection. rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:22.576Z - debug: Rendering engine handlebars rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.167Z - debug: Executing recipe chrome-pdf rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.390Z - debug: Converting with chrome HeadlessChrome/114.0.5735.90 using chrome-pool strategy rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.489Z - debug: Page request: GET (document) file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/bd91fef1-2593-40aa-abc5-ee790eae5b65-chrome-pdf.html rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.490Z - debug: Page request finished: GET (document) 200 file:///C:/Users/CMALDO~1/AppData/Local/Temp/jsreport/autocleanup/bd91fef1-2593-40aa-abc5-ee790eae5b65-chrome-pdf.html rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.490Z - debug: Page request: GET (image) http://localhost:3001/public/logo.png rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.490Z - debug: Page request: GET (image) http://localhost:3001/public/logo-juventudbc.png rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.574Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo.png rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.575Z - debug: Page request finished: GET (image) 200 http://localhost:3001/public/logo-juventudbc.png rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.575Z - debug: Running chrome with params {"timeout":59359,"margin":{},"printBackground":true} rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.575Z - debug: Skipping storing report. rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T18:15:23.575Z - info: Rendering request 1 finished in 1046 ms rootId=5brs34l939m7d0v, id=5brs34l939m7d0v
+2025-05-12T19:13:01.759Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T19:13:01.761Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T19:13:01.772Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T19:13:01.810Z - info: Found 35 extension(s)
+2025-05-12T19:13:01.992Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T19:13:01.994Z - debug: Discovered 35 extensions
+2025-05-12T19:13:02.027Z - info: Using extension authentication@3.4.0
+2025-05-12T19:13:03.032Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T19:13:03.033Z - info: Using extension base@3.0.1
+2025-05-12T19:13:03.041Z - info: Using extension child-templates@3.1.0
+2025-05-12T19:13:03.046Z - info: Using extension cli@3.2.3
+2025-05-12T19:13:03.061Z - info: Using extension components@3.3.1
+2025-05-12T19:13:03.063Z - info: Using extension data@3.1.0
+2025-05-12T19:13:03.068Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T19:13:03.068Z - info: Using extension freeze@3.0.1
+2025-05-12T19:13:03.074Z - info: Using extension fs-store@3.2.5
+2025-05-12T19:13:03.877Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T19:13:03.878Z - info: Using extension handlebars@3.2.1
+2025-05-12T19:13:03.883Z - info: Using extension import-export@3.2.0
+2025-05-12T19:13:04.464Z - info: Using extension jsrender@3.0.0
+2025-05-12T19:13:04.466Z - info: Using extension licensing@3.0.3
+2025-05-12T19:13:04.579Z - info: Using extension localization@3.2.2
+2025-05-12T19:13:04.584Z - info: Using extension npm@3.2.0
+2025-05-12T19:13:04.590Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T19:13:04.594Z - info: Using extension reports@3.1.1
+2025-05-12T19:13:04.603Z - info: Using extension tags@3.1.1
+2025-05-12T19:13:04.611Z - info: Using extension text@3.0.0
+2025-05-12T19:13:04.615Z - info: Using extension version-control@3.1.2
+2025-05-12T19:13:04.660Z - info: Using extension assets@3.6.1
+2025-05-12T19:13:04.718Z - info: Using extension authorization@3.3.0
+2025-05-12T19:13:04.734Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T19:13:04.735Z - info: Using extension browser-client@3.1.2
+2025-05-12T19:13:04.751Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T19:13:04.756Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T19:13:04.756Z - info: Using extension docx@3.7.2
+2025-05-12T19:13:04.764Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T19:13:06.427Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T19:13:06.427Z - info: Using extension pptx@3.4.0
+2025-05-12T19:13:06.433Z - info: Using extension scheduling@3.0.3
+2025-05-12T19:13:06.599Z - info: Using extension scripts@3.4.1
+2025-05-12T19:13:06.602Z - info: Using extension static-pdf@3.0.1
+2025-05-12T19:13:06.606Z - info: Using extension studio@3.9.3
+2025-05-12T19:13:07.338Z - info: Using extension xlsx@3.5.0
+2025-05-12T19:13:07.460Z - info: Using extension public-templates@3.0.0
+2025-05-12T19:13:07.465Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T19:13:07.465Z - info: Using extension sample-template@3.2.1
+2025-05-12T19:13:07.473Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T19:13:07.478Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T19:13:07.478Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T19:13:07.502Z - debug: studio default theme is: light
+2025-05-12T19:13:07.510Z - info: Verifying license key free
+2025-05-12T19:13:07.511Z - info: Using free license
+2025-05-12T19:13:07.514Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T19:13:07.515Z - info: Migration successful
+2025-05-12T19:13:07.515Z - debug: Creating samples is disabled
+2025-05-12T19:13:07.516Z - info: Initializing worker threads
+2025-05-12T19:13:07.516Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T19:13:08.050Z - info: 2 worker threads initialized in 534ms
+2025-05-12T19:13:08.050Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T19:13:08.051Z - info: reporter initialized
+2025-05-12T23:01:02.816Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:01:02.819Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:01:02.829Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:01:02.861Z - info: Found 35 extension(s)
+2025-05-12T23:01:02.909Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:01:02.910Z - debug: Discovered 35 extensions
+2025-05-12T23:01:02.938Z - info: Using extension authentication@3.4.0
+2025-05-12T23:01:03.223Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:01:03.224Z - info: Using extension base@3.0.1
+2025-05-12T23:01:03.227Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:01:03.228Z - info: Using extension cli@3.2.3
+2025-05-12T23:01:03.233Z - info: Using extension components@3.3.1
+2025-05-12T23:01:03.235Z - info: Using extension data@3.1.0
+2025-05-12T23:01:03.236Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:01:03.237Z - info: Using extension freeze@3.0.1
+2025-05-12T23:01:03.239Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:01:03.466Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:01:03.467Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:01:03.468Z - info: Using extension import-export@3.2.0
+2025-05-12T23:01:03.642Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:01:03.644Z - info: Using extension licensing@3.0.3
+2025-05-12T23:01:03.683Z - info: Using extension localization@3.2.2
+2025-05-12T23:01:03.684Z - info: Using extension npm@3.2.0
+2025-05-12T23:01:03.687Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:01:03.690Z - info: Using extension reports@3.1.1
+2025-05-12T23:01:03.694Z - info: Using extension tags@3.1.1
+2025-05-12T23:01:03.697Z - info: Using extension text@3.0.0
+2025-05-12T23:01:03.699Z - info: Using extension version-control@3.1.2
+2025-05-12T23:01:03.720Z - info: Using extension assets@3.6.1
+2025-05-12T23:01:03.737Z - info: Using extension authorization@3.3.0
+2025-05-12T23:01:03.743Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:01:03.744Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:01:03.748Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:01:03.752Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:01:03.753Z - info: Using extension docx@3.7.2
+2025-05-12T23:01:03.758Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:01:04.328Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:01:04.328Z - info: Using extension pptx@3.4.0
+2025-05-12T23:01:04.331Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:01:04.379Z - info: Using extension scripts@3.4.1
+2025-05-12T23:01:04.380Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:01:04.381Z - info: Using extension studio@3.9.3
+2025-05-12T23:01:04.578Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:01:04.626Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:01:04.628Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:01:04.628Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:01:04.631Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:01:04.633Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:01:04.633Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:01:04.642Z - debug: studio default theme is: light
+2025-05-12T23:01:04.649Z - info: Verifying license key free
+2025-05-12T23:01:04.649Z - info: Using free license
+2025-05-12T23:01:04.652Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:01:04.653Z - info: Migration successful
+2025-05-12T23:01:04.653Z - debug: Creating samples is disabled
+2025-05-12T23:01:04.654Z - info: Initializing worker threads
+2025-05-12T23:01:04.654Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:01:04.888Z - info: 2 worker threads initialized in 234ms
+2025-05-12T23:01:04.888Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:01:04.889Z - info: reporter initialized
+2025-05-12T23:02:37.845Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:02:37.847Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:02:37.850Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:02:37.867Z - info: Found 35 extension(s)
+2025-05-12T23:02:37.887Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:02:37.888Z - debug: Discovered 35 extensions
+2025-05-12T23:02:37.916Z - info: Using extension authentication@3.4.0
+2025-05-12T23:02:38.047Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:02:38.048Z - info: Using extension base@3.0.1
+2025-05-12T23:02:38.050Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:02:38.051Z - info: Using extension cli@3.2.3
+2025-05-12T23:02:38.052Z - info: Using extension components@3.3.1
+2025-05-12T23:02:38.054Z - info: Using extension data@3.1.0
+2025-05-12T23:02:38.055Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:02:38.055Z - info: Using extension freeze@3.0.1
+2025-05-12T23:02:38.056Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:02:38.151Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:02:38.151Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:02:38.153Z - info: Using extension import-export@3.2.0
+2025-05-12T23:02:38.228Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:02:38.228Z - info: Using extension licensing@3.0.3
+2025-05-12T23:02:38.244Z - info: Using extension localization@3.2.2
+2025-05-12T23:02:38.245Z - info: Using extension npm@3.2.0
+2025-05-12T23:02:38.247Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:02:38.248Z - info: Using extension reports@3.1.1
+2025-05-12T23:02:38.250Z - info: Using extension tags@3.1.1
+2025-05-12T23:02:38.251Z - info: Using extension text@3.0.0
+2025-05-12T23:02:38.252Z - info: Using extension version-control@3.1.2
+2025-05-12T23:02:38.262Z - info: Using extension assets@3.6.1
+2025-05-12T23:02:38.270Z - info: Using extension authorization@3.3.0
+2025-05-12T23:02:38.273Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:02:38.274Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:02:38.276Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:02:38.279Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:02:38.279Z - info: Using extension docx@3.7.2
+2025-05-12T23:02:38.281Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:02:38.493Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:02:38.494Z - info: Using extension pptx@3.4.0
+2025-05-12T23:02:38.495Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:02:38.522Z - info: Using extension scripts@3.4.1
+2025-05-12T23:02:38.523Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:02:38.524Z - info: Using extension studio@3.9.3
+2025-05-12T23:02:38.612Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:02:38.630Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:02:38.631Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:02:38.631Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:02:38.633Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:02:38.634Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:02:38.634Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:02:38.641Z - debug: studio default theme is: light
+2025-05-12T23:02:38.648Z - info: Verifying license key free
+2025-05-12T23:02:38.649Z - info: Using free license
+2025-05-12T23:02:38.652Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:02:38.652Z - info: Migration successful
+2025-05-12T23:02:38.653Z - debug: Creating samples is disabled
+2025-05-12T23:02:38.654Z - info: Initializing worker threads
+2025-05-12T23:02:38.654Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:02:38.821Z - info: 2 worker threads initialized in 168ms
+2025-05-12T23:02:38.821Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:02:38.822Z - info: reporter initialized
+2025-05-12T23:03:26.005Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:03:26.008Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:03:26.012Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:03:26.024Z - info: Found 35 extension(s)
+2025-05-12T23:03:26.052Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:03:26.054Z - debug: Discovered 35 extensions
+2025-05-12T23:03:26.084Z - info: Using extension authentication@3.4.0
+2025-05-12T23:03:26.223Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:03:26.224Z - info: Using extension base@3.0.1
+2025-05-12T23:03:26.228Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:03:26.229Z - info: Using extension cli@3.2.3
+2025-05-12T23:03:26.231Z - info: Using extension components@3.3.1
+2025-05-12T23:03:26.232Z - info: Using extension data@3.1.0
+2025-05-12T23:03:26.233Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:03:26.233Z - info: Using extension freeze@3.0.1
+2025-05-12T23:03:26.234Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:03:26.327Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:03:26.328Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:03:26.329Z - info: Using extension import-export@3.2.0
+2025-05-12T23:03:26.403Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:03:26.404Z - info: Using extension licensing@3.0.3
+2025-05-12T23:03:26.418Z - info: Using extension localization@3.2.2
+2025-05-12T23:03:26.419Z - info: Using extension npm@3.2.0
+2025-05-12T23:03:26.421Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:03:26.424Z - info: Using extension reports@3.1.1
+2025-05-12T23:03:26.427Z - info: Using extension tags@3.1.1
+2025-05-12T23:03:26.429Z - info: Using extension text@3.0.0
+2025-05-12T23:03:26.430Z - info: Using extension version-control@3.1.2
+2025-05-12T23:03:26.439Z - info: Using extension assets@3.6.1
+2025-05-12T23:03:26.449Z - info: Using extension authorization@3.3.0
+2025-05-12T23:03:26.452Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:03:26.452Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:03:26.454Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:03:26.456Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:03:26.457Z - info: Using extension docx@3.7.2
+2025-05-12T23:03:26.460Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:03:26.679Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:03:26.680Z - info: Using extension pptx@3.4.0
+2025-05-12T23:03:26.682Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:03:26.708Z - info: Using extension scripts@3.4.1
+2025-05-12T23:03:26.709Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:03:26.710Z - info: Using extension studio@3.9.3
+2025-05-12T23:03:26.798Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:03:26.817Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:03:26.818Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:03:26.818Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:03:26.819Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:03:26.821Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:03:26.821Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:03:26.828Z - debug: studio default theme is: light
+2025-05-12T23:03:26.835Z - info: Verifying license key free
+2025-05-12T23:03:26.836Z - info: Using free license
+2025-05-12T23:03:26.839Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:03:26.839Z - info: Migration successful
+2025-05-12T23:03:26.840Z - debug: Creating samples is disabled
+2025-05-12T23:03:26.841Z - info: Initializing worker threads
+2025-05-12T23:03:26.842Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:03:27.008Z - info: 2 worker threads initialized in 167ms
+2025-05-12T23:03:27.009Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:03:27.009Z - info: reporter initialized
+2025-05-12T23:08:57.430Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:08:57.432Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:08:57.436Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:08:57.453Z - info: Found 35 extension(s)
+2025-05-12T23:08:57.477Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:08:57.479Z - debug: Discovered 35 extensions
+2025-05-12T23:08:57.506Z - info: Using extension authentication@3.4.0
+2025-05-12T23:08:57.645Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:08:57.645Z - info: Using extension base@3.0.1
+2025-05-12T23:08:57.648Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:08:57.650Z - info: Using extension cli@3.2.3
+2025-05-12T23:08:57.652Z - info: Using extension components@3.3.1
+2025-05-12T23:08:57.653Z - info: Using extension data@3.1.0
+2025-05-12T23:08:57.654Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:08:57.654Z - info: Using extension freeze@3.0.1
+2025-05-12T23:08:57.655Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:08:57.754Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:08:57.755Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:08:57.756Z - info: Using extension import-export@3.2.0
+2025-05-12T23:08:57.824Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:08:57.825Z - info: Using extension licensing@3.0.3
+2025-05-12T23:08:57.840Z - info: Using extension localization@3.2.2
+2025-05-12T23:08:57.842Z - info: Using extension npm@3.2.0
+2025-05-12T23:08:57.844Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:08:57.846Z - info: Using extension reports@3.1.1
+2025-05-12T23:08:57.848Z - info: Using extension tags@3.1.1
+2025-05-12T23:08:57.849Z - info: Using extension text@3.0.0
+2025-05-12T23:08:57.850Z - info: Using extension version-control@3.1.2
+2025-05-12T23:08:57.858Z - info: Using extension assets@3.6.1
+2025-05-12T23:08:57.865Z - info: Using extension authorization@3.3.0
+2025-05-12T23:08:57.867Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:08:57.868Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:08:57.869Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:08:57.871Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:08:57.871Z - info: Using extension docx@3.7.2
+2025-05-12T23:08:57.873Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:08:58.074Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:08:58.075Z - info: Using extension pptx@3.4.0
+2025-05-12T23:08:58.076Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:08:58.101Z - info: Using extension scripts@3.4.1
+2025-05-12T23:08:58.102Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:08:58.102Z - info: Using extension studio@3.9.3
+2025-05-12T23:08:58.187Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:08:58.205Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:08:58.206Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:08:58.207Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:08:58.208Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:08:58.209Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:08:58.210Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:08:58.216Z - debug: studio default theme is: light
+2025-05-12T23:08:58.223Z - info: Verifying license key free
+2025-05-12T23:08:58.223Z - info: Using free license
+2025-05-12T23:08:58.227Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:08:58.229Z - info: Migration successful
+2025-05-12T23:08:58.230Z - debug: Creating samples is disabled
+2025-05-12T23:08:58.230Z - info: Initializing worker threads
+2025-05-12T23:08:58.231Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:08:58.386Z - info: 2 worker threads initialized in 156ms
+2025-05-12T23:08:58.387Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:08:58.387Z - info: reporter initialized
+2025-05-12T23:15:41.167Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:15:41.170Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:15:41.176Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:15:41.192Z - info: Found 35 extension(s)
+2025-05-12T23:15:41.237Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:15:41.238Z - debug: Discovered 35 extensions
+2025-05-12T23:15:41.269Z - info: Using extension authentication@3.4.0
+2025-05-12T23:15:41.484Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:15:41.485Z - info: Using extension base@3.0.1
+2025-05-12T23:15:41.487Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:15:41.488Z - info: Using extension cli@3.2.3
+2025-05-12T23:15:41.492Z - info: Using extension components@3.3.1
+2025-05-12T23:15:41.496Z - info: Using extension data@3.1.0
+2025-05-12T23:15:41.497Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:15:41.497Z - info: Using extension freeze@3.0.1
+2025-05-12T23:15:41.499Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:15:41.660Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:15:41.661Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:15:41.663Z - info: Using extension import-export@3.2.0
+2025-05-12T23:15:41.796Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:15:41.797Z - info: Using extension licensing@3.0.3
+2025-05-12T23:15:41.821Z - info: Using extension localization@3.2.2
+2025-05-12T23:15:41.822Z - info: Using extension npm@3.2.0
+2025-05-12T23:15:41.824Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:15:41.827Z - info: Using extension reports@3.1.1
+2025-05-12T23:15:41.830Z - info: Using extension tags@3.1.1
+2025-05-12T23:15:41.832Z - info: Using extension text@3.0.0
+2025-05-12T23:15:41.833Z - info: Using extension version-control@3.1.2
+2025-05-12T23:15:41.847Z - info: Using extension assets@3.6.1
+2025-05-12T23:15:41.858Z - info: Using extension authorization@3.3.0
+2025-05-12T23:15:41.863Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:15:41.864Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:15:41.867Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:15:41.870Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:15:41.870Z - info: Using extension docx@3.7.2
+2025-05-12T23:15:41.872Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:15:42.234Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:15:42.235Z - info: Using extension pptx@3.4.0
+2025-05-12T23:15:42.237Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:15:42.278Z - info: Using extension scripts@3.4.1
+2025-05-12T23:15:42.279Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:15:42.280Z - info: Using extension studio@3.9.3
+2025-05-12T23:15:42.445Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:15:42.478Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:15:42.479Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:15:42.479Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:15:42.481Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:15:42.483Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:15:42.483Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:15:42.491Z - debug: studio default theme is: light
+2025-05-12T23:15:42.499Z - info: Verifying license key free
+2025-05-12T23:15:42.500Z - info: Using free license
+2025-05-12T23:15:42.503Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:15:42.504Z - info: Migration successful
+2025-05-12T23:15:42.504Z - debug: Creating samples is disabled
+2025-05-12T23:15:42.505Z - info: Initializing worker threads
+2025-05-12T23:15:42.505Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:15:42.730Z - info: 2 worker threads initialized in 225ms
+2025-05-12T23:15:42.731Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:15:42.731Z - info: reporter initialized
+2025-05-12T23:30:48.476Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:30:48.479Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:30:48.485Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:30:48.510Z - info: Found 35 extension(s)
+2025-05-12T23:30:48.550Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:30:48.552Z - debug: Discovered 35 extensions
+2025-05-12T23:30:48.579Z - info: Using extension authentication@3.4.0
+2025-05-12T23:30:48.812Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:30:48.813Z - info: Using extension base@3.0.1
+2025-05-12T23:30:48.815Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:30:48.816Z - info: Using extension cli@3.2.3
+2025-05-12T23:30:48.821Z - info: Using extension components@3.3.1
+2025-05-12T23:30:48.822Z - info: Using extension data@3.1.0
+2025-05-12T23:30:48.824Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:30:48.824Z - info: Using extension freeze@3.0.1
+2025-05-12T23:30:48.826Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:30:49.004Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:30:49.004Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:30:49.006Z - info: Using extension import-export@3.2.0
+2025-05-12T23:30:49.157Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:30:49.158Z - info: Using extension licensing@3.0.3
+2025-05-12T23:30:49.192Z - info: Using extension localization@3.2.2
+2025-05-12T23:30:49.193Z - info: Using extension npm@3.2.0
+2025-05-12T23:30:49.196Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:30:49.198Z - info: Using extension reports@3.1.1
+2025-05-12T23:30:49.201Z - info: Using extension tags@3.1.1
+2025-05-12T23:30:49.203Z - info: Using extension text@3.0.0
+2025-05-12T23:30:49.204Z - info: Using extension version-control@3.1.2
+2025-05-12T23:30:49.220Z - info: Using extension assets@3.6.1
+2025-05-12T23:30:49.238Z - info: Using extension authorization@3.3.0
+2025-05-12T23:30:49.245Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:30:49.245Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:30:49.254Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:30:49.257Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:30:49.257Z - info: Using extension docx@3.7.2
+2025-05-12T23:30:49.261Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:30:49.730Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:30:49.730Z - info: Using extension pptx@3.4.0
+2025-05-12T23:30:49.732Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:30:49.772Z - info: Using extension scripts@3.4.1
+2025-05-12T23:30:49.773Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:30:49.774Z - info: Using extension studio@3.9.3
+2025-05-12T23:30:49.940Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:30:49.975Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:30:49.977Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:30:49.977Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:30:49.979Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:30:49.980Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:30:49.981Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:30:49.988Z - debug: studio default theme is: light
+2025-05-12T23:30:49.996Z - info: Verifying license key free
+2025-05-12T23:30:49.997Z - info: Using free license
+2025-05-12T23:30:50.000Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:30:50.001Z - info: Migration successful
+2025-05-12T23:30:50.002Z - debug: Creating samples is disabled
+2025-05-12T23:30:50.003Z - info: Initializing worker threads
+2025-05-12T23:30:50.003Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:30:50.242Z - info: 2 worker threads initialized in 239ms
+2025-05-12T23:30:50.243Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:30:50.244Z - info: reporter initialized
+2025-05-12T23:39:29.511Z - info: Initializing jsreport (version: 3.13.0, configuration file: none, nodejs: 20.11.1)
+2025-05-12T23:39:29.513Z - info: Searching for available extensions in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:39:29.517Z - info: Extensions location cache contains up to date information, skipping crawling in C:\Users\CMALDONADO\source\repos\injuve-backend\
+2025-05-12T23:39:29.550Z - info: Found 35 extension(s)
+2025-05-12T23:39:29.607Z - debug: Writing extension locations cache to C:\Users\CMALDO~1\AppData\Local\Temp\jsreport\core\locations.json
+2025-05-12T23:39:29.609Z - debug: Discovered 35 extensions
+2025-05-12T23:39:29.642Z - info: Using extension authentication@3.4.0
+2025-05-12T23:39:29.929Z - debug: Extension authentication@3.4.0 was disabled
+2025-05-12T23:39:29.930Z - info: Using extension base@3.0.1
+2025-05-12T23:39:29.933Z - info: Using extension child-templates@3.1.0
+2025-05-12T23:39:29.934Z - info: Using extension cli@3.2.3
+2025-05-12T23:39:29.938Z - info: Using extension components@3.3.1
+2025-05-12T23:39:29.941Z - info: Using extension data@3.1.0
+2025-05-12T23:39:29.942Z - debug: Extension express@3.7.1 is disabled, skipping
+2025-05-12T23:39:29.943Z - info: Using extension freeze@3.0.1
+2025-05-12T23:39:29.945Z - info: Using extension fs-store@3.2.5
+2025-05-12T23:39:30.138Z - debug: Extension fs-store@3.2.5 was disabled
+2025-05-12T23:39:30.139Z - info: Using extension handlebars@3.2.1
+2025-05-12T23:39:30.141Z - info: Using extension import-export@3.2.0
+2025-05-12T23:39:30.286Z - info: Using extension jsrender@3.0.0
+2025-05-12T23:39:30.288Z - info: Using extension licensing@3.0.3
+2025-05-12T23:39:30.319Z - info: Using extension localization@3.2.2
+2025-05-12T23:39:30.319Z - info: Using extension npm@3.2.0
+2025-05-12T23:39:30.322Z - info: Using extension pdf-utils@3.9.0
+2025-05-12T23:39:30.324Z - info: Using extension reports@3.1.1
+2025-05-12T23:39:30.327Z - info: Using extension tags@3.1.1
+2025-05-12T23:39:30.329Z - info: Using extension text@3.0.0
+2025-05-12T23:39:30.330Z - info: Using extension version-control@3.1.2
+2025-05-12T23:39:30.346Z - info: Using extension assets@3.6.1
+2025-05-12T23:39:30.359Z - info: Using extension authorization@3.3.0
+2025-05-12T23:39:30.364Z - debug: Extension authorization@3.3.0 was disabled
+2025-05-12T23:39:30.364Z - info: Using extension browser-client@3.1.2
+2025-05-12T23:39:30.368Z - info: Using extension chrome-pdf@3.4.0
+2025-05-12T23:39:30.372Z - debug: Chrome strategy is chrome-pool, numberOfWorkers: 1
+2025-05-12T23:39:30.372Z - info: Using extension docx@3.7.2
+2025-05-12T23:39:30.375Z - info: Using extension html-to-xlsx@3.3.2
+2025-05-12T23:39:30.757Z - info: html-to-xlsx detected chrome as available html engine
+2025-05-12T23:39:30.758Z - info: Using extension pptx@3.4.0
+2025-05-12T23:39:30.760Z - info: Using extension scheduling@3.0.3
+2025-05-12T23:39:30.801Z - info: Using extension scripts@3.4.1
+2025-05-12T23:39:30.802Z - info: Using extension static-pdf@3.0.1
+2025-05-12T23:39:30.803Z - info: Using extension studio@3.9.3
+2025-05-12T23:39:30.962Z - info: Using extension xlsx@3.5.0
+2025-05-12T23:39:30.999Z - info: Using extension public-templates@3.0.0
+2025-05-12T23:39:31.000Z - debug: Extension public-templates@3.0.0 was disabled
+2025-05-12T23:39:31.000Z - info: Using extension sample-template@3.2.1
+2025-05-12T23:39:31.002Z - info: Using extension studio-theme-dark@3.0.1
+2025-05-12T23:39:31.004Z - info: Using general timeout for rendering (reportTimeout: 60000)
+2025-05-12T23:39:31.004Z - info: Using memory provider for template store. The saved templates will be lost after restart
+2025-05-12T23:39:31.014Z - debug: studio default theme is: light
+2025-05-12T23:39:31.021Z - info: Verifying license key free
+2025-05-12T23:39:31.022Z - info: Using free license
+2025-05-12T23:39:31.026Z - info: Migrating templates chrome settings (waitForNetworkIddle -> waitForNetworkIdle)
+2025-05-12T23:39:31.027Z - info: Migration successful
+2025-05-12T23:39:31.028Z - debug: Creating samples is disabled
+2025-05-12T23:39:31.028Z - info: Initializing worker threads
+2025-05-12T23:39:31.029Z - debug: Extensions in workers: base, child-templates, components, data, handlebars, jsrender, localization, npm, pdf-utils, reports, text, version-control, assets, browser-client, chrome-pdf, docx, html-to-xlsx, pptx, scripts, static-pdf, studio, xlsx
+2025-05-12T23:39:31.239Z - info: 2 worker threads initialized in 211ms
+2025-05-12T23:39:31.239Z - info: Starting temp files cleanup with 180000ms threshold
+2025-05-12T23:39:31.239Z - info: reporter initialized

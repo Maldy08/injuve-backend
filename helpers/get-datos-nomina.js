@@ -16,6 +16,20 @@ module.exports = async function getDatosNomina(empleado, periodo) {
   const empleadoData = await db.collection('mnom01').findOne({ EMPLEADO: empleado });
   const deptoData = await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO });
   const puestoData = await db.collection('mnom03').findOne({ CATEGORIA: empleadoData.CAT });
+  let prestacionesData = null;
+  let sueldoIntegrado = 0;
+  if(empleadoData.TIPOEMP === "B") {
+    prestacionesData = await db.collection('sueldoprestacionesbase').findOne({ EMPLEADO: empleado });
+    if (prestacionesData) {
+      sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+    }
+  }
+  else {
+    prestacionesData = await db.collection('sueldoprestacionesconf').findOne({ EMPLEADO: empleado });
+    if (prestacionesData) {
+      sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+    }
+  }
 
   const percepciones = conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13);
   const prestaciones = conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500);
@@ -38,6 +52,7 @@ module.exports = async function getDatosNomina(empleado, periodo) {
     periodo,
     departamento: deptoData.DESCRIPCION,
     puesto: puestoData.DESCRIPCION,
+    sueldoIntegrado: formatCantidad(sueldoIntegrado),
     fechaPago: `${formatearFechaTexto(conceptosRaw[0]?.FECHDES)} al ${formatearFechaTexto(conceptosRaw[0]?.FECHHAS)}`,
     conceptos,
     totales: {

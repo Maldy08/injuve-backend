@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recibo de Nómina</title>
+  <title>Constancia de pago</title>
   <style>
     body { font-family: Arial, sans-serif; font-size: 11px; margin: 30px; }
     h3 { text-align: center; margin-bottom: 20px; }
@@ -45,7 +45,7 @@
     <div style="text-align: center; flex-grow: 1;">
       <div style="font-weight: bold; font-size: 14px;">GOBIERNO DEL ESTADO DE BAJA CALIFORNIA</div>
       <div style="font-weight: bold; font-size: 12px;">INSTITUTO DE LA JUVENTUD DEL ESTADO DE BAJA CALIFORNIA</div>
-      <div style="font-weight: bold;">RECIBO DE NÓMINA</div>
+      <div style="font-weight: bold;">CONSTANCIA DE PAGO POR CONTRATO DE PRESTACION DE SERVICIOS</div>
       <div>Blvd. López Mateos S/N Fracc. Calis</div>
       <div>R.F.C.: IJE110711724</div>
     </div>
@@ -68,30 +68,23 @@
             margin-bottom: 20px;">
   <!-- Columna 1 -->
   <div style="flex: 1; padding-right: 10px;">
-    <p><strong>NOMBRE:</strong> {{empleado.NOMBRE}} {{empleado.APPAT}} {{empleado.APMAT}}</p>
-    <p><strong>EMPLEADO:</strong> {{empleado.EMPLEADO}}</p>
-    <p><strong>DEPARTAMENTO:</strong> <span style="text-transform: uppercase;">{{ departamento }}</span></p>
+    <p><strong>PRESTADOR DEL SERVICIO:</strong> {{empleado.NOMBRE}} {{empleado.APPAT}} {{empleado.APMAT}}</p>
+    <p><strong>NUM DE CONTRATO:</strong> {{empleado.EMPLEADO}}</p>
   </div>
 
   <!-- Columna 2 -->
   <div style="flex: 1; padding-right: 10px;">
-    <p><strong>PUESTO ESPECÍFICO:</strong> {{ puesto }}</p>
-    <p><strong>NIVEL:</strong> {{empleado.NIVEL}}</p>
-    <p><strong>CURP:</strong> {{empleado.CURP}}</p>
     <p><strong>RFC:</strong> {{empleado.RFC}}</p>
+    <p><strong>CURP:</strong> {{empleado.CURP}}</p>
+
   </div>
 
   <!-- Columna 3 -->
   <div style="flex: 1;">
     <p><strong>PERIODO:</strong> {{periodo}}</p>
     <p><strong>PERIODO PAGADO:</strong> {{fechaPago}}</p>
-    <p><strong>DIAS LABORADOS:</strong> 14</p>
   </div>
-  <div style="flex: 1;">
-    <p><strong>SALARIO DIARIO:</strong> {{empleado.SUELDO}}</p>
-    <p><strong>SUELDO INTEGRADO:</strong> {{ sueldoIntegrado }}</p>
-    <p><strong>AFILIACION:</strong> {{empleado.REGIMSS}}</p>
-  </div>
+
 </div>
 
   <table>
@@ -99,9 +92,9 @@
       <tr>
         <th>CLAVE</th>
         <th>DESCRIPCIÓN</th>
-        <th style="text-align: center;">DÍAS</th>
-        <th style="text-align: center;">PERCEPCIONES</th>
-        <th style="text-align: center;">PRESTACIONES</th>
+        <th style="text-align: center;">PERIODO</th>
+        <th style="text-align: center;"> </th>
+        <th style="text-align: center;"> </th>
         <th style="text-align: center;">DEDUCCIONES</th>
       </tr>
     </thead>
@@ -111,8 +104,8 @@
         <td>{{this.PERCDESC}}</td>
         <td>{{this.DESCRIPCION}}</td>
         <td style="text-align: center;">{{this.DIASTRA}}</td>
-        <td style="text-align: right;">{{this.percepcion}}</td>
-        <td style="text-align: right;">{{this.prestacion}}</td>
+        <td style="text-align: right;"> </td>
+        <td style="text-align: right;"> </td>
         <td style="text-align: right;">{{this.deduccion}}</td>
       </tr>
       {{/each}}
@@ -134,15 +127,13 @@
   <div style="border: 1px solid black; border-radius: 8px; padding: 12px; margin-top: 25px; font-size: 11px;">
     <p style="text-align: justify; margin: 0;">
       Recibí del Instituto de la Juventud del Estado de Baja California, la cantidad indicada en el presente recibo que,
-      cubre a la fecha de pago el importe de mis percepciones, prestaciones que por derecho me corresponden, con horario
-      laboral de 8:00 a.m. a 3:00 p.m. de lunes a viernes, con los respectivos tiempos para tomar alimentos y/o descansar,
-      sin que me adeude alguna cantidad, habiéndome hecho los descuentos conforme a la ley y los de carácter privado,
-      Recibo de conformidad, no reservándome ninguna reclamación posterior.
+      cubre a la fecha de pago el importe del contrato civil, habiéndome hecho los descuentos conforme a la ley y los de caracter
+      privado, Recibo de conformidad, no reservándome ninguna reclamacion posterior.
     </p>
   
     <div style="margin-top: 40px; text-align: center;">
       <div style="border-top: 2px solid black; width: 50%; margin: 0 auto; padding-top: 4px;">
-        <strong>FIRMA DEL EMPLEADO</strong>
+        <strong>PRESTADOR DE SERVICIOS</strong>
       </div>
     </div>
   </div>
