@@ -9,6 +9,8 @@ const { initJsReport } = require('../helpers/jsreport.helper');
 exports.generarPDF = async (req, res) => {
   const empleado = parseInt(req.params.empleado);
   const periodo = parseInt(req.params.periodo);
+  const tipo  = parseInt(req.params.tipo);
+  
 
   if (isNaN(empleado) || isNaN(periodo)) {
     return res.status(400).json({ error: "Parámetros inválidos" });
@@ -16,8 +18,9 @@ exports.generarPDF = async (req, res) => {
 
   try {
     const jsreport = await initJsReport(); 
-    const data = await getDatosNomina(empleado, periodo);
-    const templateHtml = fs.readFileSync(path.join(__dirname, '../templates/nomina.html')).toString();
+    const data = await getDatosNomina(empleado, periodo,tipo);
+    const template = tipo == 1 ? "nomina" : "nomina-asim";
+    const templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
 
     const result = await jsreport.render({
       template: {

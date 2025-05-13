@@ -8,31 +8,37 @@ const formatCantidad = (cantidad) => new Intl.NumberFormat('es-MX', {
   maximumFractionDigits: 2
 }).format(cantidad);
 
-module.exports = async function getDatosNomina(empleado, periodo) {
+module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   const db = getDb();
+  console.log("Obteniendo datos de nómina para el empleado:", empleado, "y periodo:", periodo, "tipo:", tipo);
 
   const filtroPeriodo = periodo === 0 ? {} : { PERIODO: periodo };
-  const conceptosRaw = await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
-  const empleadoData = await db.collection('mnom01').findOne({ EMPLEADO: empleado });
-  const deptoData = await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO });
-  const puestoData = await db.collection('mnom03').findOne({ CATEGORIA: empleadoData.CAT });
+  const conceptosRaw = tipo == 1 ? await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray()
+    : await db.collection('mnom12h').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
+  const empleadoData = tipo == 1 ? await db.collection('mnom01').findOne({ EMPLEADO: empleado })
+    : await db.collection('mnom01h').findOne({ EMPLEADO: empleado });
+
+  const deptoData = tipo == 1 ? await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO }) : null;
+  const puestoData = tipo == 1 ? await db.collection('mnom03').findOne({ CATEGORIA: empleadoData.CAT }) : null;
   let prestacionesData = null;
   let sueldoIntegrado = 0;
-  if(empleadoData.TIPOEMP === "B") {
-    prestacionesData = await db.collection('sueldoprestacionesbase').findOne({ EMPLEADO: empleado });
-    if (prestacionesData) {
-      sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+  if (tipo == 1) {
+    if (empleadoData.TIPOEMP === "B") {
+      prestacionesData = await db.collection('sueldoprestacionesbase').findOne({ EMPLEADO: empleado });
+      if (prestacionesData) {
+        sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+      }
     }
-  }
-  else {
-    prestacionesData = await db.collection('sueldoprestacionesconf').findOne({ EMPLEADO: empleado });
-    if (prestacionesData) {
-      sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+    else {
+      prestacionesData = await db.collection('sueldoprestacionesconf').findOne({ EMPLEADO: empleado });
+      if (prestacionesData) {
+        sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
+      }
     }
   }
 
-  const percepciones = conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13);
-  const prestaciones = conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500);
+  const percepciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13) : conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 24);
+  const prestaciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500) : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500);
   const deducciones = conceptosRaw.filter(c => c.PERCDESC >= 500);
 
   const totalPercepciones = percepciones.reduce((s, c) => s + c.IMPORTE, 0);
@@ -50,8 +56,8 @@ module.exports = async function getDatosNomina(empleado, periodo) {
   return {
     empleado: empleadoData,
     periodo,
-    departamento: deptoData.DESCRIPCION,
-    puesto: puestoData.DESCRIPCION,
+    departamento: tipo == 1 ? deptoData.DESCRIPCION : "",
+    puesto: tipo == 1 ? puestoData.DESCRIPCION : "",
     sueldoIntegrado: formatCantidad(sueldoIntegrado),
     fechaPago: `${formatearFechaTexto(conceptosRaw[0]?.FECHDES)} al ${formatearFechaTexto(conceptosRaw[0]?.FECHHAS)}`,
     conceptos,
