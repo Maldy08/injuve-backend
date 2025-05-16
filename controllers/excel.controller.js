@@ -84,7 +84,11 @@ exports.generarExcel = async (req, res) => {
 
 
   const receptorHeaders = [
-    
+    { header: 'CURPEMPLEADO', key: 'CURP', width: 15 },
+    { header: 'RegisgtroPatronal', key: 'RFCPATRON', width: 15 },
+    { header: 'Curp', key: 'CURP', width: 15 },
+    { header: 'RfcPatronorigen', key: 'RFC', width: 15 },
+    { header: 'NumEmpleado', key: 'EMPLEADO', width: 10 }
   ]
 
 
