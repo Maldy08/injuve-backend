@@ -56,7 +56,6 @@ exports.generarExcel = async (req, res) => {
 
   // Encabezados para el Excel
   const headers = [
-    { header: 'Index', key: 'Index', width: 5 },
     { header: 'RFC', key: 'RFC', width: 15 },
     { header: 'CURP', key: 'CURP', width: 15 },
     { header: 'FechaPago', key: 'FECHAP', width: 15 },
@@ -71,7 +70,6 @@ exports.generarExcel = async (req, res) => {
 
   // Construir filas de datos
   const dataRows = Object.values(empleados).map((item, idx) => ({
-    Index: idx + 1,
     RFC: infoMap[item.EMPLEADO]?.RFC || '',
     CURP: infoMap[item.EMPLEADO]?.CURP || '',
     FECHAP: item.FECHAP,
@@ -87,7 +85,7 @@ exports.generarExcel = async (req, res) => {
   console.log('Filas en dataRows:', dataRows.length, dataRows);
 
   // Crear hoja y libro de Excel
-  const ws = XLSX.utils.json_to_sheet(dataRows, { header: headers.map(h => h.key), skipHeader: true });
+  const ws = XLSX.utils.json_to_sheet(dataRows);
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Nomina');
