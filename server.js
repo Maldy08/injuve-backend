@@ -12,6 +12,7 @@ const nominaRoutes = require('./routes/nomina.routes');
 const pdfRoutes = require('./routes/pdf.routes');
 const sendEmailRoutes = require('./routes/send-email.routes');
 const empleadosRoutes = require('./routes/empleados.routes');
+const excelRoutes = require('./routes/excel.routes');
 const app = express();
 
 // Middlewares globales
@@ -30,7 +31,7 @@ app.use('/api/nomina', nominaRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api/send-email', sendEmailRoutes);
 app.use('/api/empleados', empleadosRoutes);
-
+app.use('/api/excel', excelRoutes);
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {

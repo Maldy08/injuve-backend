@@ -12,6 +12,17 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   const db = getDb();
   console.log("Obteniendo datos de nómina para el empleado:", empleado, "y periodo:", periodo, "tipo:", tipo);
 
+  if(tipo == 2 ) {
+    await db.collection('mnom12h').updateMany(
+      { PERCDESC: 23 }, // Filtro: documentos donde PERCDESC sea igual a 23
+      { $set: { DESCRIPCION: "PRESTADOR DE SERVICIOS" } } // Actualización: establecer DESCRIPCION
+    );
+    await db.collection('mnom12h').updateMany(
+      { PERCDESC: 500 }, // Filtro: documentos donde PERCDESC sea igual a 23
+      { $set: { DESCRIPCION: "ISR" } } // Actualización: establecer DESCRIPCION
+    );
+  }
+
   const filtroPeriodo = periodo === 0 ? {} : { PERIODO: periodo };
   const conceptosRaw = tipo == 1 ? await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray()
     : await db.collection('mnom12h').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
@@ -37,6 +48,8 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
     }
   }
 
+  conceptosRaw.sort((a, b) => a.PERCDESC - b.PERCDESC);
+
   const percepciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13) : conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 24);
   const prestaciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500) : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500);
   const deducciones = conceptosRaw.filter(c => c.PERCDESC >= 500);
@@ -48,6 +61,8 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
 
   const conceptos = conceptosRaw.map(c => ({
     ...c,
+    
+    DIASTRA: c.PERCDESC == 1 ? c.DIASTRA / 8 : c.PERCDESC == 23 ? c.DIASTRA : "",
     percepcion: (c.PERCDESC >= 1 && c.PERCDESC < 13) ? formatCantidad(c.IMPORTE) : "",
     prestacion: (c.PERCDESC >= 13 && c.PERCDESC < 500) ? formatCantidad(c.IMPORTE) : "",
     deduccion: (c.PERCDESC >= 500) ? formatCantidad(c.IMPORTE) : ""

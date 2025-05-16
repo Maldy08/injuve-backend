@@ -7,6 +7,7 @@ const jsreport = require('jsreport')({
   async function initJsReport() {
     if (!initialized) {
       await jsreport.init();
+      
       initialized = true;
     }
     return jsreport;

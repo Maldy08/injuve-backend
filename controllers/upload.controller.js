@@ -32,7 +32,10 @@ exports.subirCSV = (req, res) => {
     .on('end', async () => {
       try {
         const db = getDb();
-        await db.collection(coleccion).deleteMany({}); // Opcional: limpia antes de insertar
+       // si la coleccion es diferente a mnom12 o mnom12h, no se elminan los registros
+        if (coleccion !== 'mnom12' && coleccion !== 'mnom12h' && coleccion !== 'mno01' && coleccion !== 'mnom01h') {
+          await db.collection(coleccion).deleteMany({});
+        }
         await db.collection(coleccion).insertMany(registros);
 
         fs.unlinkSync(archivoCSV.path); // Limpia archivo temporal
