@@ -69,7 +69,7 @@ exports.generarExcel = async (req, res) => {
   ];
 
   // Construir filas de datos
-  const dataRows = Object.values(empleados).map((item, idx) => ({
+  const nomnaRows = Object.values(empleados).map((item, idx) => ({
     RFC: infoMap[item.EMPLEADO]?.RFC || '',
     CURP: infoMap[item.EMPLEADO]?.CURP || '',
     FECHAP: item.FECHAP,
@@ -82,10 +82,14 @@ exports.generarExcel = async (req, res) => {
     EMPLEADO: item.EMPLEADO
   }));
 
-  console.log('Filas en dataRows:', dataRows.length, dataRows);
+
+  const receptorHeaders = [
+    
+  ]
+
 
   // Crear hoja y libro de Excel
-  const ws = XLSX.utils.json_to_sheet(dataRows);
+  const ws = XLSX.utils.json_to_sheet(nomnaRows);
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Nomina');
