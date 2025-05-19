@@ -17,7 +17,7 @@ exports.generarExcel = async (req, res) => {
     .sort({ EMPLEADO: 1 })
     .toArray();
 
-  console.log('Registros traídos de MongoDB:', data.length, data.map(d => d.EMPLEADO));
+  //console.log('Registros traídos de MongoDB:', data.length, data.map(d => d.EMPLEADO)); 
 
   // Agrupar por empleado y sumar percepciones/deducciones
   const empleados = {};
@@ -37,22 +37,22 @@ exports.generarExcel = async (req, res) => {
     }
   });
 
+  console.log('Empleados agrupados:', empleados);
+  
   // Obtener los IDs de todos los empleados encontrados
   const empleadosIds = Object.keys(empleados).map(Number);
-  console.log('IDs buscados:', empleadosIds);
-
   // Buscar info de empleados (RFC, CURP)
   const empleadosInfo = await db.collection(empleadosCollection)
     .find({ EMPLEADO: { $in: empleadosIds } })
     .project({ EMPLEADO: 1, RFC: 1, CURP: 1 })
     .toArray();
-  console.log('Empleados encontrados:', empleadosInfo);
 
   // Crear un mapa para acceso rápido
   const infoMap = {};
   empleadosInfo.forEach(e => {
     infoMap[e.EMPLEADO] = { RFC: e.RFC || '', CURP: e.CURP || '' };
   });
+
 
   // Encabezados para el Excel
   const headers = [
@@ -83,20 +83,78 @@ exports.generarExcel = async (req, res) => {
   }));
 
 
-  const receptorHeaders = [
-    { header: 'CURPEMPLEADO', key: 'CURP', width: 15 },
+  const emisorHeaders = [
+    { header: 'CURPEMPLEADO', key: 'CURPEMPLEADO', width: 15 },
     { header: 'RegisgtroPatronal', key: 'RFCPATRON', width: 15 },
     { header: 'Curp', key: 'CURP', width: 15 },
     { header: 'RfcPatronorigen', key: 'RFC', width: 15 },
     { header: 'NumEmpleado', key: 'EMPLEADO', width: 10 }
   ]
 
+  const emisorRows = empleadosInfo.map(row => ({
+    CURPEMPLEADO: row.CURP,
+    RFCPATRON: 'IJE110711724',
+    CURP: '',
+    RFC: 'IJE110711724',
+    EMPLEADO: row.EMPLEADO
+  }));
+
+const receptorHeaders = [
+  { header: 'Curp', key: 'CURP', width: 15 },
+  { header: 'NumSeguridadSocial', key: 'NumSeguridadSocial', width: 15 },
+  { header: 'FechaInicioRelLaboral', key: 'FechaInicioRelLaboral', width: 15 },
+  { header: 'Antiguedad', key: 'Antiguedad', width: 12 },
+  { header: 'TipoContrato', key: 'TipoContrato', width: 12 },
+  { header: 'Sindicalizado', key: 'Sindicalizado', width: 12 },
+  { header: 'TipoJornada', key: 'TipoJornada', width: 12 },
+  { header: 'TipoRegimen', key: 'TipoRegimen', width: 12 },
+  { header: 'NumEmpleado', key: 'NumEmpleado', width: 12 },
+  { header: 'Departamento', key: 'Departamento', width: 15 },
+  { header: 'Puesto', key: 'Puesto', width: 15 },
+  { header: 'RiesgoPuesto', key: 'RiesgoPuesto', width: 15 },
+  { header: 'PeriodicidadPago', key: 'PeriodicidadPago', width: 15 },
+  { header: 'Banco', key: 'Banco', width: 15 },
+  { header: 'CuentaBancaria', key: 'CuentaBancaria', width: 15 },
+  { header: 'SalarioBaseCotApor', key: 'SalarioBaseCotApor', width: 18 },
+  { header: 'SalarioDiarioIntegrado', key: 'SalarioDiarioIntegrado', width: 18 },
+  { header: 'ClaveEntFed', key: 'ClaveEntFed', width: 12 },
+  { header: 'NnumEmpleado', key: 'NnumEmpleado', width: 12 }
+];
+
+//antiguedad = diferentecia entre  mnom01.fechaalta y mnom12.fechahas
+
+
+  const receptorRows = empleadosInfo.map(row => ({
+    CURP: row.CURP,
+    NumSeguridadSocial: ' ' ,
+    FechaInicioRelLaboral: '',
+    Antiguedad: '',
+    TipoContrato: '',
+    Sindicalizado: '',
+    TipoJornada: '',
+    TipoRegimen: '',
+    NumEmpleado: row.EMPLEADO,
+    Departamento: '',
+    Puesto: '',
+    RiesgoPuesto: '',
+    PeriodicidadPago: '',
+    Banco: '',
+    CuentaBancaria: '',
+    SalarioBaseCotApor: 0,
+    SalarioDiarioIntegrado: 0,
+    ClaveEntFed: '',
+    NnumEmpleado: ''
+  }));
 
   // Crear hoja y libro de Excel
   const ws = XLSX.utils.json_to_sheet(nomnaRows);
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Nomina');
+
+  const wsEmisor = XLSX.utils.json_to_sheet(emisorRows);
+  XLSX.utils.sheet_add_aoa(wsEmisor, [emisorHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsEmisor, 'Emisor');
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 

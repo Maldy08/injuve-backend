@@ -35,7 +35,7 @@ exports.generarPDF = async (req, res) => {
     res.setHeader("Content-Disposition", `inline; filename=recibo_${empleado}_${periodo}.pdf`);
     result.stream.pipe(res);
   } catch (err) {
-    console.error("❌ Error al generar PDF:", err);
+    console.error("Error al generar PDF:", err);
     res.status(500).json({ error: "Error al generar el PDF" });
   }
 };
