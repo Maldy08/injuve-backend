@@ -52,11 +52,6 @@ exports.generarExcel = async (req, res) => {
     .project({ EMPLEADO: 1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
     .toArray();
 
-  const percepcionesInfo = await db.collection(collectionName)
-    .find({ PERIODO: Number(periodo) })
-    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
-    .sort({ EMPLEADO: 1 })
-    .toArray();
 
   const prestacionesBase = await db.collection(sueldoPrestacionesBaseCollection)
     .find({ EMPLEADO: { $in: empleadosIds } })
@@ -78,7 +73,11 @@ exports.generarExcel = async (req, res) => {
     .project({ PUESTO: 1, DESCRIPCION: 1, _id: 0 })
     .toArray();
 
-  console.log('puestosInfo:', puestosInfo);
+  const percepcionesInfo = await db.collection(collectionName)
+    .find({ PERIODO: Number(periodo) })
+    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .sort({ EMPLEADO: 1 })
+    .toArray();
 
 
   // Crear un mapa para acceso rápido
@@ -242,39 +241,56 @@ exports.generarExcel = async (req, res) => {
   }));
 
 
+// Generar percepcionesRows como detalle plano (una fila por cada percepción de cada empleado)
+const percepcionesRows = [];
+empleadosInfo.forEach(row => {
+  const detalle = percepcionesInfo.filter(
+    p => p.EMPLEADO === row.EMPLEADO && p.PERCDESC < 500
+  );
+  detalle.forEach(d => {
+    percepcionesRows.push({
+      CURP: row.CURP,
+      NumEmpleado: row.EMPLEADO,
+      PERCDESC: d.PERCDESC,
+      DESCRIPCION: d.DESCRIPCION,
+      IMPORTE: d.IMPORTE,
+      TOTALSUELDOS: empleados[row.EMPLEADO].TotalPercepciones,
+      TOTALSEPARACIONINDEMNIZACION: 0,
+      TOTALJUBILACIONPENSIONRETIRO: 0,
+      TOTALGRAVADO: empleados[row.EMPLEADO].TotalPercepciones,
+      TOTALEXENTO: 0,
+      TIPOPERCEPION: '',
+      CLAVE: '',
+      CONCEPTO: '',
+      IMPORTEGRAVADO: '',
+      IMPORTEEXENTO: ''
+    });
+  });
+});
 
-  const percepcionesHeaders = [
-    { header: 'CURP', key: 'CURP', width: 15 },
-    { header: 'TOTALSUELDOS', key: 'TOTALSUELDOS', width: 15 },
-    { header: 'TOTALSEPARACIONINDEMNIZACION', key: 'TOTALSEPARACIONINDEMNIZACION', width: 15 },
-    { header: 'TOTALJUBILACIONPENSIONRETIRO', key: 'TOTALJUBILACIONPENSIONRETIRO', width: 15 },
-    { header: 'TOTALGRAVADO', key: 'TOTALGRAVADO', width: 15 },
-    { header: 'TOTALEXENTO', key: 'TOTALEXENTO', width: 15 },
-    { header: 'TIPOPERCEPION', key: 'TIPOPERCEPION', width: 15 },
-    { header: 'CLAVE', key: 'CLAVE', width: 15 },
-    { header: 'CONCEPTO', key: 'CONCEPTO', width: 15 },
-    { header: 'IMPORTEGRAVADO', key: 'IMPORTEGRAVADO', width: 15 },
-    { header: 'IMPORTEEXENTO', key: 'IMPORTEEXENTO', width: 15 },
-    { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 }
-  ];
+const percepcionesHeaders = [
+  { header: 'CURP', key: 'CURP', width: 15 },
+  { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 },
+  { header: 'PERCDESC', key: 'PERCDESC', width: 10 },
+  { header: 'DESCRIPCION', key: 'DESCRIPCION', width: 20 },
+  { header: 'IMPORTE', key: 'IMPORTE', width: 15 },
+  { header: 'TOTALSUELDOS', key: 'TOTALSUELDOS', width: 15 },
+  { header: 'TOTALSEPARACIONINDEMNIZACION', key: 'TOTALSEPARACIONINDEMNIZACION', width: 15 },
+  { header: 'TOTALJUBILACIONPENSIONRETIRO', key: 'TOTALJUBILACIONPENSIONRETIRO', width: 15 },
+  { header: 'TOTALGRAVADO', key: 'TOTALGRAVADO', width: 15 },
+  { header: 'TOTALEXENTO', key: 'TOTALEXENTO', width: 15 },
+  { header: 'TIPOPERCEPION', key: 'TIPOPERCEPION', width: 15 },
+  { header: 'CLAVE', key: 'CLAVE', width: 15 },
+  { header: 'CONCEPTO', key: 'CONCEPTO', width: 15 },
+  { header: 'IMPORTEGRAVADO', key: 'IMPORTEGRAVADO', width: 15 },
+  { header: 'IMPORTEEXENTO', key: 'IMPORTEEXENTO', width: 15 }
+];
 
-  const percepcionesRows = empleadosInfo.map(row => ({
-    CURP: row.CURP,
-    TOTALSUELDOS: empleados[row.EMPLEADO].TotalPercepciones,
-    TOTALSEPARACIONINDEMNIZACION: 0,
-    TOTALJUBILACIONPENSIONRETIRO: 0,
-    TOTALGRAVADO: empleados[row.EMPLEADO].TotalPercepciones,
-    TOTALEXENTO: 0,
-    TIPOPERCEPION: '001',
-    CLAVE: '001',
-    CONCEPTO: 'Pago de nómina',
-    IMPORTEGRAVADO: 0,
-    IMPORTEEXENTO: 0,
-    NumEmpleado: row.EMPLEADO
-  }));
+// ...resto de tu código...
 
-  console.log('percepcionesRows:', percepcionesRows.find(r => r.NumEmpleado === 3));
 
+
+// Ya NO agregues la hoja PercepcionesDetalle
 
   // Crear hoja y libro de Excel
   const ws = XLSX.utils.json_to_sheet(nomnaRows);
@@ -302,6 +318,9 @@ exports.generarExcel = async (req, res) => {
   XLSX.utils.sheet_add_aoa(wsConceptos, [conceptosHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsConceptos, 'Conceptos');
 
+  const wsPercepciones = XLSX.utils.json_to_sheet(percepcionesRows);
+  XLSX.utils.sheet_add_aoa(wsPercepciones, [percepcionesHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsPercepciones, 'Percepciones');
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
