@@ -1,5 +1,6 @@
 const XLSX = require('xlsx');
 const { getDb } = require('../helpers/mongo.helper');
+const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 
 exports.generarExcel = async (req, res) => {
   const db = getDb();
@@ -10,6 +11,10 @@ exports.generarExcel = async (req, res) => {
 
   const collectionName = tipo == 1 ? 'mnom12' : 'mnom12h';
   const empleadosCollection = tipo == 1 ? 'mnom01' : 'mnom01h';
+  const sueldoPrestacionesBaseCollection = 'sueldoprestacionesbase';
+  const sueldoPrestacionesConfCollection = 'sueldoprestacionesconf';
+  const departamentosCollection = 'mnom04';
+  const puestosCollection = 'mnom90';
 
   // Traer todos los empleados para el periodo solicitado
   const data = await db.collection(collectionName)
@@ -17,7 +22,9 @@ exports.generarExcel = async (req, res) => {
     .sort({ EMPLEADO: 1 })
     .toArray();
 
-  //console.log('Registros traídos de MongoDB:', data.length, data.map(d => d.EMPLEADO)); 
+  const fechaHasta = formatearFechaTexto(data[0]?.FECHHAS);
+  console.log('Fecha hasta:', fechaHasta);
+
 
   // Agrupar por empleado y sumar percepciones/deducciones
   const empleados = {};
@@ -37,15 +44,42 @@ exports.generarExcel = async (req, res) => {
     }
   });
 
-  console.log('Empleados agrupados:', empleados);
-  
   // Obtener los IDs de todos los empleados encontrados
   const empleadosIds = Object.keys(empleados).map(Number);
   // Buscar info de empleados (RFC, CURP)
   const empleadosInfo = await db.collection(empleadosCollection)
     .find({ EMPLEADO: { $in: empleadosIds } })
-    .project({ EMPLEADO: 1, RFC: 1, CURP: 1 })
+    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
     .toArray();
+
+  const percepcionesInfo = await db.collection(collectionName)
+    .find({ PERIODO: Number(periodo) })
+    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .sort({ EMPLEADO: 1 })
+    .toArray();
+
+  const prestacionesBase = await db.collection(sueldoPrestacionesBaseCollection)
+    .find({ EMPLEADO: { $in: empleadosIds } })
+    .project({ EMPLEADO: 1, SUELDOINTEGRADO: 1, _id: 0 })
+    .toArray();
+
+  const prestacionesConf = await db.collection(sueldoPrestacionesConfCollection)
+    .find({ EMPLEADO: { $in: empleadosIds } })
+    .project({ EMPLEADO: 1, SUELDOINTEGRADO: 1, _id: 0 })
+    .toArray();
+
+  const departamentosInfo = await db.collection(departamentosCollection)
+    .find()
+    .project({ DEPTO: 1, DESCRIPCION: 1, _id: 0 })
+    .toArray();
+
+  const puestosInfo = await db.collection(puestosCollection)
+    .find()
+    .project({ PUESTO: 1, DESCRIPCION: 1, _id: 0 })
+    .toArray();
+
+  console.log('puestosInfo:', puestosInfo);
+
 
   // Crear un mapa para acceso rápido
   const infoMap = {};
@@ -99,52 +133,148 @@ exports.generarExcel = async (req, res) => {
     EMPLEADO: row.EMPLEADO
   }));
 
-const receptorHeaders = [
-  { header: 'Curp', key: 'CURP', width: 15 },
-  { header: 'NumSeguridadSocial', key: 'NumSeguridadSocial', width: 15 },
-  { header: 'FechaInicioRelLaboral', key: 'FechaInicioRelLaboral', width: 15 },
-  { header: 'Antiguedad', key: 'Antiguedad', width: 12 },
-  { header: 'TipoContrato', key: 'TipoContrato', width: 12 },
-  { header: 'Sindicalizado', key: 'Sindicalizado', width: 12 },
-  { header: 'TipoJornada', key: 'TipoJornada', width: 12 },
-  { header: 'TipoRegimen', key: 'TipoRegimen', width: 12 },
-  { header: 'NumEmpleado', key: 'NumEmpleado', width: 12 },
-  { header: 'Departamento', key: 'Departamento', width: 15 },
-  { header: 'Puesto', key: 'Puesto', width: 15 },
-  { header: 'RiesgoPuesto', key: 'RiesgoPuesto', width: 15 },
-  { header: 'PeriodicidadPago', key: 'PeriodicidadPago', width: 15 },
-  { header: 'Banco', key: 'Banco', width: 15 },
-  { header: 'CuentaBancaria', key: 'CuentaBancaria', width: 15 },
-  { header: 'SalarioBaseCotApor', key: 'SalarioBaseCotApor', width: 18 },
-  { header: 'SalarioDiarioIntegrado', key: 'SalarioDiarioIntegrado', width: 18 },
-  { header: 'ClaveEntFed', key: 'ClaveEntFed', width: 12 },
-  { header: 'NnumEmpleado', key: 'NnumEmpleado', width: 12 }
-];
+  const receptorHeaders = [
+    { header: 'Curp', key: 'CURP', width: 15 },
+    { header: 'NumSeguridadSocial', key: 'NumSeguridadSocial', width: 15 },
+    { header: 'FechaInicioRelLaboral', key: 'FechaInicioRelLaboral', width: 15 },
+    { header: 'Antiguedad', key: 'Antiguedad', width: 12 },
+    { header: 'TipoContrato', key: 'TipoContrato', width: 12 },
+    { header: 'Sindicalizado', key: 'Sindicalizado', width: 12 },
+    { header: 'TipoJornada', key: 'TipoJornada', width: 12 },
+    { header: 'TipoRegimen', key: 'TipoRegimen', width: 12 },
+    { header: 'NumEmpleado', key: 'NumEmpleado', width: 12 },
+    { header: 'Departamento', key: 'Departamento', width: 15 },
+    { header: 'Puesto', key: 'Puesto', width: 15 },
+    { header: 'RiesgoPuesto', key: 'RiesgoPuesto', width: 15 },
+    { header: 'PeriodicidadPago', key: 'PeriodicidadPago', width: 15 },
+    { header: 'Banco', key: 'Banco', width: 15 },
+    { header: 'CuentaBancaria', key: 'CuentaBancaria', width: 15 },
+    { header: 'SalarioBaseCotApor', key: 'SalarioBaseCotApor', width: 18 },
+    { header: 'SalarioDiarioIntegrado', key: 'SalarioDiarioIntegrado', width: 18 },
+    { header: 'ClaveEntFed', key: 'ClaveEntFed', width: 12 },
+    { header: 'NnumEmpleado', key: 'NnumEmpleado', width: 12 }
+  ];
 
-//antiguedad = diferentecia entre  mnom01.fechaalta y mnom12.fechahas
+  //antiguedad = diferentecia entre  mnom01.fechaalta y mnom12.fechahas
+  const [diaH, mesH, anioH] = fechaHasta.split(' ')[0].split('/');
+  const fechaHastaDate = new Date(`${anioH}-${mesH}-${diaH}`);
+
+  const receptorRows = empleadosInfo.map(row => {
+    const [dia, mes, anio] = row.FECHAALTA.split(' ')[0].split('/');
+    const fechaAlta = new Date(`${anio}-${mes}-${dia}`);
+    return {
+      CURP: row.CURP,
+      NumSeguridadSocial: row.REGIMSS,
+      FechaInicioRelLaboral: formatearFechaTexto(row.FECHAALTA),
+      Antiguedad: ' P' + Math.floor((fechaHastaDate - fechaAlta) / (1000 * 60 * 60 * 24 * 7)) + 'W',
+      TipoContrato: 1,
+      Sindicalizado: row.TIPOEMP === 'B' ? 'SI' : 'NO',
+      TipoJornada: 1,
+      TipoRegimen: 2,
+      NumEmpleado: row.EMPLEADO,
+      Departamento: departamentosInfo.find(d => d.DEPTO === row.DEPTO)?.DESCRIPCION || '',
+      Puesto: puestosInfo.find(p => p.PUESTO === row.PUESTO)?.DESCRIPCION || '',
+      RiesgoPuesto: 1,
+      PeriodicidadPago: 3,
+      Banco: 12,
+      CuentaBancaria: row.CTABANCO,
+      SalarioBaseCotApor: 0,
+      SalarioDiarioIntegrado: row.TIPOEMP === 'B'
+        ? +((prestacionesBase.find(p => p.EMPLEADO === row.EMPLEADO)?.SUELDOINTEGRADO || 0) / 14).toFixed(2)
+        : +((prestacionesConf.find(p => p.EMPLEADO === row.EMPLEADO)?.SUELDOINTEGRADO || 0) / 14).toFixed(2),
+      ClaveEntFed: 'BCN',
+      NnumEmpleado: row.EMPLEADO
+    };
+  });
 
 
-  const receptorRows = empleadosInfo.map(row => ({
+  const entidadHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'MontoRecursoPropio', key: 'MontoRecursoPropio', width: 15 },
+    { header: 'OrigenRecurso', key: 'OrigenRecurso', width: 15 },
+  ];
+
+  const entidadRows = empleadosInfo.map(row => ({
     CURP: row.CURP,
-    NumSeguridadSocial: ' ' ,
-    FechaInicioRelLaboral: '',
-    Antiguedad: '',
-    TipoContrato: '',
-    Sindicalizado: '',
-    TipoJornada: '',
-    TipoRegimen: '',
-    NumEmpleado: row.EMPLEADO,
-    Departamento: '',
-    Puesto: '',
-    RiesgoPuesto: '',
-    PeriodicidadPago: '',
-    Banco: '',
-    CuentaBancaria: '',
-    SalarioBaseCotApor: 0,
-    SalarioDiarioIntegrado: 0,
-    ClaveEntFed: '',
-    NnumEmpleado: ''
+    MontoRecursoPropio: '',
+    OrigenRecurso: 'IP'
   }));
+
+
+  const subcontratacionHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'RfcLaboral', key: 'RfcLaboral', width: 15 },
+    { header: 'PorcentajeTiempo', key: 'PorcentajeTiempo', width: 15 },
+    { header: 'NumEmpeado', key: 'NumEmpeado', width: 15 }
+  ];
+
+
+  const subcontratacionRows = empleadosInfo.map(row => ({
+    CURP: '',
+    RfcLaboral: '',
+    PorcentajeTiempo: '100',
+    NumEmpeado: row.EMPLEADO
+  }));
+
+
+  const conceptosHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'RFC', key: 'RFC', width: 15 },
+    { header: 'Nombre', key: 'Nombre', width: 15 },
+    { header: 'Concepto', key: 'Concepto', width: 15 },
+    { header: 'Cantidad', key: 'Cantidad', width: 15 },
+    { header: 'Unidad', key: 'Unidad', width: 15 },
+    { header: 'ValorUnitario', key: 'ValorUnitario', width: 15 },
+    { header: 'Importe', key: 'Importe', width: 15 },
+    { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 }
+  ];
+
+  const conceptosRows = empleadosInfo.map(row => ({
+    CURP: row.CURP,
+    RFC: row.RFC,
+    Nombre: row.NOMBRE,
+    Concepto: 'Pago de nómina',
+    Cantidad: 1,
+    Unidad: 'ACT',
+    ValorUnitario: empleados[row.EMPLEADO].TotalPercepciones,
+    Importe: empleados[row.EMPLEADO].TotalPercepciones,
+    NumEmpleado: row.EMPLEADO
+  }));
+
+
+
+  const percepcionesHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'TOTALSUELDOS', key: 'TOTALSUELDOS', width: 15 },
+    { header: 'TOTALSEPARACIONINDEMNIZACION', key: 'TOTALSEPARACIONINDEMNIZACION', width: 15 },
+    { header: 'TOTALJUBILACIONPENSIONRETIRO', key: 'TOTALJUBILACIONPENSIONRETIRO', width: 15 },
+    { header: 'TOTALGRAVADO', key: 'TOTALGRAVADO', width: 15 },
+    { header: 'TOTALEXENTO', key: 'TOTALEXENTO', width: 15 },
+    { header: 'TIPOPERCEPION', key: 'TIPOPERCEPION', width: 15 },
+    { header: 'CLAVE', key: 'CLAVE', width: 15 },
+    { header: 'CONCEPTO', key: 'CONCEPTO', width: 15 },
+    { header: 'IMPORTEGRAVADO', key: 'IMPORTEGRAVADO', width: 15 },
+    { header: 'IMPORTEEXENTO', key: 'IMPORTEEXENTO', width: 15 },
+    { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 }
+  ];
+
+  const percepcionesRows = empleadosInfo.map(row => ({
+    CURP: row.CURP,
+    TOTALSUELDOS: empleados[row.EMPLEADO].TotalPercepciones,
+    TOTALSEPARACIONINDEMNIZACION: 0,
+    TOTALJUBILACIONPENSIONRETIRO: 0,
+    TOTALGRAVADO: empleados[row.EMPLEADO].TotalPercepciones,
+    TOTALEXENTO: 0,
+    TIPOPERCEPION: '001',
+    CLAVE: '001',
+    CONCEPTO: 'Pago de nómina',
+    IMPORTEGRAVADO: 0,
+    IMPORTEEXENTO: 0,
+    NumEmpleado: row.EMPLEADO
+  }));
+
+  console.log('percepcionesRows:', percepcionesRows.find(r => r.NumEmpleado === 3));
+
 
   // Crear hoja y libro de Excel
   const ws = XLSX.utils.json_to_sheet(nomnaRows);
@@ -155,6 +285,23 @@ const receptorHeaders = [
   const wsEmisor = XLSX.utils.json_to_sheet(emisorRows);
   XLSX.utils.sheet_add_aoa(wsEmisor, [emisorHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsEmisor, 'Emisor');
+
+  const wsReceptor = XLSX.utils.json_to_sheet(receptorRows);
+  XLSX.utils.sheet_add_aoa(wsReceptor, [receptorHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsReceptor, 'Receptor');
+
+  const wsEntidad = XLSX.utils.json_to_sheet(entidadRows);
+  XLSX.utils.sheet_add_aoa(wsEntidad, [entidadHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsEntidad, 'EntidadSNCF');
+
+  const wsSubcontratacion = XLSX.utils.json_to_sheet(subcontratacionRows);
+  XLSX.utils.sheet_add_aoa(wsSubcontratacion, [subcontratacionHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsSubcontratacion, 'Subcontratacion');
+
+  const wsConceptos = XLSX.utils.json_to_sheet(conceptosRows);
+  XLSX.utils.sheet_add_aoa(wsConceptos, [conceptosHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsConceptos, 'Conceptos');
+
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
