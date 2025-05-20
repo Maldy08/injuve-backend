@@ -16,17 +16,13 @@ exports.generarExcel = async (req, res) => {
   const departamentosCollection = 'mnom04';
   const puestosCollection = 'mnom90';
 
-  // Traer todos los empleados para el periodo solicitado
   const data = await db.collection(collectionName)
     .find({ PERIODO: Number(periodo) })
     .sort({ EMPLEADO: 1 })
     .toArray();
 
   const fechaHasta = formatearFechaTexto(data[0]?.FECHHAS);
-  console.log('Fecha hasta:', fechaHasta);
 
-
-  // Agrupar por empleado y sumar percepciones/deducciones
   const empleados = {};
   data.forEach(item => {
     const emp = item.EMPLEADO;
@@ -44,9 +40,8 @@ exports.generarExcel = async (req, res) => {
     }
   });
 
-  // Obtener los IDs de todos los empleados encontrados
+
   const empleadosIds = Object.keys(empleados).map(Number);
-  // Buscar info de empleados (RFC, CURP)
   const empleadosInfo = await db.collection(empleadosCollection)
     .find({ EMPLEADO: { $in: empleadosIds } })
     .project({ EMPLEADO: 1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
@@ -74,20 +69,30 @@ exports.generarExcel = async (req, res) => {
     .toArray();
 
   const percepcionesInfo = await db.collection(collectionName)
-    .find({ PERIODO: Number(periodo) })
+    .find({ PERIODO: Number(periodo), PERCDESC: { $lt: 500 } })
     .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
     .sort({ EMPLEADO: 1 })
     .toArray();
 
 
-  // Crear un mapa para acceso rápido
+  const deduccionesInfo = await db.collection(collectionName)
+    .find({ PERIODO: Number(periodo), PERCDESC: { $gte: 500 } })
+    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .sort({ EMPLEADO: 1 })
+    .toArray();
+
+
+  const conversiones_percdesc_sat = await db.collection('conversiones_percdesc_sat')
+    .find()
+    .toArray();
+
+
   const infoMap = {};
   empleadosInfo.forEach(e => {
     infoMap[e.EMPLEADO] = { RFC: e.RFC || '', CURP: e.CURP || '' };
   });
 
 
-  // Encabezados para el Excel
   const headers = [
     { header: 'RFC', key: 'RFC', width: 15 },
     { header: 'CURP', key: 'CURP', width: 15 },
@@ -101,14 +106,14 @@ exports.generarExcel = async (req, res) => {
     { header: 'NumEmpleado', key: 'EMPLEADO', width: 10 },
   ];
 
-  // Construir filas de datos
+
   const nomnaRows = Object.values(empleados).map((item, idx) => ({
     RFC: infoMap[item.EMPLEADO]?.RFC || '',
     CURP: infoMap[item.EMPLEADO]?.CURP || '',
-    FECHAP: item.FECHAP,
-    FECHDES: item.FECHDES,
-    FECHHAS: item.FECHHAS,
-    DIASTRA: item.DIASTRA,
+    FECHAP: formatearFechaTexto(item.FECHAP),
+    FECHDES: formatearFechaTexto(item.FECHDES),
+    FECHHAS: formatearFechaTexto(item.FECHHAS),
+    DIASTRA: item.DIASTRA / 8,
     TotalPercepciones: item.TotalPercepciones,
     TotalDeducciones: item.TotalDeducciones,
     TotalOtrosPagos: 0,
@@ -211,7 +216,7 @@ exports.generarExcel = async (req, res) => {
   const subcontratacionRows = empleadosInfo.map(row => ({
     CURP: '',
     RfcLaboral: '',
-    PorcentajeTiempo: '100',
+    PorcentajeTiempo: '',
     NumEmpeado: row.EMPLEADO
   }));
 
@@ -241,58 +246,128 @@ exports.generarExcel = async (req, res) => {
   }));
 
 
-// Generar percepcionesRows como detalle plano (una fila por cada percepción de cada empleado)
-const percepcionesRows = [];
-empleadosInfo.forEach(row => {
-  const detalle = percepcionesInfo.filter(
-    p => p.EMPLEADO === row.EMPLEADO && p.PERCDESC < 500
-  );
-  detalle.forEach(d => {
-    percepcionesRows.push({
-      CURP: row.CURP,
-      NumEmpleado: row.EMPLEADO,
-      PERCDESC: d.PERCDESC,
-      DESCRIPCION: d.DESCRIPCION,
-      IMPORTE: d.IMPORTE,
-      TOTALSUELDOS: empleados[row.EMPLEADO].TotalPercepciones,
-      TOTALSEPARACIONINDEMNIZACION: 0,
-      TOTALJUBILACIONPENSIONRETIRO: 0,
-      TOTALGRAVADO: empleados[row.EMPLEADO].TotalPercepciones,
-      TOTALEXENTO: 0,
-      TIPOPERCEPION: '',
-      CLAVE: '',
-      CONCEPTO: '',
-      IMPORTEGRAVADO: '',
-      IMPORTEEXENTO: ''
-    });
+  const percepcionesHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'TotalSueldos', key: 'TotalSueldos', width: 15 },
+    { header: 'TotalSeparacionIndemnizacion', key: 'TotalSeparacionIndemnizacion', width: 15 },
+    { header: 'TotalJubilacionPensionRetiro', key: 'TotalJubilacionPensionRetiro', width: 15 },
+    { header: 'TotalGravado', key: 'TotalGravado', width: 15 },
+    { header: 'TotalExento', key: 'TotalExento', width: 15 },
+    { header: 'TipoPercepcion', key: 'TipoPercepcion', width: 15 },
+    { header: 'Clave', key: 'Clave', width: 15 },
+    { header: 'Concepto', key: 'Concepto', width: 15 },
+    { header: 'ImporteGravado', key: 'ImporteGravado', width: 15 },
+    { header: 'ImporteExento', key: 'ImporteExento', width: 15 },
+    { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 }
+  ];
+
+  let empleadosProcesados = new Set();
+  let percepcionesRows = [];
+
+  percepcionesInfo.forEach(item => {
+
+    if (!empleadosProcesados.has(item.EMPLEADO)) {
+
+      const totalGravado = percepcionesInfo
+        .filter(p => p.EMPLEADO === item.EMPLEADO && p.IMPORTE > 0 && p.PERCDESC < 500)
+        .reduce((sum, p) => sum + Number(p.IMPORTE || 0), 0);
+
+
+      const empleado = empleadosInfo.find(e => e.EMPLEADO === item.EMPLEADO) || {};
+
+      percepcionesRows.push({
+        CURP: empleado.CURP || '',
+        TotalSueldos: totalGravado,
+        TotalSeparacionIndemnizacion: 0,
+        TotalJubilacionPensionRetiro: 0,
+        TotalGravado: totalGravado,
+        TotalExento: 0,
+        TipoPercepcion: '',
+        Clave: '',
+        Concepto: '',
+        ImporteGravado: '',
+        ImporteExento: '',
+        NumEmpleado: item.EMPLEADO
+      });
+
+      empleadosProcesados.add(item.EMPLEADO);
+    }
+
+    if (item.IMPORTE > 0) {
+      const empleado = empleadosInfo.find(e => e.EMPLEADO === item.EMPLEADO) || {};
+      percepcionesRows.push({
+        CURP: empleado.CURP || '',
+        TotalSueldos: '',
+        TotalSeparacionIndemnizacion: '',
+        TotalJubilacionPensionRetiro: '',
+        TotalGravado: '',
+        TotalExento: '',
+        TipoPercepcion: conversiones_percdesc_sat.find(c => c.PERCDESC === item.PERCDESC && c.TIPO === 1)?.CLAVESAT || '',
+        Clave: item.DESCRIPCION.substring(0, 6),
+        Concepto: conversiones_percdesc_sat.find(c => c.PERCDESC === item.PERCDESC && c.TIPO === 1)?.DESCRIPCIONSAT || '',
+        ImporteGravado: item.IMPORTE,
+        ImporteExento: 0,
+        NumEmpleado: item.EMPLEADO
+      });
+    }
   });
-});
 
-const percepcionesHeaders = [
-  { header: 'CURP', key: 'CURP', width: 15 },
-  { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 },
-  { header: 'PERCDESC', key: 'PERCDESC', width: 10 },
-  { header: 'DESCRIPCION', key: 'DESCRIPCION', width: 20 },
-  { header: 'IMPORTE', key: 'IMPORTE', width: 15 },
-  { header: 'TOTALSUELDOS', key: 'TOTALSUELDOS', width: 15 },
-  { header: 'TOTALSEPARACIONINDEMNIZACION', key: 'TOTALSEPARACIONINDEMNIZACION', width: 15 },
-  { header: 'TOTALJUBILACIONPENSIONRETIRO', key: 'TOTALJUBILACIONPENSIONRETIRO', width: 15 },
-  { header: 'TOTALGRAVADO', key: 'TOTALGRAVADO', width: 15 },
-  { header: 'TOTALEXENTO', key: 'TOTALEXENTO', width: 15 },
-  { header: 'TIPOPERCEPION', key: 'TIPOPERCEPION', width: 15 },
-  { header: 'CLAVE', key: 'CLAVE', width: 15 },
-  { header: 'CONCEPTO', key: 'CONCEPTO', width: 15 },
-  { header: 'IMPORTEGRAVADO', key: 'IMPORTEGRAVADO', width: 15 },
-  { header: 'IMPORTEEXENTO', key: 'IMPORTEEXENTO', width: 15 }
-];
+  empleadosProcesados = new Set();
 
-// ...resto de tu código...
+  const deduccionesHeaders = [
+    { header: 'CURP', key: 'CURP', width: 15 },
+    { header: 'TotalImpuestosRetenidos', key: 'TotalImpuestosRetenidos', width: 15 },
+    { header: 'TotalOtrasDeducciones', key: 'TotalOtrasDeducciones', width: 15 },
+    { header: 'TipoDeduccion', key: 'TipoDeduccion', width: 15 },
+    { header: 'Clave', key: 'Clave', width: 15 },
+    { header: 'Concepto', key: 'Concepto', width: 15 },
+    { header: 'Importe', key: 'Importe', width: 15 },
+    { header: 'NumEmpleado', key: 'NumEmpleado', width: 15 }
+  ];
 
 
+  let deduccionesRows = [];
+  deduccionesInfo.forEach(item => {
 
-// Ya NO agregues la hoja PercepcionesDetalle
+    if (!empleadosProcesados.has(item.EMPLEADO)) {
 
-  // Crear hoja y libro de Excel
+      const totalDeducciones = deduccionesInfo
+        .filter(p => p.EMPLEADO === item.EMPLEADO && p.IMPORTE > 0 && p.PERCDESC >= 500)
+        .reduce((sum, p) => sum + Number(p.IMPORTE || 0), 0);
+
+
+      const empleado = empleadosInfo.find(e => e.EMPLEADO === item.EMPLEADO) || {};
+
+      deduccionesRows.push({
+        CURP: empleado.CURP || '',
+        TotalImpuestosRetenidos: totalDeducciones,
+        TotalOtrasDeducciones: 0,
+        TipoDeduccion: '',
+        Clave: '',
+        Concepto: '',
+        Importe: '',
+        NumEmpleado: item.EMPLEADO
+      });
+
+      empleadosProcesados.add(item.EMPLEADO);
+    }
+
+
+    if (item.IMPORTE > 0) {
+      const empleado = empleadosInfo.find(e => e.EMPLEADO === item.EMPLEADO) || {};
+      deduccionesRows.push({
+        CURP: empleado.CURP || '',
+        TotalImpuestosRetenidos: '',
+        TotalOtrasDeducciones: '',
+        TipoDeduccion: conversiones_percdesc_sat.find(c => c.PERCDESC === item.PERCDESC && c.TIPO === 2)?.CLAVESAT || '',
+        Clave: item.DESCRIPCION.substring(0, 6),
+        Concepto: conversiones_percdesc_sat.find(c => c.PERCDESC === item.PERCDESC && c.TIPO === 2)?.DESCRIPCIONSAT || '',
+        Importe: Math.abs(item.IMPORTE),
+        NumEmpleado: item.EMPLEADO
+      });
+    }
+  });
+  
   const ws = XLSX.utils.json_to_sheet(nomnaRows);
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
@@ -322,9 +397,14 @@ const percepcionesHeaders = [
   XLSX.utils.sheet_add_aoa(wsPercepciones, [percepcionesHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsPercepciones, 'Percepciones');
 
+  const wsDeducciones = XLSX.utils.json_to_sheet(deduccionesRows);
+  XLSX.utils.sheet_add_aoa(wsDeducciones, [deduccionesHeaders.map(h => h.header)], { origin: "A1" });
+  XLSX.utils.book_append_sheet(wb, wsDeducciones, 'Deducciones');
+
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
-  res.setHeader('Content-Disposition', 'attachment; filename=reporte_nomina.xlsx');
+  const fileName = `TIMBRADO_PERIODO_${periodo}_${tipo}.xlsx`;
+  res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   res.send(buffer);
 };
