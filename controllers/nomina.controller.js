@@ -2,6 +2,60 @@ const { getDb } = require('../helpers/mongo.helper');
 const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 const numeroALetras = require('../helpers/numeros-letras');
 
+
+exports.resumenPorPeriodo = async (req, res) => {
+  const tipo = parseInt(req.params.tipo);
+  if (isNaN(tipo)) {
+    return res.status(400).json({ error: "Parámetro tipo inválido" });
+  }
+
+  try {
+    const db = getDb();
+    let resumen = [];
+    const collection = tipo === 1 ? 'mnom12' : 'mnom12h';
+
+    resumen = await db.collection(collection).aggregate([
+      {
+        $group: {
+          _id: "$PERIODO",
+          percepciones: {
+            $sum: {
+              $cond: [{ $lt: ["$PERCDESC", 500] }, "$IMPORTE", 0]
+            }
+          },
+          deducciones: {
+            $sum: {
+              $cond: [{ $gte: ["$PERCDESC", 500] }, "$IMPORTE", 0]
+            }
+          }
+        }
+      },
+      {
+        $addFields: {
+          neto: { $subtract: ["$percepciones", "$deducciones"] }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          PERIODO: "$_id",
+          PERCEPCIONES: { $round: ["$percepciones", 2] },
+          DEDUCCIONES: { $round: ["$deducciones", 2] },
+          NETO: { $round: ["$neto", 2] }
+        }
+      },
+      { $sort: { PERIODO: -1 } }
+    ]).toArray();
+
+    res.json(resumen);
+  } catch (error) {
+    console.error('Error al obtener resumen por periodo:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+
 // GET /api/nomina/recibos/:empleado
 exports.obtenerResumen = async (req, res) => {
   const empleado = parseInt(req.params.empleado);
