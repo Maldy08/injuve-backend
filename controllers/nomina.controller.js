@@ -2,7 +2,6 @@ const { getDb } = require('../helpers/mongo.helper');
 const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 const numeroALetras = require('../helpers/numeros-letras');
 
-
 exports.resumenPorPeriodo = async (req, res) => {
   const tipo = parseInt(req.params.tipo);
   if (isNaN(tipo)) {
@@ -27,7 +26,9 @@ exports.resumenPorPeriodo = async (req, res) => {
             $sum: {
               $cond: [{ $gte: ["$PERCDESC", 500] }, "$IMPORTE", 0]
             }
-          }
+          },
+          FECHADES: { $first: "$FECHDES" },
+          FECHHAS: { $first: "$FECHHAS" }
         }
       },
       {
@@ -39,6 +40,13 @@ exports.resumenPorPeriodo = async (req, res) => {
         $project: {
           _id: 0,
           PERIODO: "$_id",
+          FECHAPAGO: {
+            $cond: [
+              { $and: [{ $ifNull: ["$FECHDES", false] }, { $ifNull: ["$FECHHAS", false] }] },
+              { $concat: ["$FECHDES", " al ", "$FECHHAS"] },
+              { $ifNull: ["$FECHDES", { $ifNull: ["$FECHHAS", ""] }] }
+            ]
+          },
           PERCEPCIONES: { $round: ["$percepciones", 2] },
           DEDUCCIONES: { $round: ["$deducciones", 2] },
           NETO: { $round: ["$neto", 2] }
@@ -127,12 +135,12 @@ exports.obtenerJson = async (req, res) => {
 
     const conceptosRaw = tipo == 1 ? await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray() : await db.collection('mnom12h').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
     const empleadoData = tipo == 1 ? await db.collection('mnom01').findOne({ EMPLEADO: empleado }) : await db.collection('mnom01h').findOne({ EMPLEADO: empleado });
-    const deptoData = tipo == 1 ?  await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO }) : [{
+    const deptoData = tipo == 1 ? await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO }) : [{
       DESCRIPCION: "N/A"
     }];
 
-    const percepciones = tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13) : conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC <=23);
-    const prestaciones = tipo == 1 ?  conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500) : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500);
+    const percepciones = tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13) : conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC <= 23);
+    const prestaciones = tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500) : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500);
     const deducciones = conceptosRaw.filter(c => c.PERCDESC >= 500);
 
     const totalPercepciones = percepciones.reduce((s, c) => s + c.IMPORTE, 0);
@@ -226,7 +234,7 @@ exports.recibos = async (req, res) => {
       ]).toArray();
     }
 
-    if(tipo === 2) {
+    if (tipo === 2) {
 
       resumen = await db.collection('mnom12h').aggregate([
         {
