@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {generarExcel} = require('../controllers/excel.controller');
+const {generarTimbrado} = require('../controllers/excel.controller');
 
-router.get('/:periodo/:tipo', generarExcel);  
+router.get('/:periodo/:tipo', generarTimbrado);  
 
 module.exports = router; 

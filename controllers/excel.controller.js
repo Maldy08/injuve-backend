@@ -2,7 +2,7 @@ const XLSX = require('xlsx');
 const { getDb } = require('../helpers/mongo.helper');
 const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 
-exports.generarExcel = async (req, res) => {
+exports.generarTimbrado = async (req, res) => {
   const db = getDb();
   const { periodo, tipo } = req.params;
   if (!periodo || !tipo) {
@@ -368,16 +368,16 @@ exports.generarExcel = async (req, res) => {
     }
   });
   
-  const ws = XLSX.utils.json_to_sheet(nomnaRows);
+  const ws = XLSX.utils.json_to_sheet(nomnaRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Nomina');
 
-  const wsEmisor = XLSX.utils.json_to_sheet(emisorRows);
+  const wsEmisor = XLSX.utils.json_to_sheet(emisorRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsEmisor, [emisorHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsEmisor, 'Emisor');
 
-  const wsReceptor = XLSX.utils.json_to_sheet(receptorRows);
+  const wsReceptor = XLSX.utils.json_to_sheet(receptorRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsReceptor, [receptorHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsReceptor, 'Receptor');
 
@@ -385,19 +385,19 @@ exports.generarExcel = async (req, res) => {
   XLSX.utils.sheet_add_aoa(wsEntidad, [entidadHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsEntidad, 'EntidadSNCF');
 
-  const wsSubcontratacion = XLSX.utils.json_to_sheet(subcontratacionRows);
+  const wsSubcontratacion = XLSX.utils.json_to_sheet(subcontratacionRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsSubcontratacion, [subcontratacionHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsSubcontratacion, 'Subcontratacion');
 
-  const wsConceptos = XLSX.utils.json_to_sheet(conceptosRows);
+  const wsConceptos = XLSX.utils.json_to_sheet(conceptosRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsConceptos, [conceptosHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsConceptos, 'Conceptos');
 
-  const wsPercepciones = XLSX.utils.json_to_sheet(percepcionesRows);
+  const wsPercepciones = XLSX.utils.json_to_sheet(percepcionesRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsPercepciones, [percepcionesHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsPercepciones, 'Percepciones');
 
-  const wsDeducciones = XLSX.utils.json_to_sheet(deduccionesRows);
+  const wsDeducciones = XLSX.utils.json_to_sheet(deduccionesRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(wsDeducciones, [deduccionesHeaders.map(h => h.header)], { origin: "A1" });
   XLSX.utils.book_append_sheet(wb, wsDeducciones, 'Deducciones');
 

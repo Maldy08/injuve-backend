@@ -31,7 +31,7 @@ app.use('/api/nomina', nominaRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api/send-email', sendEmailRoutes);
 app.use('/api/empleados', empleadosRoutes);
-app.use('/api/excel', excelRoutes);
+app.use('/api/timbrado', excelRoutes);
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
