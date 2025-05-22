@@ -12,13 +12,19 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
 
   const percepciones = await db.collection('mnom12')
     .find({ PERIODO: Number(periodo), PERCDESC: { $lte: 500 } })
-    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .project({ EMPLEADO: 1, DIASTRA: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .sort({ PERCDESC: 1 })
     .toArray();
 
-  
+
   const empleadosRFC = await db.collection('mnom01')
     .find({ EMPLEADO: { $in: percepciones.map(p => p.EMPLEADO) } })
     .project({ EMPLEADO: 1, RFC: 1, CURP: 1, _id: 0 })
+    .toArray();
+
+
+  const bssCollection = await db.collection('bss')
+    .find()
     .toArray();
 
   const empleadosMap = {};
@@ -33,16 +39,35 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
   }));
 
   const descripcionesUnicas = [...new Set(percepciones.map(p => p.DESCRIPCION))];
-
+  const bssEmpleadosSet = new Set(bssCollection.map(b => +b.empleado)); 
   const empleados = {};
-  percepciones.forEach(p => {
-    if (!empleados[p.EMPLEADO]) empleados[p.EMPLEADO] = { EMPLEADO: p.EMPLEADO };
+  
+
+  percepcionesConRFC.forEach(p => {
+    if (!bssEmpleadosSet.has(p.EMPLEADO)) return;
+
+    if (!empleados[p.EMPLEADO]) {
+      empleados[p.EMPLEADO] = {
+        EMPLEADO: p.EMPLEADO,
+        RFC: p.RFC,
+        DIAS: p.PERCDESC === 1 ? p.DIASTRA / 8 : 0,
+        TOTAL_PERCEPCIONES: 0,
+      };
+    }
     empleados[p.EMPLEADO][p.DESCRIPCION] = p.IMPORTE;
+    if (p.PERCDESC < 500) {
+      empleados[p.EMPLEADO].TOTAL_PERCEPCIONES += Number(p.IMPORTE || 0);
+    }
   });
+
 
   const headers = [
     { header: 'EMPLEADO', key: 'EMPLEADO', width: 10 },
-    ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 }))
+    { header: 'RFC', key: 'RFC', width: 15 },
+    { header: 'DIAS', key: 'DIAS', width: 15 },
+    ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 })),
+    { header: 'TOTAL_PERCEPCIONES', key: 'TOTAL_PERCEPCIONES', width: 20 }
+
   ];
 
   const rows = Object.values(empleados);
@@ -51,15 +76,14 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers.map(h => h.key) });
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'PivotPercepciones');
+  XLSX.utils.book_append_sheet(wb, ws, 'Percepciones');
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
-  const fileName = `PIVOT_PERCEPCIONES_${periodo}.xlsx`;
+  const fileName = `BSS_REVISION_PERIODO${periodo}.xlsx`;
   res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   res.send(buffer);
 };
-
 
 exports.generarTimbrado = async (req, res) => {
   const db = getDb();
@@ -426,7 +450,7 @@ exports.generarTimbrado = async (req, res) => {
       });
     }
   });
-  
+
   const ws = XLSX.utils.json_to_sheet(nomnaRows.sort((a, b) => a.EMPLEADO - b.EMPLEADO));
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
   const wb = XLSX.utils.book_new();

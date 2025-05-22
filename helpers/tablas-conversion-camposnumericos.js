@@ -15,6 +15,7 @@
     sueldoprestacionesconf:['EMPLEADO', 'SUELDOMES', 'SUELDODIA', 'CANASTABASICA', 'BONOTRANSPORTE', 'PREVISIONSOCIAL', 'FOMENTOEDUCATIVO',
         'QUINQUENIO', 'AGUICATORCENAL', 'SUELDOINTEGRADO'
       ],
+    bss: ['tiporegimen', 'isstecali', 'diaspagados', 'departamento', 'clabe','periocidad','tipopercepcion', 'tipodeduccion', 'tipoprestacion', 'tipoincapacidad', 'tipoincapacidad', 'tipoincapacidad', 'tipoincapacidad', 'tipoincapacidad','importe','importe_new'],  
   };
 
   module.exports = camposNumericos;
