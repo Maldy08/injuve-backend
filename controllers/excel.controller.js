@@ -2,6 +2,54 @@ const XLSX = require('xlsx');
 const { getDb } = require('../helpers/mongo.helper');
 const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 
+exports.percepcionesPivotPorPeriodo = async (req, res) => {
+  const db = getDb();
+  const { periodo } = req.params;
+  if (!periodo) {
+    return res.status(400).json({ error: "Parámetro periodo inválido" });
+  }
+
+  // 1. Trae todas las percepciones del periodo
+  const percepciones = await db.collection('mnom12')
+    .find({ PERIODO: Number(periodo), PERCDESC: { $lte: 500 } })
+    .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .toArray();
+
+  // 2. Obtén todas las descripciones únicas (columnas)
+  const descripcionesUnicas = [...new Set(percepciones.map(p => p.DESCRIPCION))];
+
+  // 3. Agrupa por empleado
+  const empleados = {};
+  percepciones.forEach(p => {
+    if (!empleados[p.EMPLEADO]) empleados[p.EMPLEADO] = { EMPLEADO: p.EMPLEADO };
+    empleados[p.EMPLEADO][p.DESCRIPCION] = p.IMPORTE;
+  });
+
+  // 4. Prepara headers dinámicos
+  const headers = [
+    { header: 'EMPLEADO', key: 'EMPLEADO', width: 10 },
+    ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 }))
+  ];
+
+  // 5. Prepara las filas
+  const rows = Object.values(empleados);
+  
+
+  // 6. Genera el Excel
+  const XLSX = require('xlsx');
+  const ws = XLSX.utils.json_to_sheet(rows, { header: headers.map(h => h.key) });
+  XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'PivotPercepciones');
+
+  const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+  const fileName = `PIVOT_PERCEPCIONES_${periodo}.xlsx`;
+  res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.send(buffer);
+};
+
+
 exports.generarTimbrado = async (req, res) => {
   const db = getDb();
   const { periodo, tipo } = req.params;
