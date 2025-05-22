@@ -9,33 +9,44 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
     return res.status(400).json({ error: "Parámetro periodo inválido" });
   }
 
-  // 1. Trae todas las percepciones del periodo
+
   const percepciones = await db.collection('mnom12')
     .find({ PERIODO: Number(periodo), PERCDESC: { $lte: 500 } })
     .project({ EMPLEADO: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
     .toArray();
 
-  // 2. Obtén todas las descripciones únicas (columnas)
+  
+  const empleadosRFC = await db.collection('mnom01')
+    .find({ EMPLEADO: { $in: percepciones.map(p => p.EMPLEADO) } })
+    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, _id: 0 })
+    .toArray();
+
+  const empleadosMap = {};
+  empleadosRFC.forEach(e => {
+    empleadosMap[e.EMPLEADO] = { RFC: e.RFC || '', CURP: e.CURP || '' };
+  });
+
+  const percepcionesConRFC = percepciones.map(p => ({
+    ...p,
+    RFC: empleadosMap[p.EMPLEADO]?.RFC || '',
+    CURP: empleadosMap[p.EMPLEADO]?.CURP || ''
+  }));
+
   const descripcionesUnicas = [...new Set(percepciones.map(p => p.DESCRIPCION))];
 
-  // 3. Agrupa por empleado
   const empleados = {};
   percepciones.forEach(p => {
     if (!empleados[p.EMPLEADO]) empleados[p.EMPLEADO] = { EMPLEADO: p.EMPLEADO };
     empleados[p.EMPLEADO][p.DESCRIPCION] = p.IMPORTE;
   });
 
-  // 4. Prepara headers dinámicos
   const headers = [
     { header: 'EMPLEADO', key: 'EMPLEADO', width: 10 },
     ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 }))
   ];
 
-  // 5. Prepara las filas
   const rows = Object.values(empleados);
-  
 
-  // 6. Genera el Excel
   const XLSX = require('xlsx');
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers.map(h => h.key) });
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
