@@ -13,6 +13,7 @@ const pdfRoutes = require('./routes/pdf.routes');
 const sendEmailRoutes = require('./routes/send-email.routes');
 const empleadosRoutes = require('./routes/empleados.routes');
 const excelRoutes = require('./routes/excel.routes');
+const bssRoutes = require('./routes/bss.routes');
 const app = express();
 
 // Middlewares globales
@@ -32,13 +33,14 @@ app.use('/api/pdf', pdfRoutes);
 app.use('/api/send-email', sendEmailRoutes);
 app.use('/api/empleados', empleadosRoutes);
 app.use('/api/timbrado', excelRoutes);
+app.use('/api/bss', bssRoutes);
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
   app.listen(process.env.PORT || 3001, async () => {
     await conectarMongo();
-    console.log(`✅ Servidor activo en http://localhost:${process.env.PORT || 3001}`);
+    console.log(`Servidor activo en http://localhost:${process.env.PORT || 3001}`);
   });
 }).catch(err => {
-  console.error("❌ Error al inicializar jsreport:", err);
+  console.error(" Error al inicializar jsreport:", err);
 });

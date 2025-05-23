@@ -67,11 +67,9 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
     { header: 'DIAS', key: 'DIAS', width: 15 },
     ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 })),
     { header: 'TOTAL_PERCEPCIONES', key: 'TOTAL_PERCEPCIONES', width: 20 }
-
   ];
 
   const rows = Object.values(empleados);
-
   const XLSX = require('xlsx');
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers.map(h => h.key) });
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });

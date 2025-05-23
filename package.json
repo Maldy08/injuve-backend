@@ -17,6 +17,7 @@
     "nodemailer": "^7.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xmlbuilder2": "^3.1.1"
   }
 }
