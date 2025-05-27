@@ -39,9 +39,9 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
   }));
 
   const descripcionesUnicas = [...new Set(percepciones.map(p => p.DESCRIPCION))];
-  const bssEmpleadosSet = new Set(bssCollection.map(b => +b.empleado)); 
+  const bssEmpleadosSet = new Set(bssCollection.map(b => +b.empleado));
   const empleados = {};
-  
+
 
   percepcionesConRFC.forEach(p => {
     if (!bssEmpleadosSet.has(p.EMPLEADO)) return;
@@ -70,6 +70,15 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
   ];
 
   const rows = Object.values(empleados);
+  rows.forEach(row => {
+    descripcionesUnicas.forEach(desc => {
+      if (row[desc] === undefined) {
+        row[desc] = 0;
+      }
+    });
+  });
+
+
   const XLSX = require('xlsx');
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers.map(h => h.key) });
   XLSX.utils.sheet_add_aoa(ws, [headers.map(h => h.header)], { origin: "A1" });
