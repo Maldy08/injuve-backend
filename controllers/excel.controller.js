@@ -2,6 +2,83 @@ const XLSX = require('xlsx');
 const { getDb } = require('../helpers/mongo.helper');
 const formatearFechaTexto = require('../helpers/formatear-fecha-texto');
 
+
+exports.percepcionesPivotJsonPorPeriodo = async (req, res) => {
+  const db = getDb();
+  const { periodo } = req.params;
+  if (!periodo) {
+    return res.status(400).json({ error: "Parámetro periodo inválido" });
+  }
+
+  const percepciones = await db.collection('mnom12')
+    .find({ PERIODO: Number(periodo), PERCDESC: { $lte: 500 } })
+    .project({ EMPLEADO: 1, DIASTRA: 1, PERCDESC: 1, DESCRIPCION: 1, IMPORTE: 1, _id: 0 })
+    .sort({ PERCDESC: 1 })
+    .toArray();
+
+  const empleadosRFC = await db.collection('mnom01')
+    .find({ EMPLEADO: { $in: percepciones.map(p => p.EMPLEADO) } })
+    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, _id: 0 })
+    .toArray();
+
+  const bssCollection = await db.collection('bss')
+    .find()
+    .toArray();
+
+  const empleadosMap = {};
+  empleadosRFC.forEach(e => {
+    empleadosMap[e.EMPLEADO] = { RFC: e.RFC || '', CURP: e.CURP || '' };
+  });
+
+  const percepcionesConRFC = percepciones.map(p => ({
+    ...p,
+    RFC: empleadosMap[p.EMPLEADO]?.RFC || '',
+    CURP: empleadosMap[p.EMPLEADO]?.CURP || ''
+  }));
+
+  const descripcionesUnicas = [...new Set(percepciones.map(p => p.DESCRIPCION))];
+  const bssEmpleadosSet = new Set(bssCollection.map(b => +b.empleado));
+  const empleados = {};
+
+  percepcionesConRFC.forEach(p => {
+    if (!bssEmpleadosSet.has(p.EMPLEADO)) return;
+
+    if (!empleados[p.EMPLEADO]) {
+      empleados[p.EMPLEADO] = {
+        EMPLEADO: p.EMPLEADO,
+        RFC: p.RFC,
+        DIAS: p.PERCDESC === 1 ? p.DIASTRA / 8 : 0,
+        TOTAL_PERCEPCIONES: 0,
+      };
+    }
+    empleados[p.EMPLEADO][p.DESCRIPCION] = p.IMPORTE;
+    if (p.PERCDESC < 500) {
+      empleados[p.EMPLEADO].TOTAL_PERCEPCIONES += Number(p.IMPORTE || 0);
+    }
+  });
+
+  // Asegura que todas las percepciones tengan valor 0 si están vacías
+  const rows = Object.values(empleados);
+  rows.forEach(row => {
+    descripcionesUnicas.forEach(desc => {
+      if (row[desc] === undefined) {
+        row[desc] = 0;
+      }
+    });
+  });
+
+  res.json({
+    columns: [
+      { header: 'EMPLEADO', key: 'EMPLEADO' },
+      { header: 'RFC', key: 'RFC' },
+      { header: 'DIAS', key: 'DIAS' },
+      ...descripcionesUnicas.map(desc => ({ header: desc, key: desc })),
+      { header: 'TOTAL_PERCEPCIONES', key: 'TOTAL_PERCEPCIONES' }
+    ],
+    data: rows
+  });
+};
+
 exports.percepcionesPivotPorPeriodo = async (req, res) => {
   const db = getDb();
   const { periodo } = req.params;
