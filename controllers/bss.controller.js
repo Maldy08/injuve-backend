@@ -27,9 +27,50 @@ exports.uploadExcelBss = async (req, res) => {
 
 
 exports.exportarBssXml = async (req, res) => {
+    const { periodo, banco } = req.params;
+
+    if (!banco || !periodo) {
+        return res.status(400).json({ error: 'Los parámetros banco y periodo son requeridos.' });
+    }
+    const filtado = banco !== "012" ? 'OTROS' : 'BBVA';
     const db = getDb();
-    const bssCollection = await db.collection('bss').find().toArray();
-    //const mnom01Collection = await db.collection('mnom01').find().toArray();
+
+
+    let query = {};
+    if (filtado === 'BBVA') {
+        query = { banco: "012" };
+    } else {
+        query = { banco: { $ne: "012" } };
+    }
+    const bssCollection = await db.collection('bss').find(query).toArray();
+    //const fechaPago = await db.collection('mnom12').findOne({ PERIODO: Number(periodo) });
+    let nuevaFechaPago = new Date();
+    const dia = String(nuevaFechaPago.getDate()).padStart(2, '0');
+    const mes = String(nuevaFechaPago.getMonth() + 1).padStart(2, '0');
+    const anio = nuevaFechaPago.getFullYear();
+    nuevaFechaPago = `${dia}/${mes}/${anio}`;
+
+    if (filtado !== 'BBVA') {
+        if (typeof nuevaFechaPago === 'string' && nuevaFechaPago.includes('/')) {
+            const [dia, mes, anio] = nuevaFechaPago.split('/');
+            // Usa el constructor Date correcto (mes base 0)
+            const fechaObj = new Date(Number(anio), Number(mes) - 1, Number(dia));
+            fechaObj.setDate(fechaObj.getDate() + 1);
+            const diaF = String(fechaObj.getDate()).padStart(2, '0');
+            const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
+            const anioF = fechaObj.getFullYear();
+            nuevaFechaPago = `${diaF}/${mesF}/${anioF}`;
+        } else {
+            // Si viene en otro formato compatible con Date
+            const fechaObj = new Date(nuevaFechaPago);
+            fechaObj.setDate(fechaObj.getDate() + 1);
+            const diaF = String(fechaObj.getDate()).padStart(2, '0');
+            const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
+            const anioF = fechaObj.getFullYear();
+            nuevaFechaPago = `${diaF}/${mesF}/${anioF}`;
+        }
+    }
+
 
     const root = create({ version: '1.0', encoding: 'UTF-8' })
         .ele('nomina', {
@@ -39,9 +80,9 @@ exports.exportarBssXml = async (req, res) => {
             periodo: 'PERIODO DE PAGO 10',
             tipoNomina: '160',
             ejercicio: '2025',
-            fechaPago: '14/05/2025',
-            fechaInicialPago: '14/05/2025',
-            fechaFinalPago: '14/05/2025'
+            fechaPago: nuevaFechaPago,
+            fechaInicialPago: nuevaFechaPago,
+            fechaFinalPago: nuevaFechaPago
         });
 
     bssCollection.forEach(item => {
@@ -73,14 +114,16 @@ exports.exportarBssXml = async (req, res) => {
     });
 
     const xml = root.end({ prettyPrint: false });
-
+    const filename = `BSS_${periodo}_${filtado}.xml`;
+ 
     res.setHeader('Content-Type', 'application/xml');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
     res.send(xml);
 
 }
 
 exports.exportarBssTxt = async (req, res) => {
-    const { banco } = req.params;
+    const { periodo ,banco } = req.params;
     if (!banco) {
         return res.status(400).json({ error: 'El parámetro banco es requerido.' });
     }
@@ -123,8 +166,8 @@ exports.exportarBssTxt = async (req, res) => {
     });
 
     const txt = lines.join('\n');
-
-    res.setHeader('Content-Disposition', 'attachment; filename=layout_nomina.txt');
+    const filename = `BSS_${periodo}_${filtado}.txt`;
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);   
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.send(txt);
 };

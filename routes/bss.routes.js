@@ -5,9 +5,9 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() }); 
 const { uploadExcelBss, exportarBssXml,exportarBssTxt } = require('../controllers/bss.controller');
 
+router.get('/exportar-xml/:periodo/:banco',exportarBssXml);
+router.get('/exportar-txt/:periodo/:banco',exportarBssTxt);
 router.post('/upload', upload.single('file'), uploadExcelBss);
-router.get('/exportar-xml',exportarBssXml);
-router.get('/exportar-txt/:banco',exportarBssTxt);
 
 module.exports = router;
 
