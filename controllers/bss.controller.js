@@ -42,7 +42,9 @@ exports.exportarBssXml = async (req, res) => {
     } else {
         query = { banco: { $ne: "012" } };
     }
-    const bssCollection = await db.collection('bss').find(query).toArray();
+    const bssCollection = await db.collection('bss').find(query)
+        .sort({ empleado: 1 })
+        .toArray();
     //const fechaPago = await db.collection('mnom12').findOne({ PERIODO: Number(periodo) });
     let nuevaFechaPago = new Date();
     const dia = String(nuevaFechaPago.getDate()).padStart(2, '0');
@@ -77,7 +79,7 @@ exports.exportarBssXml = async (req, res) => {
             version: '1.0',
             claveOrganismo: '10111',
             descripcion: 'INJUVE',
-            periodo: 'PERIODO DE PAGO 10',
+            periodo: `PERIODO DE PAGO ${periodo}`,
             tipoNomina: '160',
             ejercicio: '2025',
             fechaPago: nuevaFechaPago,
@@ -94,28 +96,28 @@ exports.exportarBssXml = async (req, res) => {
             tipoRegimen: item.tiporegimen || '',
             numSeguridadSocial: item.isstecali || '',
             numDiasPagados: '14',
-            departamento: item.departamento || '',
+            departamento: '',
             clabe: item.clabe || '',
             banco: item.banco || '',
-            periodicidadPago: item.periodicidadPago || ''
+            periodicidadPago: item.periodicidadPago || '14'
         });
 
         const percepciones = pago.ele('percepciones', {
-            totalGravado: item.totalGravado || (item.importe_new ? item.importe_new.toFixed(2) : '0.00'),
-            totalExcento: item.totalExcento || '0.00'
+            totalGravado: item.totalGravado || '0.00',
+            totalExcento: item.totalExcento || (item.importe_new ? item.importe_new.toFixed(2) : '0.00')
         });
 
         percepciones.ele('percepcion', {
             tipoPercepcion: item.tipoPercepcion || '100',
             concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
-            importeGravado: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
-            importeExcento: '0.00'
+            importeGravado: '0.00',
+            importeExcento: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
         });
     });
 
     const xml = root.end({ prettyPrint: false });
     const filename = `BSS_${periodo}_${filtado}.xml`;
- 
+
     res.setHeader('Content-Type', 'application/xml');
     res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
     res.send(xml);
@@ -123,7 +125,7 @@ exports.exportarBssXml = async (req, res) => {
 }
 
 exports.exportarBssTxt = async (req, res) => {
-    const { periodo ,banco } = req.params;
+    const { periodo, banco } = req.params;
     if (!banco) {
         return res.status(400).json({ error: 'El parámetro banco es requerido.' });
     }
@@ -155,7 +157,7 @@ exports.exportarBssTxt = async (req, res) => {
             fixed(item.clabe, 20, ' ', 'rigth') +                     // 4.- Numero de cuenta (20)
             fixed(
                 item.importe_new
-                    ? String(item.importe_new).replace('.', '')
+                    ? String(Number(item.importe_new).toFixed(2)).replace('.', '')
                     : '0',
                 15, '0', 'left'
             ) +                                                           // 5.- Importe a pagar (15, sin decimales)
@@ -167,7 +169,7 @@ exports.exportarBssTxt = async (req, res) => {
 
     const txt = lines.join('\n');
     const filename = `BSS_${periodo}_${filtado}.txt`;
-    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);   
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.send(txt);
 };
