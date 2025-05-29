@@ -10,7 +10,7 @@ exports.uploadExcelBss = async (req, res) => {
     const woorkbook = XLSX.read(req.file.buffer, { type: 'buffer' });
     const sheetName = woorkbook.SheetNames[0];
     const data = XLSX.utils.sheet_to_json(woorkbook.Sheets[sheetName], { raw: false });
-    4
+    
     const db = getDb();
     const bssCollection = await db.collection('bss');
     for (const row of data) {
@@ -115,7 +115,8 @@ exports.exportarBssXml = async (req, res) => {
         });
     });
 
-    const xml = root.end({ prettyPrint: false });
+    let xml = root.end({ prettyPrint: false });
+xml = xml.replace('?>', '?>\n');
     const filename = `BSS_${periodo}_${filtado}.xml`;
 
     res.setHeader('Content-Type', 'application/xml');
