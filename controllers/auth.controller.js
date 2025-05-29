@@ -17,6 +17,7 @@ exports.login = async (req, res) => {
     }
 
     const tipo = accesos.TIPO;
+    const admin = accesos.ADMIN;
     if(tipo == 1) {
        empleado = await db.collection('mnom01').findOne({ RFC: rfc.toUpperCase() });
     }
@@ -48,6 +49,7 @@ exports.login = async (req, res) => {
         RFC: empleado.RFC,
         CURP: empleado.CURP,
         TIPO: accesos.TIPO,
+        ADMIN: admin,
       }
     });
   } catch (err) {
