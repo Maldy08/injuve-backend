@@ -70,6 +70,7 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
 
   return {
     empleado: empleadoData,
+    dias: 12,
     periodo,
     departamento: tipo == 1 ? deptoData.DESCRIPCION : "",
     puesto: tipo == 1 ? puestoData.DESCRIPCION : "",
