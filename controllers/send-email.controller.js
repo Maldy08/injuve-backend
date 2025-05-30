@@ -6,7 +6,7 @@ const fs = require('fs');
 const { getDb } = require('../helpers/mongo.helper');
 
 exports.enviarRecibosPorCorreo = async (req, res) => {
-  const { periodo, tipo } = req.body;
+  const { periodo, tipo } = req.params;
   if (!periodo || !tipo) {
     return res.status(400).json({ error: "Faltan parámetros requeridos" });
   }
