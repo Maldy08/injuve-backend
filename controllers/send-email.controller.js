@@ -7,44 +7,40 @@ const { getDb } = require('../helpers/mongo.helper');
 
 exports.enviarRecibosPorCorreo = async (req, res) => {
   const { periodo, tipo } = req.body;
-
   if (!periodo || !tipo) {
     return res.status(400).json({ error: "Faltan parámetros requeridos" });
   }
 
+  // Configura SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
   try {
     const jsreport = await initJsReport();
     const db = getDb();
-
-    // Obtener empleados según el tipo
     const collectionName = tipo === 1 ? 'mnom12' : 'mnom12h';
     const empleadosData = await db.collection(collectionName).find({ PERIODO: periodo }).toArray();
-
-    // Filtrar empleados únicos
     const empleadosUnicos = empleadosData.filter(
       (value, index, self) => index === self.findIndex((e) => e.EMPLEADO === value.EMPLEADO)
-    );
+    ).slice(0, 10);
 
-    // Obtener correos de la tabla correspondiente (mnom01 o mnom01h)
     const correosCollection = tipo === 1 ? 'mnom01' : 'mnom01h';
     const empleadosConCorreos = await Promise.all(
       empleadosUnicos.map(async (empleado) => {
         const correoData = await db.collection(correosCollection).findOne({ EMPLEADO: empleado.EMPLEADO });
         return {
           ...empleado,
-          CORREO: correoData ? correoData.EMAIL : null, // Agregar el correo si existe
+          CORREO: correoData ? correoData.EMAIL : null,
         };
       })
     );
-
-    // Filtrar empleados que no tienen correo
     const empleadosFiltrados = empleadosConCorreos.filter((empleado) => empleado.CORREO);
 
-    // Leer la plantilla correspondiente
     const template = tipo === 1 ? "nomina" : "nomina-asim";
     const templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
 
-    // Configuración de nodemailer
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -53,14 +49,10 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
       }
     });
 
-    // Recorrer empleados y enviar correos
+    let enviados = 0;
     for (const empleado of empleadosFiltrados) {
       const { EMPLEADO, CORREO } = empleado;
-
-      // Obtener datos de nómina para el empleado
       const data = await getDatosNomina(EMPLEADO, periodo, tipo);
-
-      // Generar el PDF con jsreport
       const result = await jsreport.render({
         template: {
           content: templateHtml,
@@ -69,8 +61,6 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
         },
         data
       });
-
-      // Enviar el correo
       await transporter.sendMail({
         from: `"Nómina Injuve" <${process.env.EMAIL_USER}>`,
         to: CORREO,
@@ -83,12 +73,17 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
           }
         ]
       });
+      enviados++;
+      // Envía el progreso al frontend
+      res.write(`data: ${JSON.stringify({ progreso: enviados, total: empleadosFiltrados.length })}\n\n`);
     }
 
-    res.json({ mensaje: "✅ Correos enviados correctamente" });
+    res.write(`data: ${JSON.stringify({ mensaje: "✅ Correos enviados correctamente", done: true })}\n\n`);
+    res.end();
   } catch (error) {
     console.error("Error al enviar correos:", error);
-    res.status(500).json({ error: "❌ No se pudo enviar el correo" });
+    res.write(`data: ${JSON.stringify({ error: "❌ No se pudo enviar el correo", done: true })}\n\n`);
+    res.end();
   }
 };
 
