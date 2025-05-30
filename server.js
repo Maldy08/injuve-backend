@@ -24,6 +24,16 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 const { swaggerUi, specs } = require('./swagger');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+const compression = require('compression');
+app.use(compression({
+  filter: (req, res) => {
+    if (req.headers.accept && req.headers.accept === 'text/event-stream') {
+      return false; // No comprimir SSE
+    }
+    return compression.filter(req, res);
+  }
+}));
+
 
 // Rutas
 app.use('/api/auth', authRoutes);
