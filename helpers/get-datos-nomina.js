@@ -53,6 +53,8 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   const percepciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 13) : conceptosRaw.filter(c => c.PERCDESC >= 1 && c.PERCDESC < 24);
   const prestaciones =  tipo == 1 ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500) : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500);
   const deducciones = conceptosRaw.filter(c => c.PERCDESC >= 500);
+  const dias = percepciones.reduce((s, c) => s + (c.PERCDESC == 1 ? c.DIASTRA / 8 : 0), 0);
+  const sueldoDiario = sueldoIntegrado /  dias ;
 
   const totalPercepciones = percepciones.reduce((s, c) => s + c.IMPORTE, 0);
   const totalPrestaciones = prestaciones.reduce((s, c) => s + c.IMPORTE, 0);
@@ -70,7 +72,7 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
 
   return {
     empleado: empleadoData,
-    dias: 12,
+    dias: dias,
     periodo,
     departamento: tipo == 1 ? deptoData.DESCRIPCION : "",
     puesto: tipo == 1 ? puestoData.DESCRIPCION : "",

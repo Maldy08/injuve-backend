@@ -22,6 +22,7 @@ exports.generarPDF = async (req, res) => {
     const template = tipo == 1 ? "nomina" : "nomina-asim";
     const templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
 
+    
     const result = await jsreport.render({
       template: {
         content: templateHtml,
