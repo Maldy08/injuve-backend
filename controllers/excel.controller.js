@@ -188,6 +188,19 @@ exports.generarTimbrado = async (req, res) => {
     .sort({ EMPLEADO: 1 })
     .toArray();
 
+
+  const diasPagadosEmpleados = data.reduce((acc, item) => {
+    const percepcion = item.PERCDESC;
+    if (percepcion === 1 || percepcion === 23) {
+      const empleado = item.EMPLEADO;
+
+      acc[empleado] = percepcion === 1 ? item.DIASTRA / 8 : item.DIASTRA || 0;
+    }
+    return acc;
+  }, {});
+
+
+
   const fechaHasta = formatearFechaTexto(data[0]?.FECHHAS);
 
   const empleados = {};
@@ -280,7 +293,7 @@ exports.generarTimbrado = async (req, res) => {
     FECHAP: formatearFechaTexto(item.FECHAP),
     FECHDES: formatearFechaTexto(item.FECHDES),
     FECHHAS: formatearFechaTexto(item.FECHHAS),
-    DIASTRA: item.DIASTRA / 8,
+    DIASTRA: diasPagadosEmpleados[item.EMPLEADO] || 0,
     TotalPercepciones: item.TotalPercepciones,
     TotalDeducciones: item.TotalDeducciones,
     TotalOtrosPagos: 0,
@@ -343,12 +356,12 @@ exports.generarTimbrado = async (req, res) => {
       TipoJornada: 1,
       TipoRegimen: 2,
       NumEmpleado: row.EMPLEADO,
-      Departamento: departamentosInfo.find(d => d.DEPTO === row.DEPTO)?.DESCRIPCION || '',
-      Puesto: puestosInfo.find(p => p.PUESTO === row.PUESTO)?.DESCRIPCION || '',
+      Departamento: departamentosInfo.find(d => d.DEPTO === row.DEPTO)?.DESCRIPCION || 'UNICO',
+      Puesto: puestosInfo.find(p => p.PUESTO === row.PUESTO)?.DESCRIPCION || 'UNICO',
       RiesgoPuesto: 1,
       PeriodicidadPago: 3,
       Banco: 12,
-      CuentaBancaria: row.CTABANCO,
+      CuentaBancaria: String(row.CTABANCO),
       SalarioBaseCotApor: 0,
       SalarioDiarioIntegrado: row.TIPOEMP === 'B'
         ? +((prestacionesBase.find(p => p.EMPLEADO === row.EMPLEADO)?.SUELDOINTEGRADO || 0) / 14).toFixed(2)

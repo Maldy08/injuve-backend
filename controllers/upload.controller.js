@@ -1,9 +1,7 @@
-
-
 const fs = require('fs');
 const csv = require('csv-parser');
 const { getDb } = require('../helpers/mongo.helper');
-const  camposNumericos  = require('../helpers/tablas-conversion-camposnumericos');
+const camposNumericos = require('../helpers/tablas-conversion-camposnumericos');
 
 exports.subirCSV = (req, res) => {
   const coleccion = req.params.coleccion;
@@ -32,11 +30,23 @@ exports.subirCSV = (req, res) => {
     .on('end', async () => {
       try {
         const db = getDb();
-       // si la coleccion es diferente a mnom12 o mnom12h, no se elminan los registros
-        if (coleccion !== 'mnom12' && coleccion !== 'mnom12h' && coleccion !== 'mno01' && coleccion !== 'mnom01h') {
+        // si la coleccion es diferente a mnom12 o mnom12h, no se eliminan los registros
+        if (coleccion !== 'mnom12' && coleccion !== 'mnom12h' && coleccion !== 'mnom01' && coleccion !== 'mnom01h') {
           await db.collection(coleccion).deleteMany({});
         }
         await db.collection(coleccion).insertMany(registros);
+
+        // --- Agregar RFCs a accesos solo si la colección es mnom01 o mnom01h ---
+        if (coleccion === 'mnom01' || coleccion === 'mnom01h') {
+          const rfcs = [...new Set(registros.map(r => r.RFC).filter(Boolean))];
+          for (const rfc of rfcs) {
+            const existe = await db.collection('accesos').findOne({ RFC: rfc });
+            if (!existe) {
+              await db.collection('accesos').insertOne({ RFC: rfc, TIPO: coleccion === "mnom01" ? 1 : 2, ADMIN: 0 });
+            }
+          }
+        }
+        // ----------------------------------------------------------------------
 
         fs.unlinkSync(archivoCSV.path); // Limpia archivo temporal
 
