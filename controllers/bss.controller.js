@@ -174,3 +174,15 @@ exports.exportarBssTxt = async (req, res) => {
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.send(txt);
 };
+
+exports.getDatosBSS = async (req, res) => {
+
+    const db = getDb();
+    const bssCollection = await db.collection('bss').find({})
+        .sort({ empleado: 1 })
+        .toArray();
+
+
+        return res.json(bssCollection);
+
+}
