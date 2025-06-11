@@ -40,7 +40,7 @@ exports.subirCSV = (req, res) => {
       try {
         const db = getDb();
 
-        if (!['mnom12', 'mnom12h', 'mnom01', 'mnom01h'].includes(coleccion)) {
+        if (!['mnom12', 'mnom12h'].includes(coleccion)) {
           await db.collection(coleccion).deleteMany({});
         }
 
