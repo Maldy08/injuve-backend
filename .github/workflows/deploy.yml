@@ -1,0 +1,28 @@
+name: Deploy Backend a EC2
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    name: Backend Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: SSH y despliegue
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "🚀 Backend: pull & restart"
+            cd /home/ec2-user/injuve-backend
+            git pull origin production
+            npm install
+            pm2 restart backend || pm2 start backend
