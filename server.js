@@ -28,7 +28,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /* ✅ Agrupamos todas las rutas del backend en /api/backend para no interferir con Next.js */
 const baseApiPath = '/api/backend';
-
+//
 // Rutas del backend
 app.use(`${baseApiPath}/auth`, require('./routes/auth.routes'));
 app.use(`${baseApiPath}/upload`, require('./routes/upload.routes'));
