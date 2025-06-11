@@ -1,4 +1,5 @@
 const XLSX = require('xlsx');
+
 const { create } = require('xmlbuilder2');
 const { getDb } = require('../helpers/mongo.helper');
 
@@ -186,3 +187,135 @@ exports.getDatosBSS = async (req, res) => {
         return res.json(bssCollection);
 
 }
+
+
+// ...otros requires...
+
+exports.exportarBssZip = async (req, res) => {
+    const { periodo, banco } = req.params;
+    if (!banco || !periodo) {
+        return res.status(400).json({ error: 'Los parámetros banco y periodo son requeridos.' });
+    }
+    const filtado = banco !== "012" ? 'OTROS' : 'BBVA';
+    const db = getDb();
+
+    // --- Genera el XML (igual que en exportarBssXml) ---
+    let query = {};
+    if (filtado === 'BBVA') {
+        query = { banco: "012" };
+    } else {
+        query = { banco: { $ne: "012" } };
+    }
+    const bssCollection = await db.collection('bss').find(query).sort({ empleado: 1 }).toArray();
+
+    // ...lógica de fecha...
+    let nuevaFechaPago = new Date();
+    const dia = String(nuevaFechaPago.getDate()).padStart(2, '0');
+    const mes = String(nuevaFechaPago.getMonth() + 1).padStart(2, '0');
+    const anio = nuevaFechaPago.getFullYear();
+    nuevaFechaPago = `${dia}/${mes}/${anio}`;
+    if (filtado !== 'BBVA') {
+        if (typeof nuevaFechaPago === 'string' && nuevaFechaPago.includes('/')) {
+            const [dia, mes, anio] = nuevaFechaPago.split('/');
+            const fechaObj = new Date(Number(anio), Number(mes) - 1, Number(dia));
+            fechaObj.setDate(fechaObj.getDate() + 1);
+            const diaF = String(fechaObj.getDate()).padStart(2, '0');
+            const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
+            const anioF = fechaObj.getFullYear();
+            nuevaFechaPago = `${diaF}/${mesF}/${anioF}`;
+        } else {
+            const fechaObj = new Date(nuevaFechaPago);
+            fechaObj.setDate(fechaObj.getDate() + 1);
+            const diaF = String(fechaObj.getDate()).padStart(2, '0');
+            const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
+            const anioF = fechaObj.getFullYear();
+            nuevaFechaPago = `${diaF}/${mesF}/${anioF}`;
+        }
+    }
+
+    const { create } = require('xmlbuilder2');
+    const root = create({ version: '1.0', encoding: 'UTF-8' })
+        .ele('nomina', {
+            version: '1.0',
+            claveOrganismo: '10111',
+            descripcion: 'INJUVE',
+            periodo: `PERIODO DE PAGO ${periodo}`,
+            tipoNomina: '160',
+            ejercicio: '2025',
+            fechaPago: nuevaFechaPago,
+            fechaInicialPago: nuevaFechaPago,
+            fechaFinalPago: nuevaFechaPago
+        });
+
+    bssCollection.forEach(item => {
+        const pago = root.ele('pago', {
+            numEmpleado: item.empleado || '',
+            nombreCompleto: item.nombre || '',
+            curp: item.curp || '',
+            tipoRegimen: item.tiporegimen || '',
+            numSeguridadSocial: item.isstecali || '',
+            numDiasPagados: '14',
+            departamento: '',
+            clabe: item.clabe || '',
+            banco: item.banco || '',
+            periodicidadPago: item.periodicidadPago || '14'
+        });
+
+        const percepciones = pago.ele('percepciones', {
+            totalGravado: item.totalGravado || '0.00',
+            totalExcento: item.totalExcento || (item.importe_new ? item.importe_new.toFixed(2) : '0.00')
+        });
+
+        percepciones.ele('percepcion', {
+            tipoPercepcion: item.tipoPercepcion || '100',
+            concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
+            importeGravado: '0.00',
+            importeExcento: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
+        });
+    });
+
+    let xml = root.end({ prettyPrint: false });
+    xml = xml.replace('?>', '?>\n');
+    const xmlFilename = `BSS_${periodo}_${filtado}.xml`;
+
+    // --- Genera el TXT (igual que en exportarBssTxt) ---
+    function fixed(str, length, pad = ' ', dir = 'right') {
+        str = str === undefined || str === null ? '' : String(str);
+        if (str.length > length) return str.substring(0, length);
+        if (dir === 'left') return str.padStart(length, pad);
+        return str.padEnd(length, pad);
+    }
+    let consecutivo = 1;
+    const lines = bssCollection.map(item => {
+        return (
+            fixed(consecutivo++, 9, '0', 'left') +
+            fixed(item.rfc, 16) +
+            fixed(filtado === 'BBVA' ? '99' : '40') +
+            fixed(item.clabe, 20, ' ', 'right') +
+            fixed(
+                item.importe_new
+                    ? String(Number(item.importe_new).toFixed(2)).replace('.', '')
+                    : '0',
+                15, '0', 'left'
+            ) +
+            fixed(item.nombre, 40) +
+            fixed(item.banco, 3, '0', 'left') +
+            fixed('001', 3, '0', 'left')
+        );
+    });
+    const txt = lines.join('\n');
+    const txtFilename = `BSS_${periodo}_${filtado}.txt`;
+
+    // --- Crea el ZIP y lo envía ---
+    const archiver = require('archiver');
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename=BSS_${periodo}_${filtado}.zip`);
+    archive.pipe(res);
+
+    archive.append(xml, { name: xmlFilename });
+    archive.append(txt, { name: txtFilename });
+
+    archive.finalize();
+};
