@@ -72,7 +72,7 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
 
 
   if(empleadoData && empleadoData.TIPOEMP === "C" && tipo == 1) {
-    empleadoData.SUELDO = (( prestacionesData.SUELDOMES * 12 / 26) / 14 ).toFixed(2);
+    empleadoData.SUELDO = ( prestacionesData.SUELDOMES * 12 / 26) / 14 
   }
 
   empleadoData.SUELDO = (empleadoData.SUELDO ).toFixed(2);
