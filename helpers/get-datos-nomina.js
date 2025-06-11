@@ -70,6 +70,13 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
     deduccion: (c.PERCDESC >= 500) ? formatCantidad(c.IMPORTE) : ""
   }));
 
+
+  if(empleadoData && empleadoData.TIPOEMP === "C" && tipo == 1) {
+    empleadoData.SUELDO = (( prestacionesData.SUELDOMES * 12 / 26) / 14 ).toFixed(2);
+  }
+
+  empleadoData.SUELDO = (empleadoData.SUELDO ).toFixed(2);
+
   return {
     empleado: empleadoData,
     dias: dias,
