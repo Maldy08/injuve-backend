@@ -319,3 +319,32 @@ exports.exportarBssZip = async (req, res) => {
 
     archive.finalize();
 };
+
+exports.actualizarBss = async (req, res) => {
+    const db = getDb();
+    const bssData = req.body;
+
+    if (!bssData || !bssData.empleado) {
+        return res.status(400).json({ error: 'El objeto bss debe incluir el campo "empleado".' });
+    }
+
+    // Elimina _id si existe
+    if (bssData._id) {
+        delete bssData._id;
+    }
+
+    try {
+        const result = await db.collection('bss').updateOne(
+            { empleado: String(bssData.empleado) },
+            { $set: bssData }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: 'Empleado no encontrado.' });
+        }
+
+        res.json({ message: 'Registro BSS actualizado correctamente.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al actualizar el registro BSS.' });
+    }
+};
