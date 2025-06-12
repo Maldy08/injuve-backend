@@ -38,8 +38,8 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
         const correoData = await db.collection(correosCollection).findOne({ EMPLEADO: empleado.EMPLEADO });
         return {
           ...empleado,
-          //CORREO: correoData ? correoData.EMAIL : null,
-          CORREO: "camv29@gmail.com"
+          CORREO: correoData ? correoData.EMAIL : null,
+         // CORREO: "camv29@gmail.com"
         };
       })
     );
