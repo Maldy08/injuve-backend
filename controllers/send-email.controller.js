@@ -29,8 +29,7 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
     // Filtrar empleados únicos
     const empleadosUnicos = empleadosData.filter(
       (value, index, self) => index === self.findIndex((e) => e.EMPLEADO === value.EMPLEADO)
-    )
-    .slice(0,5);
+    );
 
     // Obtener correos de la tabla correspondiente (mnom01 o mnom01h)
     const correosCollection = Number(tipo) === 1 ? 'mnom01' : 'mnom01h';
