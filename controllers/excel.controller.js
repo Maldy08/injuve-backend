@@ -127,10 +127,16 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
       empleados[p.EMPLEADO] = {
         EMPLEADO: p.EMPLEADO,
         RFC: p.RFC,
-        DIAS: p.PERCDESC === 1 ? p.DIASTRA / 8 : 0,
-        DIAS_PRIMA: p.PERCDESC === 5 ? p.DIASTRA / 8 : 0,
+        DIAS: 0,
+        DIAS_PRIMA: 0,
         TOTAL_PERCEPCIONES: 0,
       };
+    }
+    if (p.PERCDESC === 1) {
+      empleados[p.EMPLEADO].DIAS += p.DIASTRA / 8;
+    }
+    if (p.PERCDESC === 5) {
+      empleados[p.EMPLEADO].DIAS_PRIMA += p.DIASTRA; // O solo p.DIASTRA si así lo necesitas
     }
     empleados[p.EMPLEADO][p.DESCRIPCION] = p.IMPORTE;
     if (p.PERCDESC < 500) {
