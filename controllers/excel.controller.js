@@ -128,6 +128,7 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
         EMPLEADO: p.EMPLEADO,
         RFC: p.RFC,
         DIAS: p.PERCDESC === 1 ? p.DIASTRA / 8 : 0,
+        DIAS_PRIMA: p.PERCDESC === 5 ? p.DIASTRA / 8 : 0,
         TOTAL_PERCEPCIONES: 0,
       };
     }
@@ -142,6 +143,7 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
     { header: 'EMPLEADO', key: 'EMPLEADO', width: 10 },
     { header: 'RFC', key: 'RFC', width: 15 },
     { header: 'DIAS', key: 'DIAS', width: 15 },
+    { header: 'DIAS_PRIMA', key: 'DIAS_PRIMA', width: 15 },
     ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 })),
     { header: 'TOTAL_PERCEPCIONES', key: 'TOTAL_PERCEPCIONES', width: 20 }
   ];
