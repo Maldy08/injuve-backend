@@ -64,7 +64,7 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   const conceptos = conceptosRaw.map(c => ({
     ...c,
     
-    DIASTRA: c.PERCDESC == 1 ? c.DIASTRA / 8 : c.PERCDESC == 23 ? c.DIASTRA : "",
+    DIASTRA: c.PERCDESC == 1 ? c.DIASTRA / 8 : (c.PERCDESC == 5 || c.PERCDESC == 23) ? c.DIASTRA : "",
     percepcion: (c.PERCDESC >= 1 && c.PERCDESC < 13) ? formatCantidad(c.IMPORTE) : "",
     prestacion: (c.PERCDESC >= 13 && c.PERCDESC < 500) ? formatCantidad(c.IMPORTE) : "",
     deduccion: (c.PERCDESC >= 500) ? formatCantidad(c.IMPORTE) : ""
