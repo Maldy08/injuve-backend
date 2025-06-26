@@ -47,6 +47,7 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
       }
     }
   }
+  //
 
   conceptosRaw.sort((a, b) => a.PERCDESC - b.PERCDESC);
 
