@@ -11,7 +11,7 @@ exports.uploadExcelBss = async (req, res) => {
     const woorkbook = XLSX.read(req.file.buffer, { type: 'buffer' });
     const sheetName = woorkbook.SheetNames[0];
     const data = XLSX.utils.sheet_to_json(woorkbook.Sheets[sheetName], { raw: false });
-    
+
     const db = getDb();
     const bssCollection = await db.collection('bss');
     for (const row of data) {
@@ -90,6 +90,8 @@ exports.exportarBssXml = async (req, res) => {
 
     bssCollection.forEach(item => {
         // Ajusta los nombres de los campos según tu colección
+        if (item.importe_new !== 0) return; // Si el importe es 0, no generar pago
+
         const pago = root.ele('pago', {
             numEmpleado: item.empleado || '',
             nombreCompleto: item.nombre || '',
@@ -114,10 +116,11 @@ exports.exportarBssXml = async (req, res) => {
             importeGravado: '0.00',
             importeExcento: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
         });
+
     });
 
     let xml = root.end({ prettyPrint: false });
-xml = xml.replace('?>', '?>\n');
+    xml = xml.replace('?>', '?>\n');
     const filename = `BSS_${periodo}_${filtado}.xml`;
 
     res.setHeader('Content-Type', 'application/xml');
@@ -152,6 +155,7 @@ exports.exportarBssTxt = async (req, res) => {
 
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
+        if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
         return (
             fixed(consecutivo++, 9, '0', 'left') +                          // 1.- Numero consecutivo del registro (9)
             fixed(item.rfc, 16) +                                           // 2.- RFC del empleado (16)
@@ -184,7 +188,7 @@ exports.getDatosBSS = async (req, res) => {
         .toArray();
 
 
-        return res.json(bssCollection);
+    return res.json(bssCollection);
 
 }
 
@@ -248,6 +252,8 @@ exports.exportarBssZip = async (req, res) => {
         });
 
     bssCollection.forEach(item => {
+
+        if (item.importe_new === 0) return; // Si el importe es 0, no generar pago  
         const pago = root.ele('pago', {
             numEmpleado: item.empleado || '',
             nombreCompleto: item.nombre || '',
@@ -287,6 +293,7 @@ exports.exportarBssZip = async (req, res) => {
     }
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
+        if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
         return (
             fixed(consecutivo++, 9, '0', 'left') +
             fixed(item.rfc, 16) +
