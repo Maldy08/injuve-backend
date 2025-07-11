@@ -253,7 +253,7 @@ exports.exportarBssZip = async (req, res) => {
 
     bssCollection.forEach(item => {
 
-        if (item.importe_new === 0) return; // Si el importe es 0, no generar pago  
+       // if (item.importe_new === 0) return; // Si el importe es 0, no generar pago  
         const pago = root.ele('pago', {
             numEmpleado: item.empleado || '',
             nombreCompleto: item.nombre || '',
@@ -293,7 +293,7 @@ exports.exportarBssZip = async (req, res) => {
     }
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
-        if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
+      //  if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
         return (
             fixed(consecutivo++, 9, '0', 'left') +
             fixed(item.rfc, 16) +

@@ -45,7 +45,7 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
     );
 
     // Filtrar empleados que no tienen correo
-    const empleadosFiltrados = empleadosConCorreos.filter((empleado) => empleado.CORREO);
+    const empleadosFiltrados = empleadosConCorreos.filter((empleado) => empleado.CORREO );
 
     // Leer la plantilla correspondiente
     const template = Number(tipo) === 1 ? "nomina" : "nomina-asim";
@@ -54,8 +54,7 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
     // Configuración de nodemailer
     const transporter = nodemailer.createTransport({
       service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
+      auth: { user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
       }
     });
