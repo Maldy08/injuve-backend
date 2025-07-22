@@ -520,12 +520,8 @@ exports.generarTimbrado = async (req, res) => {
     if (!empleadosProcesados.has(item.EMPLEADO)) {
 
       const totalDeducciones = deduccionesInfo
-        .filter(p => p.EMPLEADO === item.EMPLEADO && p.IMPORTE > 0 && p.PERCDESC === 500)
+        .filter(p => p.EMPLEADO === item.EMPLEADO && p.IMPORTE > 0 && p.PERCDESC >= 500)
         .reduce((sum, p) => sum + Number(p.IMPORTE || 0), 0);
-
-      const totalOtrasDeducciones = deduccionesInfo
-        .filter(p => p.EMPLEADO === item.EMPLEADO && p.IMPORTE > 0 && p.PERCDESC !== 500)
-        .reduce((sum, p) => sum + Math.abs(Number(p.IMPORTE || 0)), 0);
 
 
       const empleado = empleadosInfo.find(e => e.EMPLEADO === item.EMPLEADO) || {};
@@ -533,7 +529,7 @@ exports.generarTimbrado = async (req, res) => {
       deduccionesRows.push({
         CURP: empleado.CURP || '',
         TotalImpuestosRetenidos: totalDeducciones,
-        TotalOtrasDeducciones: totalOtrasDeducciones,
+        TotalOtrasDeducciones: 0,
         TipoDeduccion: '',
         Clave: '',
         Concepto: '',
