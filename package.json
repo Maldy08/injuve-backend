@@ -11,6 +11,7 @@
     "dotenv": "^16.5.0",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
+    "firebase-admin": "^13.4.0",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^9.0.2",
     "jsreport": "^3.13.0",

@@ -7,6 +7,14 @@ const conectarMongo = require('./helpers/mongo.helper');
 
 const app = express();
 
+const admin = require('firebase-admin');
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+
 // Middlewares globales
 app.use(cors());
 app.use(express.json());
@@ -38,6 +46,7 @@ app.use(`${baseApiPath}/send-email`, require('./routes/send-email.routes'));
 app.use(`${baseApiPath}/empleados`, require('./routes/empleados.routes'));
 app.use(`${baseApiPath}/timbrado`, require('./routes/excel.routes'));
 app.use(`${baseApiPath}/bss`, require('./routes/bss.routes'));
+app.use(`${baseApiPath}/notificaciones`, require('./routes/notifaciones.routes'));
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {

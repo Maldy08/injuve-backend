@@ -1,3 +1,4 @@
 node_modules
 logs
 .env
+config/sirh-injuve-firebase.json
