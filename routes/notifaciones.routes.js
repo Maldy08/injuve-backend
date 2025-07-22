@@ -6,3 +6,5 @@ const { enviarNotificacionesRecibos } = require('../controllers/notificaciones.c
 
 // Ruta para enviar notificaciones de recibos
 router.post('/recibos', enviarNotificacionesRecibos);
+
+module.exports = router;
