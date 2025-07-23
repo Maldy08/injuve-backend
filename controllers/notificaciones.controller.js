@@ -70,7 +70,7 @@ exports.enviarNotificacionesRecibos = async (req, res) => {
 
     try {
         // Obtenemos las instancias de ambas bases de datos
-        const mongoDb = getDb();
+       
         const firestoreDb = admin.firestore();
 
         const db = getDb();

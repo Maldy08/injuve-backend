@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./helpers/firebase.helper.js');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -7,12 +8,6 @@ const conectarMongo = require('./helpers/mongo.helper');
 
 const app = express();
 
-const admin = require('firebase-admin');
-const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
 
 
 // Middlewares globales
