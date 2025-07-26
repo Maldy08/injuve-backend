@@ -67,6 +67,7 @@ exports.login = async (req, res) => {
         RFC: empleado.RFC,
         CURP: empleado.CURP,
         TIPO: accesos.TIPO,
+        EMAIL: empleado.EMAIL,
         ADMIN: isAdmin,
       }
     });
