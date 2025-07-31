@@ -64,7 +64,7 @@ exports.resumenPorPeriodo = async (req, res) => {
 
 
 
-// GET /api/nomina/recibos/:empleado
+// GET /api/nomina/recibos/:empleado/:tipo
 exports.obtenerResumen = async (req, res) => {
   const empleado = parseInt(req.params.empleado);
   const tipo = parseInt(req.params.tipo);
@@ -108,6 +108,7 @@ exports.obtenerResumen = async (req, res) => {
     const resumen = Object.values(agrupados).map(r => ({
       ...r,
       percepciones: r.percepciones.toFixed(2),
+      prestaciones: r.prestaciones.toFixed(2),
       deducciones: r.deducciones.toFixed(2),
       neto: (r.percepciones + r.prestaciones - r.deducciones).toFixed(2)
     })).sort((a, b) => a.periodo - b.periodo);
