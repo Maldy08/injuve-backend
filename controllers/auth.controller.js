@@ -1,7 +1,74 @@
 // 1. La importación clave: Asegúrate de que apunte a tu helper.
-const admin = require('../helpers/firebase.helper.js'); 
+const admin = require('../helpers/firebase.helper.js');
 const jwt = require('jsonwebtoken');
 const { getDb } = require('../helpers/mongo.helper');
+
+
+exports.loginMobile = async (req, res) => {
+  const { email, password, fcmToken } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email y contraseña son requeridos' });
+  }
+
+  try {
+    const db = getDb();
+    const user = await db.collection('usuarios').findOne({ CORREO: email });
+
+    if (!user || user.PASSWORD !== password) {
+      return res.status(401).json({ error: 'Email o contraseña incorrectos' });
+    }
+
+    let empleado = null;
+    if (user.TIPO === 1) {
+      empleado = await db.collection('mnom01').findOne({ EMAIL: email });
+    } else if (user.TIPO === 2) {
+      empleado = await db.collection('mnom01h').findOne({ EMAIL: email });
+    }
+
+    // Puedes agregar validación si no se encuentra el empleado
+    if (!empleado) {
+      return res.status(404).json({ error: 'Empleado no encontrado en la colección correspondiente' });
+    }
+
+    if (fcmToken) {
+      const db = admin.firestore();
+      const tokenRef = db.collection('device_tokens').doc(String(user.CORREO));
+
+      await tokenRef.set({
+        fcm_token: fcmToken,
+        updated_at: admin.firestore.FieldValue.serverTimestamp()
+      });
+      console.log(`Token FCM guardado en Firestore para el empleado ${user.CORREO}`); // Asegúrate de que 'user.CORREO' sea el identificador correcto
+    }
+
+
+    const token = jwt.sign(
+      { userId: user.EMPLEADO, email: user.CORREO },
+      process.env.SECRET_KEY,
+      { expiresIn: '4h' }
+    );
+
+    res.json({
+      token,
+      empleado: {
+        EMPLEADO: empleado.EMPLEADO,
+        NOMBRE: empleado.NOMBRE,
+        APPAT: empleado.APPAT,
+        APMAT: empleado.APMAT,
+        RFC: empleado.RFC,
+        CURP: empleado.CURP,
+        TIPO: user.TIPO,
+        EMAIL: user.CORREO,
+      }
+    });
+  } catch (err) {
+    console.error("Error en loginMobile:", err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+
+}
+
 
 exports.login = async (req, res) => {
   const { rfc, fcmToken } = req.body;
@@ -76,3 +143,5 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+
