@@ -3,6 +3,36 @@
 const admin = require('firebase-admin');
 const { getDb } = require('../helpers/mongo.helper');
 
+
+exports.guardarToken = async (req, res) => {
+  // El fcmToken viene en el cuerpo de la petición
+  const { fcmToken } = req.body;
+  // El ID del empleado viene del middleware de autenticación
+  const empleadoId = req.user.email;
+
+  if (!fcmToken) {
+    return res.status(400).json({ message: 'No se proporcionó el fcmToken.' });
+  }
+
+  try {
+    const db = admin.firestore();
+    const tokenRef = db.collection('device_tokens').doc(String(empleadoId));
+
+    await tokenRef.set({
+      fcm_token: fcmToken,
+      updated_at: admin.firestore.FieldValue.serverTimestamp()
+    });
+
+    console.log(`Token FCM actualizado en Firestore para el empleado ${empleadoId}`);
+    res.status(200).json({ message: 'Token actualizado correctamente.' });
+
+  } catch (error) {
+    console.error(`Error al guardar el token para el empleado ${empleadoId}:`, error);
+    res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
+
 exports.enviarNotificacionesRecibos = async (req, res) => {
     const { periodo, tipo } = req.body;
 
@@ -17,7 +47,7 @@ exports.enviarNotificacionesRecibos = async (req, res) => {
 
         // CORRECCIÓN 1: 'distinct' ya devuelve el arreglo de IDs que necesitas.
         const idsDeEmpleados = await db.collection(collectionNameRecibos)
-            .distinct("EMPLEADO", { PERIODO: Number(periodo) }); // Asegúrate de que 'periodo' sea un número si así está en tu BD
+            .distinct("EMAIL", { PERIODO: Number(periodo) }); // Asegúrate de que 'periodo' sea un número si así está en tu BD
 
         if (!idsDeEmpleados || idsDeEmpleados.length === 0) {
             return res.status(200).json({ message: 'No hay recibos para este periodo.' });

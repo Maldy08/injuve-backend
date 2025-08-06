@@ -33,13 +33,13 @@ exports.loginMobile = async (req, res) => {
 
     if (fcmToken) {
       const db = admin.firestore();
-      const tokenRef = db.collection('device_tokens').doc(String(user.CORREO));
+      const tokenRef = db.collection('device_tokens').doc(String(user.userId));
 
       await tokenRef.set({
         fcm_token: fcmToken,
         updated_at: admin.firestore.FieldValue.serverTimestamp()
       });
-      console.log(`Token FCM guardado en Firestore para el empleado ${user.CORREO}`); // Asegúrate de que 'user.CORREO' sea el identificador correcto
+      console.log(`Token FCM guardado en Firestore para el empleado ${user.userId}`); // Asegúrate de que 'user.CORREO' sea el identificador correcto
     }
 
 
