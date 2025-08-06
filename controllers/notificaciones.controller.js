@@ -8,7 +8,7 @@ exports.guardarToken = async (req, res) => {
   // El fcmToken viene en el cuerpo de la petición
   const { fcmToken } = req.body;
   // El ID del empleado viene del middleware de autenticación
-  const empleadoId = req.user.email;
+  const empleadoId = req.user.userId;
 
   if (!fcmToken) {
     return res.status(400).json({ message: 'No se proporcionó el fcmToken.' });
