@@ -47,7 +47,7 @@ exports.enviarNotificacionesRecibos = async (req, res) => {
 
         // CORRECCIÓN 1: 'distinct' ya devuelve el arreglo de IDs que necesitas.
         const idsDeEmpleados = await db.collection(collectionNameRecibos)
-            .distinct("EMAIL", { PERIODO: Number(periodo) }); // Asegúrate de que 'periodo' sea un número si así está en tu BD
+            .distinct("EMPLEADO", { PERIODO: Number(periodo) }); // Asegúrate de que 'periodo' sea un número si así está en tu BD
 
         if (!idsDeEmpleados || idsDeEmpleados.length === 0) {
             return res.status(200).json({ message: 'No hay recibos para este periodo.' });
