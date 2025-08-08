@@ -24,7 +24,6 @@ exports.getProfile = async (req, res) => {
 
 
     res.json({
-      empleado: {
         EMPLEADO: empleado.EMPLEADO,
         NOMBRE: empleado.NOMBRE,
         APPAT: empleado.APPAT,
@@ -33,7 +32,6 @@ exports.getProfile = async (req, res) => {
         CURP: empleado.CURP,
         TIPO: user.TIPO,
         EMAIL: user.CORREO,
-      }
     });
   } catch (err) {
     console.error("Error al obtener el perfil:", err);
@@ -89,14 +87,17 @@ exports.loginMobile = async (req, res) => {
     );
 
     res.json({
-      EMPLEADO: empleado.EMPLEADO,
-      NOMBRE: empleado.NOMBRE,
-      APPAT: empleado.APPAT,
-      APMAT: empleado.APMAT,
-      RFC: empleado.RFC,
-      CURP: empleado.CURP,
-      TIPO: user.TIPO,
-      EMAIL: user.CORREO,
+      token,
+      empleado: {
+        EMPLEADO: empleado.EMPLEADO,
+        NOMBRE: empleado.NOMBRE,
+        APPAT: empleado.APPAT,
+        APMAT: empleado.APMAT,
+        RFC: empleado.RFC,
+        CURP: empleado.CURP,
+        TIPO: user.TIPO,
+        EMAIL: user.CORREO,
+      }
     });
   } catch (err) {
     console.error("Error en loginMobile:", err);
