@@ -3,6 +3,45 @@ const admin = require('../helpers/firebase.helper.js');
 const jwt = require('jsonwebtoken');
 const { getDb } = require('../helpers/mongo.helper');
 
+exports.getProfile = async (req, res) => {
+
+  const empleadoId = req.user.userId;
+
+  try {
+    const db = getDb();
+    const user = await db.collection('usuarios').findOne({ EMPLEADO: empleadoId });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Empleado no encontrado' });
+    }
+
+    let empleado = null;
+    if (user.TIPO === 1) {
+      empleado = await db.collection('mnom01').findOne({ EMPLEADO: empleadoId });
+    } else if (user.TIPO === 2) {
+      empleado = await db.collection('mnom01h').findOne({ EMPLEADO: empleadoId });
+    }
+
+
+    res.json({
+      empleado: {
+        EMPLEADO: empleado.EMPLEADO,
+        NOMBRE: empleado.NOMBRE,
+        APPAT: empleado.APPAT,
+        APMAT: empleado.APMAT,
+        RFC: empleado.RFC,
+        CURP: empleado.CURP,
+        TIPO: user.TIPO,
+        EMAIL: user.CORREO,
+      }
+    });
+  } catch (err) {
+    console.error("Error al obtener el perfil:", err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}
+
+
 
 exports.loginMobile = async (req, res) => {
   const { email, password, fcmToken } = req.body;
