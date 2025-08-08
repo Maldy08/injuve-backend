@@ -89,17 +89,14 @@ exports.loginMobile = async (req, res) => {
     );
 
     res.json({
-      token,
-      empleado: {
-        EMPLEADO: empleado.EMPLEADO,
-        NOMBRE: empleado.NOMBRE,
-        APPAT: empleado.APPAT,
-        APMAT: empleado.APMAT,
-        RFC: empleado.RFC,
-        CURP: empleado.CURP,
-        TIPO: user.TIPO,
-        EMAIL: user.CORREO,
-      }
+      EMPLEADO: empleado.EMPLEADO,
+      NOMBRE: empleado.NOMBRE,
+      APPAT: empleado.APPAT,
+      APMAT: empleado.APMAT,
+      RFC: empleado.RFC,
+      CURP: empleado.CURP,
+      TIPO: user.TIPO,
+      EMAIL: user.CORREO,
     });
   } catch (err) {
     console.error("Error en loginMobile:", err);
