@@ -1,0 +1,15 @@
+node_modules/
+npm-debug.log*
+.git/
+.env
+logs/
+uploads/*
+!uploads/.gitkeep
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Dockerfile
+docker-compose.yml
+.dockerignore
+README.md
