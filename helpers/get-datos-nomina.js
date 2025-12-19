@@ -52,11 +52,11 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   conceptosRaw.sort((a, b) => a.PERCDESC - b.PERCDESC);
 
   const percepciones = tipo == 1
-    ? conceptosRaw.filter(c => (c.PERCDESC >= 1 && c.PERCDESC < 13) || c.PERCDESC === 40)
-    : conceptosRaw.filter(c => (c.PERCDESC >= 1 && c.PERCDESC < 24) || c.PERCDESC === 40);
+    ? conceptosRaw.filter(c => (c.PERCDESC >= 1 && c.PERCDESC < 13) || c.PERCDESC === 40 || c.PERCDESC === 60)
+    : conceptosRaw.filter(c => (c.PERCDESC >= 1 && c.PERCDESC < 24) || c.PERCDESC === 40 || c.PERCDESC === 60);
   const prestaciones = tipo == 1
-    ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500 && c.PERCDESC !== 40)
-    : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500 && c.PERCDESC !== 40);
+    ? conceptosRaw.filter(c => c.PERCDESC >= 13 && c.PERCDESC < 500 && c.PERCDESC !== 40 && c.PERCDESC !== 60)
+    : conceptosRaw.filter(c => c.PERCDESC >= 24 && c.PERCDESC < 500 && c.PERCDESC !== 40 && c.PERCDESC !== 60);
   const deducciones = conceptosRaw.filter(c => c.PERCDESC >= 500 && c.PERCDESC !== 570);
   const dias = percepciones.reduce((s, c) => s + (c.PERCDESC == 1 ? c.DIASTRA / 8 : 0), 0);
   const sueldoDiario = sueldoIntegrado / dias;
@@ -69,10 +69,10 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   const conceptos = conceptosRaw.map(c => ({
     ...c,
 
-    DIASTRA: c.PERCDESC == 1 ? c.DIASTRA / 8 : (c.PERCDESC == 23) ? c.DIASTRA : "",
-    percepcion: ((tipo == 1 && c.PERCDESC >= 1 && c.PERCDESC < 13) || (tipo != 1 && c.PERCDESC >= 1 && c.PERCDESC < 24) || c.PERCDESC === 40)
+    DIASTRA: c.PERCDESC == 1 ? c.DIASTRA / 8 : (c.PERCDESC == 23 || c.PERCDESC == 6 || c.PERCDESC == 60) ? c.DIASTRA : "",
+    percepcion: ((tipo == 1 && c.PERCDESC >= 1 && c.PERCDESC < 13) || (tipo != 1 && c.PERCDESC >= 1 && c.PERCDESC < 24) || c.PERCDESC === 40 || c.PERCDESC === 60)
       ? formatCantidad(c.IMPORTE) : "",
-    prestacion: ((tipo == 1 && c.PERCDESC >= 13 && c.PERCDESC < 500 && c.PERCDESC !== 40) || (tipo != 1 && c.PERCDESC >= 24 && c.PERCDESC < 500 && c.PERCDESC !== 40))
+    prestacion: ((tipo == 1 && c.PERCDESC >= 13 && c.PERCDESC < 500 && c.PERCDESC !== 40 && c.PERCDESC !== 60) || (tipo != 1 && c.PERCDESC >= 24 && c.PERCDESC < 500 && c.PERCDESC !== 40 && c.PERCDESC !== 60))
       ? formatCantidad(c.IMPORTE) : "",
     deduccion: (c.PERCDESC >= 500) ? formatCantidad(c.IMPORTE) : ""
   }));

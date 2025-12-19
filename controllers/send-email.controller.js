@@ -7,7 +7,6 @@ const { getDb } = require('../helpers/mongo.helper');
 
 exports.enviarRecibosPorCorreo = async (req, res) => {
   const { periodo, tipo } = req.query;
-
   if (!periodo || !tipo) {
     return res.status(400).json({ error: "Faltan parámetros requeridos" });
   }
@@ -38,7 +37,7 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
         const correoData = await db.collection(correosCollection).findOne({ EMPLEADO: empleado.EMPLEADO });
         return {
           ...empleado,
-          CORREO: correoData ? correoData.EMAIL : null,
+          CORREO: correoData ? correoData.EMAIL : 'camv29@gmail.com',
          // CORREO: "camv29@gmail.com"
         };
       })
@@ -94,7 +93,7 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
       });
 
       enviados++;
-       console.log('Progreso:', enviados, 'de', total);
+      console.log('Progreso:', enviados, 'de', total);
       // Envía el progreso al frontend con los nombres que espera el frontend
       res.write(`data: ${JSON.stringify({ progreso: enviados, total })}\n\n`);
     }
