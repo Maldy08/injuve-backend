@@ -82,7 +82,7 @@ exports.exportarBssXml = async (req, res) => {
             descripcion: 'INJUVE',
             periodo: `PERIODO DE PAGO ${periodo}`,
             tipoNomina: '160',
-            ejercicio: '2025',
+            ejercicio: '2026',
             fechaPago: nuevaFechaPago,
             fechaInicialPago: nuevaFechaPago,
             fechaFinalPago: nuevaFechaPago
@@ -245,7 +245,7 @@ exports.exportarBssZip = async (req, res) => {
             descripcion: 'INJUVE',
             periodo: `PERIODO DE PAGO ${periodo}`,
             tipoNomina: '160',
-            ejercicio: '2025',
+            ejercicio: '2026',
             fechaPago: nuevaFechaPago,
             fechaInicialPago: nuevaFechaPago,
             fechaFinalPago: nuevaFechaPago

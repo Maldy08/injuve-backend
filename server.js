@@ -33,6 +33,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 const baseApiPath = '/api/backend';
 //
 // Rutas del backend
+app.use(`${baseApiPath}/home`, require('./routes/home.routes'));
 app.use(`${baseApiPath}/auth`, require('./routes/auth.routes'));
 app.use(`${baseApiPath}/upload`, require('./routes/upload.routes'));
 app.use(`${baseApiPath}/nomina`, require('./routes/nomina.routes'));
