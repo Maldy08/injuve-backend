@@ -232,7 +232,7 @@ exports.generarTimbrado = async (req, res) => {
   const empleadosIds = Object.keys(empleados).map(Number);
   const empleadosInfo = await db.collection(empleadosCollection)
     .find({ EMPLEADO: { $in: empleadosIds } })
-    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
+    .project({ EMPLEADO: 1, NOMBRE: 1, APPAT:1, APMAT:1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
     .toArray();
 
 
@@ -424,7 +424,7 @@ exports.generarTimbrado = async (req, res) => {
   const conceptosRows = empleadosInfo.map(row => ({
     CURP: row.CURP,
     RFC: row.RFC,
-    Nombre: row.NOMBRE,
+    Nombre: row.NOMBRE + ' ' + row.APPAT + ' ' + row.APMAT,
     Concepto: 'Pago de nómina',
     Cantidad: 1,
     Unidad: 'ACT',
