@@ -1,5 +1,3 @@
-// 1. La importación clave: Asegúrate de que apunte a tu helper.
-const admin = require('../helpers/firebase.helper.js');
 const jwt = require('jsonwebtoken');
 const { getDb } = require('../helpers/mongo.helper');
 
@@ -42,7 +40,7 @@ exports.getProfile = async (req, res) => {
 
 
 exports.loginMobile = async (req, res) => {
-  const { email, password, fcmToken } = req.body;
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email y contraseña son requeridos' });
@@ -77,17 +75,6 @@ exports.loginMobile = async (req, res) => {
       if(accesos.ADMIN === 1) {
         admin = 1;
       }
-    }
-
-    if (fcmToken) {
-      const db = admin.firestore();
-      const tokenRef = db.collection('device_tokens').doc(String(user.userId));
-
-      await tokenRef.set({
-        fcm_token: fcmToken,
-        updated_at: admin.firestore.FieldValue.serverTimestamp()
-      });
-      console.log(`Token FCM guardado en Firestore para el empleado ${user.userId}`); // Asegúrate de que 'user.CORREO' sea el identificador correcto
     }
 
 
@@ -139,7 +126,7 @@ exports.login = async (req, res) => {
     }
 
     const tipo = accesos.TIPO;
-    const isAdmin = accesos.ADMIN; // Renombrada para evitar conflicto con la variable 'admin' de Firebase
+    const isAdmin = accesos.ADMIN;
     let collectionName;
 
     if (tipo == 1) {
@@ -153,18 +140,6 @@ exports.login = async (req, res) => {
 
     if (!empleado) {
       return res.status(401).json({ error: 'RFC no encontrado' });
-    }
-
-    // Esta sección ahora funcionará porque 'admin' está correctamente definido.
-    if (fcmToken) {
-      const db = admin.firestore();
-      const tokenRef = db.collection('device_tokens').doc(String(empleado.EMPLEADO));
-
-      await tokenRef.set({
-        fcm_token: fcmToken,
-        updated_at: admin.firestore.FieldValue.serverTimestamp()
-      });
-      console.log(`Token FCM guardado en Firestore para el empleado ${empleado.EMPLEADO}`);
     }
 
     const token = jwt.sign(

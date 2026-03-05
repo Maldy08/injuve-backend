@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./helpers/firebase.helper.js');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -42,7 +41,6 @@ app.use(`${baseApiPath}/send-email`, require('./routes/send-email.routes'));
 app.use(`${baseApiPath}/empleados`, require('./routes/empleados.routes'));
 app.use(`${baseApiPath}/timbrado`, require('./routes/excel.routes'));
 app.use(`${baseApiPath}/bss`, require('./routes/bss.routes'));
-app.use(`${baseApiPath}/notificaciones`, require('./routes/notifaciones.routes'));
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
