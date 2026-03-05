@@ -1,0 +1,11 @@
+2026-03-05T17:12:41.220Z - error: Error when processing render request 1
+(because) net::ERR_ACCESS_DENIED at file:///C:/Users/CMALDO%7E1/AppData/Local/Temp/jsreport/autocleanup/a7d710e5-cd37-49a0-852c-bd210c38a9fc-chrome-pdf.html
+Error: net::ERR_ACCESS_DENIED at file:///C:/Users/CMALDO%7E1/AppData/Local/Temp/jsreport/autocleanup/a7d710e5-cd37-49a0-852c-bd210c38a9fc-chrome-pdf.html
+    at navigate (C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\puppeteer-core\lib\cjs\puppeteer\common\Frame.js:112:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Deferred.race (C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\puppeteer-core\lib\cjs\puppeteer\util\Deferred.js:87:20)
+    at async Frame.goto (C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\puppeteer-core\lib\cjs\puppeteer\common\Frame.js:78:21)
+    at async CDPPage.goto (C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\puppeteer-core\lib\cjs\puppeteer\common\Page.js:486:16)
+    at async C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\@jsreport\jsreport-chrome-pdf\lib\conversion.js:227:5
+    at async C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\@jsreport\jsreport-chrome-pdf\lib\conversion.js:432:22 rootId=5g14mf32pz7fykf, id=5g14mf32pz7fykf
+2026-03-05T17:12:41.221Z - error: Rendering request 1 finished with error in 2250 ms rootId=5g14mf32pz7fykf, id=5g14mf32pz7fykf

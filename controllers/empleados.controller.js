@@ -155,3 +155,61 @@ exports.getEmpleadosVacaciones = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor'});
     }
 }
+
+exports.updateEmpleado = async (req, res) => {
+    const { tipo, id } = req.params;
+    const { NOMBRE, APPAT, APMAT, RFC, CURP, EMAIL } = req.body;
+
+    // Validar tipo
+    if (tipo !== '1' && tipo !== '2') {
+        return res.status(400).json({ error: 'Tipo inválido. Debe ser 1 o 2.' });
+    }
+
+    // Validar que al menos un campo sea proporcionado
+    if (!NOMBRE && !APPAT && !APMAT && !RFC && !CURP && !EMAIL) {
+        return res.status(400).json({ error: 'Debe proporcionar al menos un campo para actualizar.' });
+    }
+
+    try {
+        const db = getDb();
+        const collection = tipo === '1' ? 'mnom01' : 'mnom01h';
+        
+        // Construir objeto de actualización solo con campos proporcionados
+        const updateFields = {};
+        if (NOMBRE !== undefined) updateFields.NOMBRE = NOMBRE;
+        if (APPAT !== undefined) updateFields.APPAT = APPAT;
+        if (APMAT !== undefined) updateFields.APMAT = APMAT;
+        if (RFC !== undefined) updateFields.RFC = RFC;
+        if (CURP !== undefined) updateFields.CURP = CURP;
+        if (EMAIL !== undefined) updateFields.EMAIL = EMAIL;
+
+        // Actualizar empleado
+        const result = await db.collection(collection).updateOne(
+            { EMPLEADO: parseInt(id) },
+            { $set: updateFields }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: 'Empleado no encontrado' });
+        }
+
+        if (result.modifiedCount === 0) {
+            return res.status(200).json({ message: 'No se realizaron cambios. Los datos son idénticos.' });
+        }
+
+        // Obtener empleado actualizado
+        const empleadoActualizado = await db.collection(collection).findOne(
+            { EMPLEADO: parseInt(id) },
+            { projection: { _id: 0 } }
+        );
+
+        res.json({
+            message: 'Empleado actualizado exitosamente',
+            empleado: empleadoActualizado
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar empleado:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}

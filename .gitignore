@@ -2,3 +2,5 @@ node_modules
 logs
 .env
 .vscode
+jsreport-temp/
+config/sirh-injuve-firebase.json

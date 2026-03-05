@@ -60,49 +60,99 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
     });
 
     let enviados = 0;
+    let fallidos = 0;
     const total = empleadosFiltrados.length;
+    const bitacoraErrores = []; // Bitácora de empleados con error
 
     for (const empleado of empleadosFiltrados) {
       const { EMPLEADO, CORREO } = empleado;
 
-      // Obtener datos de nómina para el empleado
-      const data = await getDatosNomina(EMPLEADO, Number(periodo), Number(tipo));
+      try {
+        // Obtener datos de nómina para el empleado
+        const data = await getDatosNomina(EMPLEADO, Number(periodo), Number(tipo));
 
-      // Generar el PDF con jsreport
-      const result = await jsreport.render({
-        template: {
-          content: templateHtml,
-          engine: "handlebars",
-          recipe: "chrome-pdf"
-        },
-        data
-      });
+        // Generar el PDF con jsreport
+        const result = await jsreport.render({
+          template: {
+            content: templateHtml,
+            engine: "handlebars",
+            recipe: "chrome-pdf"
+          },
+          data
+        });
 
-      // Enviar el correo
-      await transporter.sendMail({
-        from: `"Nómina Injuve" <${process.env.EMAIL_USER}>`,
-        to: CORREO,
-        subject: `Recibo de Nómina - Periodo ${periodo}`,
-        text: `Adjunto se encuentra su recibo de nómina correspondiente al periodo ${periodo}.`,
-        attachments: [
-          {
-            filename: `empleado_${EMPLEADO}_${periodo}.pdf`,
-            content: result.content
-          }
-        ]
-      });
+        // Enviar el correo
+        await transporter.sendMail({
+          from: `"Nómina Injuve" <${process.env.EMAIL_USER}>`,
+          to: CORREO,
+          subject: `Recibo de Nómina - Periodo ${periodo}`,
+          text: `Adjunto se encuentra su recibo de nómina correspondiente al periodo ${periodo}.`,
+          attachments: [
+            {
+              filename: `empleado_${EMPLEADO}_${periodo}.pdf`,
+              content: result.content
+            }
+          ]
+        });
 
-      enviados++;
-      console.log('Progreso:', enviados, 'de', total);
-      // Envía el progreso al frontend con los nombres que espera el frontend
-      res.write(`data: ${JSON.stringify({ progreso: enviados, total })}\n\n`);
+        enviados++;
+        console.log(`✅ Correo enviado a empleado ${EMPLEADO} (${CORREO}) - ${enviados}/${total}`);
+        
+        // Envía el progreso al frontend
+        res.write(`data: ${JSON.stringify({ 
+          progreso: enviados + fallidos, 
+          total, 
+          enviados,
+          fallidos,
+          empleadoActual: EMPLEADO
+        })}\n\n`);
+
+      } catch (error) {
+        fallidos++;
+        const errorInfo = {
+          empleado: EMPLEADO,
+          correo: CORREO,
+          error: error.message || 'Error desconocido',
+          fecha: new Date().toISOString()
+        };
+        bitacoraErrores.push(errorInfo);
+        
+        console.error(`❌ Error al enviar correo a empleado ${EMPLEADO} (${CORREO}):`, error.message);
+        
+        // Envía el progreso incluyendo el error actual
+        res.write(`data: ${JSON.stringify({ 
+          progreso: enviados + fallidos, 
+          total, 
+          enviados,
+          fallidos,
+          empleadoActual: EMPLEADO,
+          errorEmpleado: errorInfo
+        })}\n\n`);
+      }
     }
 
-    // Proceso terminado
-    res.write(`data: ${JSON.stringify({ mensaje: "✅ Correos enviados correctamente" })}\n\n`);
+    // Proceso terminado - enviar resumen final
+    const mensajeFinal = enviados === total 
+      ? `✅ Todos los correos fueron enviados correctamente (${enviados}/${total})`
+      : `⚠️ Proceso completado: ${enviados} enviados, ${fallidos} fallidos de ${total} total`;
+
+    res.write(`data: ${JSON.stringify({ 
+      mensaje: mensajeFinal,
+      resumen: {
+        total,
+        enviados,
+        fallidos,
+        bitacoraErrores
+      },
+      finalizado: true
+    })}\n\n`);
     res.end();
   } catch (error) {
-    res.write(`data: ${JSON.stringify({ error: "❌ No se pudo enviar el correo" })}\n\n`);
+    console.error('❌ Error crítico en el proceso de envío de correos:', error);
+    res.write(`data: ${JSON.stringify({ 
+      error: "❌ Error crítico: " + (error.message || "No se pudo completar el proceso"),
+      finalizado: true
+    })}\n\n`);
     res.end();
   }
 };
