@@ -7,8 +7,6 @@ const conectarMongo = require('./helpers/mongo.helper');
 
 const app = express();
 
-
-
 // Middlewares globales
 app.use(cors());
 app.use(express.json());
