@@ -228,25 +228,85 @@ exports.enviarReciboPorCorreo = async (req, res) => {
   const { empleado, periodo, correo, tipo } = req.body;
 
   if (!empleado || !periodo || !correo || !tipo) {
-    return res.status(400).json({ error: "Faltan parámetros requeridos" });
+    return res.status(400).json({ 
+      error: "Faltan parámetros requeridos",
+      detalles: { empleado, periodo, correo, tipo }
+    });
   }
 
   try {
-    const jsreport = await initJsReport();
-    const data = await getDatosNomina(empleado, periodo, tipo);
+    console.log(`📧 Iniciando envío de correo a empleado ${empleado} (${correo}) - Periodo ${periodo}`);
+
+    // Inicializar jsreport
+    let jsreport;
+    try {
+      jsreport = await initJsReport();
+    } catch (error) {
+      console.error(`❌ Error al inicializar jsreport para empleado ${empleado}:`, error.message);
+      return res.status(500).json({ 
+        error: "Error al inicializar el generador de PDF",
+        detalles: error.message,
+        empleado,
+        paso: "inicialización_jsreport"
+      });
+    }
+
+    // Obtener datos de nómina
+    let data;
+    try {
+      data = await getDatosNomina(empleado, periodo, tipo);
+      if (!data) {
+        throw new Error("No se encontraron datos de nómina para este empleado");
+      }
+    } catch (error) {
+      console.error(`❌ Error al obtener datos de nómina para empleado ${empleado}:`, error.message);
+      return res.status(404).json({ 
+        error: "No se encontraron datos de nómina",
+        detalles: error.message,
+        empleado,
+        periodo,
+        paso: "obtener_datos_nomina"
+      });
+    }
+
+    // Leer plantilla
     const template = tipo == 1 ? "nomina" : "nomina-asim";
-    const templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
+    let templateHtml;
+    try {
+      templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
+    } catch (error) {
+      console.error(`❌ Error al leer plantilla ${template} para empleado ${empleado}:`, error.message);
+      return res.status(500).json({ 
+        error: "Error al leer la plantilla del PDF",
+        detalles: error.message,
+        empleado,
+        template,
+        paso: "leer_plantilla"
+      });
+    }
 
-    const result = await jsreport.render({
-      template: {
-        content: templateHtml,
-        engine: "handlebars",
-        recipe: "chrome-pdf"
-      },
-      data
-    });
+    // Generar PDF
+    let result;
+    try {
+      result = await jsreport.render({
+        template: {
+          content: templateHtml,
+          engine: "handlebars",
+          recipe: "chrome-pdf"
+        },
+        data
+      });
+    } catch (error) {
+      console.error(`❌ Error al generar PDF para empleado ${empleado}:`, error.message);
+      return res.status(500).json({ 
+        error: "Error al generar el PDF",
+        detalles: error.message,
+        empleado,
+        paso: "generar_pdf"
+      });
+    }
 
-    // Configuración de nodemailer con SMTP (ejemplo Gmail)
+    // Configurar transporter de correo
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -255,22 +315,48 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       }
     });
 
-    await transporter.sendMail({
-      from: `"Nómina Injuve" <${process.env.EMAIL_USER}>`,
-      to: correo,
-      subject: `Recibo de Nómina - Periodo ${periodo}`,
-      text: `Adjunto se encuentra su recibo de nómina correspondiente al periodo ${periodo}.`,
-      attachments: [
-        {
-          filename: `recibo_${empleado}_${periodo}.pdf`,
-          content: result.content
-        }
-      ]
+    // Enviar correo
+    try {
+      await transporter.sendMail({
+        from: `"Nómina Injuve" <${process.env.EMAIL_USER}>`,
+        to: correo,
+        subject: `Recibo de Nómina - Periodo ${periodo}`,
+        text: `Adjunto se encuentra su recibo de nómina correspondiente al periodo ${periodo}.`,
+        attachments: [
+          {
+            filename: `recibo_${empleado}_${periodo}.pdf`,
+            content: result.content
+          }
+        ]
+      });
+    } catch (error) {
+      console.error(`❌ Error al enviar correo a empleado ${empleado} (${correo}):`, error.message);
+      return res.status(500).json({ 
+        error: "Error al enviar el correo electrónico",
+        detalles: error.message,
+        empleado,
+        correo,
+        paso: "enviar_correo"
+      });
+    }
+
+    console.log(`✅ Correo enviado exitosamente a empleado ${empleado} (${correo})`);
+    res.json({ 
+      mensaje: "✅ Correo enviado correctamente",
+      empleado,
+      correo,
+      periodo
     });
 
-    res.json({ mensaje: "✅ Correo enviado correctamente" });
   } catch (error) {
-    console.error("Error al enviar correo:", error);
-    res.status(500).json({ error: "❌ No se pudo enviar el correo" });
+    console.error(`❌ Error inesperado al enviar correo a empleado ${empleado}:`, error);
+    res.status(500).json({ 
+      error: "❌ Error inesperado al procesar la solicitud",
+      detalles: error.message || "Error desconocido",
+      empleado,
+      correo,
+      periodo,
+      paso: "proceso_general"
+    });
   }
 };
