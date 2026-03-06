@@ -41,6 +41,7 @@ app.use(`${baseApiPath}/timbrado`, require('./routes/excel.routes'));
 app.use(`${baseApiPath}/bss`, require('./routes/bss.routes'));
 app.use(`${baseApiPath}/puestos`, require('./routes/puestos.routes'));
 app.use(`${baseApiPath}/categorias`, require('./routes/categorias.routes'));
+app.use(`${baseApiPath}/usuarios`, require('./routes/usuarios.routes'));
 
 // Inicialización del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
