@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { subirCSV, subirMDB } = require('../controllers/upload.controller');
+const { subirCSV, subirMDB, listarMDB, descargarMDB } = require('../controllers/upload.controller');
 
 // Almacenamiento temporal para CSV
 const upload = multer({ dest: path.join(__dirname, '../uploads') });
@@ -19,7 +19,13 @@ const uploadMDB = multer({
   }
 });
 
-// Ruta para respaldo de base de datos .mdb
+// Listar respaldos .mdb
+router.get('/backup-mdb', listarMDB);
+
+// Descargar un respaldo por nombre
+router.get('/backup-mdb/:nombre', descargarMDB);
+
+// Subir nuevo respaldo .mdb
 router.post('/backup-mdb', (req, res, next) => {
   uploadMDB.single('archivo')(req, res, (err) => {
     if (err) return res.status(400).json({ mensaje: '❌ ' + err.message });

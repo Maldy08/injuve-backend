@@ -121,3 +121,56 @@ exports.subirMDB = (req, res) => {
     res.status(500).json({ mensaje: '❌ Error al guardar el respaldo: ' + err.message });
   }
 };
+
+exports.listarMDB = (req, res) => {
+  if (!fs.existsSync(BACKUP_DIR)) {
+    return res.json({ archivos: [] });
+  }
+
+  try {
+    const regex = /^NOMINAPER(\d+)\.MDB$/i;
+    const archivos = fs.readdirSync(BACKUP_DIR)
+      .filter((nombre) => regex.test(nombre))
+      .map((nombre) => {
+        const stats = fs.statSync(path.join(BACKUP_DIR, nombre));
+        return {
+          nombre,
+          tamaño: stats.size,
+          fechaCreacion: stats.birthtime,
+          fechaModificacion: stats.mtime
+        };
+      })
+      .sort((a, b) => {
+        const numA = parseInt(a.nombre.match(regex)[1], 10);
+        const numB = parseInt(b.nombre.match(regex)[1], 10);
+        return numB - numA; // más reciente primero
+      });
+
+    res.json({ archivos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ mensaje: '❌ Error al listar respaldos: ' + err.message });
+  }
+};
+
+exports.descargarMDB = (req, res) => {
+  const { nombre } = req.params;
+
+  // Validar que el nombre tenga el formato esperado para evitar path traversal
+  const regex = /^NOMINAPER\d+\.MDB$/i;
+  if (!regex.test(nombre)) {
+    return res.status(400).json({ mensaje: '❌ Nombre de archivo inválido' });
+  }
+
+  const filePath = path.join(BACKUP_DIR, nombre);
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ mensaje: '❌ Archivo no encontrado' });
+  }
+
+  res.download(filePath, nombre, (err) => {
+    if (err && !res.headersSent) {
+      res.status(500).json({ mensaje: '❌ Error al descargar el archivo' });
+    }
+  });
+};
