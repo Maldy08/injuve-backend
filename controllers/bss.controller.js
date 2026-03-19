@@ -33,15 +33,17 @@ exports.exportarBssXml = async (req, res) => {
     if (!banco || !periodo) {
         return res.status(400).json({ error: 'Los parámetros banco y periodo son requeridos.' });
     }
-    const filtado = banco !== "012" ? 'OTROS' : 'BBVA';
+    const filtado = banco === 'PENSION' ? 'PENSION' : banco !== "012" ? 'OTROS' : 'BBVA';
     const db = getDb();
 
 
     let query = {};
     if (filtado === 'BBVA') {
         query = { banco: "012" };
-    } else {
+    } else if (filtado === 'OTROS') {
         query = { banco: { $ne: "012" } };
+    } else {
+        query = { pensionAlimenticia: { $exists: true } };
     }
     const bssCollection = await db.collection('bss').find(query)
         .sort({ empleado: 1 })
@@ -54,11 +56,12 @@ exports.exportarBssXml = async (req, res) => {
     nuevaFechaPago = `${dia}/${mes}/${anio}`;
 
     if (filtado !== 'BBVA') {
+        const diasExtra = filtado === 'PENSION' ? 2 : 1;
         if (typeof nuevaFechaPago === 'string' && nuevaFechaPago.includes('/')) {
             const [dia, mes, anio] = nuevaFechaPago.split('/');
             // Usa el constructor Date correcto (mes base 0)
             const fechaObj = new Date(Number(anio), Number(mes) - 1, Number(dia));
-            fechaObj.setDate(fechaObj.getDate() + 1);
+            fechaObj.setDate(fechaObj.getDate() + diasExtra);
             const diaF = String(fechaObj.getDate()).padStart(2, '0');
             const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
             const anioF = fechaObj.getFullYear();
@@ -66,7 +69,7 @@ exports.exportarBssXml = async (req, res) => {
         } else {
             // Si viene en otro formato compatible con Date
             const fechaObj = new Date(nuevaFechaPago);
-            fechaObj.setDate(fechaObj.getDate() + 1);
+            fechaObj.setDate(fechaObj.getDate() + diasExtra);
             const diaF = String(fechaObj.getDate()).padStart(2, '0');
             const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
             const anioF = fechaObj.getFullYear();
@@ -89,34 +92,63 @@ exports.exportarBssXml = async (req, res) => {
         });
 
     bssCollection.forEach(item => {
-        // Ajusta los nombres de los campos según tu colección
-        if (item.importe_new !== 0) return; // Si el importe es 0, no generar pago
+        if (item.importe_new === 0) return;
 
-        const pago = root.ele('pago', {
-            numEmpleado: item.empleado || '',
-            nombreCompleto: item.nombre || '',
-            curp: item.curp || '',
-            tipoRegimen: item.tiporegimen || '',
-            numSeguridadSocial: item.isstecali || '',
-            numDiasPagados: '14',
-            departamento: '',
-            clabe: item.clabe || '',
-            banco: item.banco || '',
-            periodicidadPago: item.periodicidadPago || '14'
-        });
-
-        const percepciones = pago.ele('percepciones', {
-            totalGravado: item.totalGravado || '0.00',
-            totalExcento: item.totalExcento || (item.importe_new ? item.importe_new.toFixed(2) : '0.00')
-        });
-
-        percepciones.ele('percepcion', {
-            tipoPercepcion: item.tipoPercepcion || '100',
-            concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
-            importeGravado: '0.00',
-            importeExcento: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
-        });
-
+        if (filtado === 'PENSION') {
+            if (!item.pensionAlimenticia) return;
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            const benef = item.pensionAlimenticia.beneficiaria;
+            const pago = root.ele('pago', {
+                numEmpleado: (item.empleado || '') + 'PA',
+                nombreCompleto: benef.nombre || '',
+                curp: benef.curp || '',
+                tipoRegimen: item.tiporegimen || '',
+                numSeguridadSocial: '',
+                numDiasPagados: '14',
+                departamento: '',
+                clabe: benef.clabe || '',
+                banco: benef.banco || '',
+                periodicidadPago: '14'
+            });
+            const percepciones = pago.ele('percepciones', {
+                totalGravado: '0.00',
+                totalExcento: importePension.toFixed(2)
+            });
+            percepciones.ele('percepcion', {
+                tipoPercepcion: '100',
+                concepto: 'PENSION ALIMENTICIA BONO DE SEGURIDAD SOCIAL',
+                importeGravado: '0.00',
+                importeExcento: importePension.toFixed(2),
+            });
+        } else {
+            let importeEmpleado = item.importe_new;
+            if (item.pensionAlimenticia) {
+                const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+                importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
+            }
+            const pago = root.ele('pago', {
+                numEmpleado: item.empleado || '',
+                nombreCompleto: item.nombre || '',
+                curp: item.curp || '',
+                tipoRegimen: item.tiporegimen || '',
+                numSeguridadSocial: item.isstecali || '',
+                numDiasPagados: '14',
+                departamento: '',
+                clabe: item.clabe || '',
+                banco: item.banco || '',
+                periodicidadPago: item.periodicidadPago || '14'
+            });
+            const percepciones = pago.ele('percepciones', {
+                totalGravado: item.totalGravado || '0.00',
+                totalExcento: item.totalExcento || importeEmpleado.toFixed(2)
+            });
+            percepciones.ele('percepcion', {
+                tipoPercepcion: item.tipoPercepcion || '100',
+                concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
+                importeGravado: '0.00',
+                importeExcento: importeEmpleado.toFixed(2),
+            });
+        }
     });
 
     let xml = root.end({ prettyPrint: false });
@@ -134,15 +166,17 @@ exports.exportarBssTxt = async (req, res) => {
     if (!banco) {
         return res.status(400).json({ error: 'El parámetro banco es requerido.' });
     }
-    const filtado = banco !== "012" ? 'OTROS' : 'BBVA';
+    const filtado = banco === 'PENSION' ? 'PENSION' : banco !== "012" ? 'OTROS' : 'BBVA';
     const db = getDb();
 
 
     let query = {};
     if (filtado === 'BBVA') {
         query = { banco: "012" };
-    } else {
+    } else if (filtado === 'OTROS') {
         query = { banco: { $ne: "012" } };
+    } else {
+        query = { pensionAlimenticia: { $exists: true } };
     }
     const bssCollection = await db.collection('bss').find(query).toArray();
 
@@ -155,16 +189,34 @@ exports.exportarBssTxt = async (req, res) => {
 
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
-        if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
+        if (item.importe_new === 0) return '';
+        if (filtado === 'PENSION') {
+            if (!item.pensionAlimenticia) return '';
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            const benef = item.pensionAlimenticia.beneficiaria;
+            return (
+                fixed(consecutivo++, 9, '0', 'left') +
+                fixed(benef.rfc, 16) +
+                fixed('99') +
+                fixed(benef.clabe, 20) +
+                fixed(String(importePension.toFixed(2)).replace('.', ''), 15, '0', 'left') +
+                fixed(benef.nombre, 40) +
+                fixed(benef.banco, 3, '0', 'left') +
+                fixed('001', 3, '0', 'left')
+            );
+        }
+        let importeEmpleado = item.importe_new;
+        if (item.pensionAlimenticia) {
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
+        }
         return (
             fixed(consecutivo++, 9, '0', 'left') +                          // 1.- Numero consecutivo del registro (9)
             fixed(item.rfc, 16) +                                           // 2.- RFC del empleado (16)
             fixed(filtado === 'BBVA' ? '99' : '40') +                        // 3.- Tipo de cuenta (2)
             fixed(item.clabe, 20, ' ', 'rigth') +                     // 4.- Numero de cuenta (20)
             fixed(
-                item.importe_new
-                    ? String(Number(item.importe_new).toFixed(2)).replace('.', '')
-                    : '0',
+                String(importeEmpleado.toFixed(2)).replace('.', ''),
                 15, '0', 'left'
             ) +                                                           // 5.- Importe a pagar (15, sin decimales)
             fixed(item.nombre, 40) +                                        // 6.- Nombre trabajador (40)
@@ -200,15 +252,17 @@ exports.exportarBssZip = async (req, res) => {
     if (!banco || !periodo) {
         return res.status(400).json({ error: 'Los parámetros banco y periodo son requeridos.' });
     }
-    const filtado = banco !== "012" ? 'OTROS' : 'BBVA';
+    const filtado = banco === 'PENSION' ? 'PENSION' : banco !== "012" ? 'OTROS' : 'BBVA';
     const db = getDb();
 
     // --- Genera el XML (igual que en exportarBssXml) ---
     let query = {};
     if (filtado === 'BBVA') {
         query = { banco: "012" };
-    } else {
+    } else if (filtado === 'OTROS') {
         query = { banco: { $ne: "012" } };
+    } else {
+        query = { pensionAlimenticia: { $exists: true } };
     }
     const bssCollection = await db.collection('bss').find(query).sort({ empleado: 1 }).toArray();
 
@@ -219,17 +273,18 @@ exports.exportarBssZip = async (req, res) => {
     const anio = nuevaFechaPago.getFullYear();
     nuevaFechaPago = `${dia}/${mes}/${anio}`;
     if (filtado !== 'BBVA') {
+        const diasExtra = filtado === 'PENSION' ? 2 : 1;
         if (typeof nuevaFechaPago === 'string' && nuevaFechaPago.includes('/')) {
             const [dia, mes, anio] = nuevaFechaPago.split('/');
             const fechaObj = new Date(Number(anio), Number(mes) - 1, Number(dia));
-            fechaObj.setDate(fechaObj.getDate() + 1);
+            fechaObj.setDate(fechaObj.getDate() + diasExtra);
             const diaF = String(fechaObj.getDate()).padStart(2, '0');
             const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
             const anioF = fechaObj.getFullYear();
             nuevaFechaPago = `${diaF}/${mesF}/${anioF}`;
         } else {
             const fechaObj = new Date(nuevaFechaPago);
-            fechaObj.setDate(fechaObj.getDate() + 1);
+            fechaObj.setDate(fechaObj.getDate() + diasExtra);
             const diaF = String(fechaObj.getDate()).padStart(2, '0');
             const mesF = String(fechaObj.getMonth() + 1).padStart(2, '0');
             const anioF = fechaObj.getFullYear();
@@ -252,32 +307,63 @@ exports.exportarBssZip = async (req, res) => {
         });
 
     bssCollection.forEach(item => {
+        if (item.importe_new === 0) return;
 
-        if (item.importe_new === 0) return; // Si el importe es 0, no generar pago  
-        const pago = root.ele('pago', {
-            numEmpleado: item.empleado || '',
-            nombreCompleto: item.nombre || '',
-            curp: item.curp || '',
-            tipoRegimen: item.tiporegimen || '',
-            numSeguridadSocial: item.isstecali || '',
-            numDiasPagados: '14',
-            departamento: '',
-            clabe: item.clabe || '',
-            banco: item.banco || '',
-            periodicidadPago: item.periodicidadPago || '14'
-        });
-
-        const percepciones = pago.ele('percepciones', {
-            totalGravado: item.totalGravado || '0.00',
-            totalExcento: item.totalExcento || (item.importe_new ? item.importe_new.toFixed(2) : '0.00')
-        });
-
-        percepciones.ele('percepcion', {
-            tipoPercepcion: item.tipoPercepcion || '100',
-            concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
-            importeGravado: '0.00',
-            importeExcento: item.importe_new ? item.importe_new.toFixed(2) : '0.00',
-        });
+        if (filtado === 'PENSION') {
+            if (!item.pensionAlimenticia) return;
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            const benef = item.pensionAlimenticia.beneficiaria;
+            const pago = root.ele('pago', {
+                numEmpleado: (item.empleado || '') + 'PA',
+                nombreCompleto: benef.nombre || '',
+                curp: benef.curp || '',
+                tipoRegimen: item.tiporegimen || '',
+                numSeguridadSocial: '',
+                numDiasPagados: '14',
+                departamento: '',
+                clabe: benef.clabe || '',
+                banco: benef.banco || '',
+                periodicidadPago: '14'
+            });
+            const percepciones = pago.ele('percepciones', {
+                totalGravado: '0.00',
+                totalExcento: importePension.toFixed(2)
+            });
+            percepciones.ele('percepcion', {
+                tipoPercepcion: '100',
+                concepto: 'PENSION ALIMENTICIA BONO DE SEGURIDAD SOCIAL',
+                importeGravado: '0.00',
+                importeExcento: importePension.toFixed(2),
+            });
+        } else {
+            let importeEmpleado = item.importe_new;
+            if (item.pensionAlimenticia) {
+                const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+                importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
+            }
+            const pago = root.ele('pago', {
+                numEmpleado: item.empleado || '',
+                nombreCompleto: item.nombre || '',
+                curp: item.curp || '',
+                tipoRegimen: item.tiporegimen || '',
+                numSeguridadSocial: item.isstecali || '',
+                numDiasPagados: '14',
+                departamento: '',
+                clabe: item.clabe || '',
+                banco: item.banco || '',
+                periodicidadPago: item.periodicidadPago || '14'
+            });
+            const percepciones = pago.ele('percepciones', {
+                totalGravado: item.totalGravado || '0.00',
+                totalExcento: item.totalExcento || importeEmpleado.toFixed(2)
+            });
+            percepciones.ele('percepcion', {
+                tipoPercepcion: item.tipoPercepcion || '100',
+                concepto: item.concepto || 'BONO DE SEGURIDAD SOCIAL',
+                importeGravado: '0.00',
+                importeExcento: importeEmpleado.toFixed(2),
+            });
+        }
     });
 
     let xml = root.end({ prettyPrint: false });
@@ -293,16 +379,34 @@ exports.exportarBssZip = async (req, res) => {
     }
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
-        if (item.importe_new === 0) return ''; // Si el importe es 0, no generar línea
+        if (item.importe_new === 0) return '';
+        if (filtado === 'PENSION') {
+            if (!item.pensionAlimenticia) return '';
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            const benef = item.pensionAlimenticia.beneficiaria;
+            return (
+                fixed(consecutivo++, 9, '0', 'left') +
+                fixed(benef.rfc, 16) +
+                fixed('99') +
+                fixed(benef.clabe, 20) +
+                fixed(String(importePension.toFixed(2)).replace('.', ''), 15, '0', 'left') +
+                fixed(benef.nombre, 40) +
+                fixed(benef.banco, 3, '0', 'left') +
+                fixed('001', 3, '0', 'left')
+            );
+        }
+        let importeEmpleado = item.importe_new;
+        if (item.pensionAlimenticia) {
+            const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
+            importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
+        }
         return (
             fixed(consecutivo++, 9, '0', 'left') +
             fixed(item.rfc, 16) +
             fixed(filtado === 'BBVA' ? '99' : '40') +
             fixed(item.clabe, 20, ' ', 'right') +
             fixed(
-                item.importe_new
-                    ? String(Number(item.importe_new).toFixed(2)).replace('.', '')
-                    : '0',
+                String(importeEmpleado.toFixed(2)).replace('.', ''),
                 15, '0', 'left'
             ) +
             fixed(item.nombre, 40) +
