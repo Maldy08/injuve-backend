@@ -43,7 +43,12 @@ exports.subirCSV = (req, res) => {
       try {
         const db = getDb();
 
-        if (!['mnom12', 'mnom12h'].includes(coleccion)) {
+        if (['mnom12', 'mnom12h'].includes(coleccion)) {
+          const periodo = registros[0]?.PERIODO;
+          if (periodo !== undefined && periodo !== null && periodo !== '') {
+            await db.collection(coleccion).deleteMany({ PERIODO: periodo });
+          }
+        } else {
           await db.collection(coleccion).deleteMany({});
         }
 

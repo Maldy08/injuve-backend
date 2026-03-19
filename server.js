@@ -9,7 +9,8 @@ const app = express();
 
 // Middlewares globales
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 const compression = require('compression');
@@ -22,7 +23,7 @@ app.use(compression({
   }
 }));
 
-// Documentación Swagger
+// Documentaciï¿½n Swagger
 const { swaggerUi, specs } = require('./swagger');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -47,7 +48,7 @@ app.use(`${baseApiPath}/sueldoprestacionesbase`, require('./routes/sueldoprestac
 app.use(`${baseApiPath}/sueldoprestacionesconf`, require('./routes/sueldoprestacionesconf.routes'));
 app.use(`${baseApiPath}/usuarios`, require('./routes/usuarios.routes'));
 
-// Inicialización del servidor con jsreport y MongoDB
+// Inicializaciï¿½n del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
   app.listen(process.env.PORT || 3001, async () => {
     await conectarMongo();
