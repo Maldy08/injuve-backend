@@ -48,6 +48,7 @@ exports.exportarBssXml = async (req, res) => {
     const bssCollection = await db.collection('bss').find(query)
         .sort({ empleado: 1 })
         .toArray();
+
     //const fechaPago = await db.collection('mnom12').findOne({ PERIODO: Number(periodo) });
     let nuevaFechaPago = new Date();
     const dia = String(nuevaFechaPago.getDate()).padStart(2, '0');
