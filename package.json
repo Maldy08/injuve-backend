@@ -11,6 +11,7 @@
     "dotenv": "^16.5.0",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.3.1",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^9.0.2",
     "jsreport": "^3.13.0",

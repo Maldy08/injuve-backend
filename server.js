@@ -29,10 +29,16 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /* Agrupamos todas las rutas del backend en /api/backend para no interferir con Next.js */
 const baseApiPath = '/api/backend';
+const authMiddleware = require('./middleware/auth.middleware');
 
-// Rutas del backend
-app.use(`${baseApiPath}/home`, require('./routes/home.routes'));
+// Rutas públicas (no requieren token)
 app.use(`${baseApiPath}/auth`, require('./routes/auth.routes'));
+
+// Protección JWT global — todas las rutas registradas después de esta línea requieren token válido
+app.use(authMiddleware);
+
+// Rutas protegidas
+app.use(`${baseApiPath}/home`, require('./routes/home.routes'));
 app.use(`${baseApiPath}/upload`, require('./routes/upload.routes'));
 app.use(`${baseApiPath}/nomina`, require('./routes/nomina.routes'));
 app.use(`${baseApiPath}/pdf`, require('./routes/pdf.routes'));
