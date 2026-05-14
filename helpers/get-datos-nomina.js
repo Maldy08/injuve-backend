@@ -23,28 +23,39 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
     );
   }
 
+  const coleccionEmpleado = tipo == 1 ? 'mnom01' : 'mnom01h';
+  const coleccionNomina = tipo == 1 ? 'mnom12' : 'mnom12h';
+
   const filtroPeriodo = periodo === 0 ? {} : { PERIODO: periodo };
-  const conceptosRaw = tipo == 1 ? await db.collection('mnom12').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray()
-    : await db.collection('mnom12h').find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
-  const empleadoData = tipo == 1 ? await db.collection('mnom01').findOne({ EMPLEADO: empleado })
-    : await db.collection('mnom01h').findOne({ EMPLEADO: empleado });
+  const conceptosRaw = await db.collection(coleccionNomina).find({ EMPLEADO: empleado, ...filtroPeriodo }).toArray();
+  const empleadoData = await db.collection(coleccionEmpleado).findOne({ EMPLEADO: empleado });
+
+  if (!empleadoData) {
+    throw new Error(`Empleado ${empleado} no existe en la colección "${coleccionEmpleado}". Sincroniza el catálogo de empleados con el AgenteNomina (Zona 1 o 2).`);
+  }
+
+  if (conceptosRaw.length === 0) {
+    const detallePeriodo = periodo === 0 ? "" : ` en el periodo ${periodo}`;
+    throw new Error(`No hay registros de nómina para el empleado ${empleado}${detallePeriodo} en la colección "${coleccionNomina}". Verifica que la nómina esté sincronizada con el AgenteNomina.`);
+  }
 
   const deptoData = tipo == 1 ? await db.collection('mnom04').findOne({ DEPTO: empleadoData.DEPTO }) : null;
+  if (tipo == 1 && !deptoData) {
+    throw new Error(`Departamento ${empleadoData.DEPTO} (asignado al empleado ${empleado}) no existe en la colección "mnom04". Sincroniza el catálogo de departamentos con el AgenteNomina (Zona 3).`);
+  }
+
   const puestoData = tipo == 1 ? await db.collection('mnom03').findOne({ CATEGORIA: empleadoData.CAT }) : null;
+  if (tipo == 1 && !puestoData) {
+    throw new Error(`Categoría ${empleadoData.CAT} (asignada al empleado ${empleado}) no existe en la colección "mnom03". Sincroniza el catálogo de categorías con el AgenteNomina (Zona 3).`);
+  }
+
   let prestacionesData = null;
   let sueldoIntegrado = 0;
   if (tipo == 1) {
-    if (empleadoData.TIPOEMP === "B") {
-      prestacionesData = await db.collection('sueldoprestacionesbase').findOne({ EMPLEADO: empleado });
-      if (prestacionesData) {
-        sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
-      }
-    }
-    else {
-      prestacionesData = await db.collection('sueldoprestacionesconf').findOne({ EMPLEADO: empleado });
-      if (prestacionesData) {
-        sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
-      }
+    const coleccionPrestaciones = empleadoData.TIPOEMP === "B" ? 'sueldoprestacionesbase' : 'sueldoprestacionesconf';
+    prestacionesData = await db.collection(coleccionPrestaciones).findOne({ EMPLEADO: empleado });
+    if (prestacionesData) {
+      sueldoIntegrado = prestacionesData.SUELDOINTEGRADO;
     }
   }
   //
@@ -78,7 +89,10 @@ module.exports = async function getDatosNomina(empleado, periodo, tipo) {
   }));
 
 
-  if (empleadoData && empleadoData.TIPOEMP === "C" && tipo == 1) {
+  if (empleadoData.TIPOEMP === "C" && tipo == 1) {
+    if (!prestacionesData) {
+      throw new Error(`Empleado ${empleado} (TIPOEMP="C", confianza) no existe en la colección "sueldoprestacionesconf". Sincroniza el catálogo con el AgenteNomina (Zona 3).`);
+    }
     empleadoData.SUELDO = (prestacionesData.SUELDOMES * 12 / 26) / 14
   }
 
