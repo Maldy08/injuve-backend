@@ -25,4 +25,15 @@ jobs:
             cd /home/ec2-user/injuve-backend
             git pull origin production
             npm install
+
+            # Ensure Chrome 114.0.5735.90 is cached for puppeteer 20.7.1 (jsreport-chrome-pdf).
+            # The cache is global (~/.cache/puppeteer) and another puppeteer-using project can
+            # replace it; this step is idempotent and only downloads when missing.
+            if ! ls "$HOME/.cache/puppeteer/chrome/" 2>/dev/null | grep -q "114.0.5735.90"; then
+              echo "📥 Chrome 114 missing from puppeteer cache — installing..."
+              node node_modules/@puppeteer/browsers/lib/cjs/main-cli.js install chrome@114.0.5735.90 --path "$HOME/.cache/puppeteer"
+            else
+              echo "✓ Chrome 114 already in puppeteer cache"
+            fi
+
             pm2 restart backend || pm2 start backend
