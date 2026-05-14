@@ -37,7 +37,7 @@ exports.generarPDF = async (req, res) => {
     result.stream.pipe(res);
   } catch (err) {
     console.error("Error al generar PDF:", err);
-    res.status(500).json({ error: "Error al generar el PDF" });
+    res.status(500).json({ error: err.message || "Error al generar el PDF" });
   }
 };
 

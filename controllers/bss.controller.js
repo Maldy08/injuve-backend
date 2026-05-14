@@ -86,7 +86,7 @@ exports.exportarBssXml = async (req, res) => {
             descripcion: 'INJUVE',
             periodo: `PERIODO DE PAGO ${periodo}`,
             tipoNomina: '160',
-            ejercicio: '2026',
+            ejercicio: String(new Date().getFullYear()),
             fechaPago: nuevaFechaPago,
             fechaInicialPago: nuevaFechaPago,
             fechaFinalPago: nuevaFechaPago
@@ -301,7 +301,7 @@ exports.exportarBssZip = async (req, res) => {
             descripcion: 'INJUVE',
             periodo: `PERIODO DE PAGO ${periodo}`,
             tipoNomina: '160',
-            ejercicio: '2026',
+            ejercicio: String(new Date().getFullYear()),
             fechaPago: nuevaFechaPago,
             fechaInicialPago: nuevaFechaPago,
             fechaFinalPago: nuevaFechaPago

@@ -117,8 +117,9 @@ exports.getEmpleadosVacaciones = async (req, res) => {
         }
 
         // Agregar encabezado grande en la fila 2
+        const anioActual = new Date().getFullYear();
         worksheet.mergeCells('B2', 'G2');
-        worksheet.getCell('B2').value = 'PROGRAMA DE VACACIONES 2025';
+        worksheet.getCell('B2').value = `PROGRAMA DE VACACIONES ${anioActual}`;
         worksheet.getCell('B2').font = { size: 16, bold: true };
         worksheet.getCell('B2').alignment = { vertical: 'middle', horizontal: 'center' };
 
@@ -145,7 +146,7 @@ exports.getEmpleadosVacaciones = async (req, res) => {
 
         // Generar el archivo en memoria y enviarlo
         const buffer = await workbook.xlsx.writeBuffer();
-        const fileName = `PROGRAMA_DE_VACACIONES_2025.xlsx`;
+        const fileName = `PROGRAMA_DE_VACACIONES_${anioActual}.xlsx`;
         res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.send(buffer);
