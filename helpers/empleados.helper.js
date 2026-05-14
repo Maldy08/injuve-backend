@@ -1,7 +1,7 @@
 exports.calcularAniosTrabajados = (fechaAltaStr) => {
     const [dia, mes, anio] = fechaAltaStr.split('/');
     const fechaAlta = new Date(`${anio}-${mes}-${dia}`);
-    const hoy = new Date(2025, 12, 31);
+    const hoy = new Date();
     const diffMs = hoy - fechaAlta;
     const anios = diffMs / (1000 * 60 * 60 * 24 * 365.25);
     return Math.floor(anios);
