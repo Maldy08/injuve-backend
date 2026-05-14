@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const { getDb } = require('../helpers/mongo.helper');
+const { registrarError, PASOS } = require('../helpers/bitacora-envio.helper');
 
 exports.enviarRecibosPorCorreo = async (req, res) => {
   const { periodo, tipo } = req.query;
@@ -116,13 +117,23 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
           fecha: new Date().toISOString()
         };
         bitacoraErrores.push(errorInfo);
-        
+
         console.error(`❌ Error al enviar correo a empleado ${EMPLEADO} (${CORREO}):`, error.message);
-        
+
+        await registrarError({
+          empleado: EMPLEADO,
+          correo: CORREO,
+          periodo,
+          tipo,
+          modo: 'masivo',
+          paso: PASOS.ENVIO_MASIVO,
+          mensaje: error.message || 'Error desconocido'
+        });
+
         // Envía el progreso incluyendo el error actual
-        res.write(`data: ${JSON.stringify({ 
-          progreso: enviados + fallidos, 
-          total, 
+        res.write(`data: ${JSON.stringify({
+          progreso: enviados + fallidos,
+          total,
           enviados,
           fallidos,
           empleadoActual: EMPLEADO,
@@ -149,7 +160,18 @@ exports.enviarRecibosPorCorreo = async (req, res) => {
     res.end();
   } catch (error) {
     console.error('❌ Error crítico en el proceso de envío de correos:', error);
-    res.write(`data: ${JSON.stringify({ 
+
+    await registrarError({
+      empleado: null,
+      correo: null,
+      periodo,
+      tipo,
+      modo: 'masivo',
+      paso: PASOS.CRITICO_MASIVO,
+      mensaje: error.message || 'Error crítico desconocido'
+    });
+
+    res.write(`data: ${JSON.stringify({
       error: "❌ Error crítico: " + (error.message || "No se pudo completar el proceso"),
       finalizado: true
     })}\n\n`);
@@ -243,11 +265,16 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       jsreport = await initJsReport();
     } catch (error) {
       console.error(`❌ Error al inicializar jsreport para empleado ${empleado}:`, error.message);
-      return res.status(500).json({ 
+      await registrarError({
+        empleado, correo, periodo, tipo,
+        modo: 'individual', paso: PASOS.INICIALIZACION_JSREPORT,
+        mensaje: error.message
+      });
+      return res.status(500).json({
         error: "Error al inicializar el generador de PDF",
         detalles: error.message,
         empleado,
-        paso: "inicialización_jsreport"
+        paso: PASOS.INICIALIZACION_JSREPORT
       });
     }
 
@@ -260,12 +287,17 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       }
     } catch (error) {
       console.error(`❌ Error al obtener datos de nómina para empleado ${empleado}:`, error.message);
-      return res.status(404).json({ 
+      await registrarError({
+        empleado, correo, periodo, tipo,
+        modo: 'individual', paso: PASOS.OBTENER_DATOS_NOMINA,
+        mensaje: error.message
+      });
+      return res.status(404).json({
         error: "No se encontraron datos de nómina",
         detalles: error.message,
         empleado,
         periodo,
-        paso: "obtener_datos_nomina"
+        paso: PASOS.OBTENER_DATOS_NOMINA
       });
     }
 
@@ -276,12 +308,17 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       templateHtml = fs.readFileSync(path.join(__dirname, `../templates/${template}.html`)).toString();
     } catch (error) {
       console.error(`❌ Error al leer plantilla ${template} para empleado ${empleado}:`, error.message);
-      return res.status(500).json({ 
+      await registrarError({
+        empleado, correo, periodo, tipo,
+        modo: 'individual', paso: PASOS.LEER_PLANTILLA,
+        mensaje: error.message
+      });
+      return res.status(500).json({
         error: "Error al leer la plantilla del PDF",
         detalles: error.message,
         empleado,
         template,
-        paso: "leer_plantilla"
+        paso: PASOS.LEER_PLANTILLA
       });
     }
 
@@ -298,11 +335,16 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       });
     } catch (error) {
       console.error(`❌ Error al generar PDF para empleado ${empleado}:`, error.message);
-      return res.status(500).json({ 
+      await registrarError({
+        empleado, correo, periodo, tipo,
+        modo: 'individual', paso: PASOS.GENERAR_PDF,
+        mensaje: error.message
+      });
+      return res.status(500).json({
         error: "Error al generar el PDF",
         detalles: error.message,
         empleado,
-        paso: "generar_pdf"
+        paso: PASOS.GENERAR_PDF
       });
     }
 
@@ -331,17 +373,22 @@ exports.enviarReciboPorCorreo = async (req, res) => {
       });
     } catch (error) {
       console.error(`❌ Error al enviar correo a empleado ${empleado} (${correo}):`, error.message);
-      return res.status(500).json({ 
+      await registrarError({
+        empleado, correo, periodo, tipo,
+        modo: 'individual', paso: PASOS.ENVIAR_CORREO,
+        mensaje: error.message
+      });
+      return res.status(500).json({
         error: "Error al enviar el correo electrónico",
         detalles: error.message,
         empleado,
         correo,
-        paso: "enviar_correo"
+        paso: PASOS.ENVIAR_CORREO
       });
     }
 
     console.log(`✅ Correo enviado exitosamente a empleado ${empleado} (${correo})`);
-    res.json({ 
+    res.json({
       mensaje: "✅ Correo enviado correctamente",
       empleado,
       correo,
@@ -350,13 +397,18 @@ exports.enviarReciboPorCorreo = async (req, res) => {
 
   } catch (error) {
     console.error(`❌ Error inesperado al enviar correo a empleado ${empleado}:`, error);
-    res.status(500).json({ 
+    await registrarError({
+      empleado, correo, periodo, tipo,
+      modo: 'individual', paso: PASOS.PROCESO_GENERAL,
+      mensaje: error.message || 'Error desconocido'
+    });
+    res.status(500).json({
       error: "❌ Error inesperado al procesar la solicitud",
       detalles: error.message || "Error desconocido",
       empleado,
       correo,
       periodo,
-      paso: "proceso_general"
+      paso: PASOS.PROCESO_GENERAL
     });
   }
 };
