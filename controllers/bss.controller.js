@@ -1,30 +1,139 @@
 const XLSX = require('xlsx');
+const path = require('path');
+const fs = require('fs');
 
 const { create } = require('xmlbuilder2');
 const { getDb } = require('../helpers/mongo.helper');
+const { initJsReport } = require('../helpers/jsreport.helper');
+
+const fmtMxn = (n) => Number(n || 0).toLocaleString('es-MX', {
+    style: 'currency',
+    currency: 'MXN',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+});
 
 exports.uploadExcelBss = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No se subió ningún archivo' });
     }
 
-    const woorkbook = XLSX.read(req.file.buffer, { type: 'buffer' });
-    const sheetName = woorkbook.SheetNames[0];
-    const data = XLSX.utils.sheet_to_json(woorkbook.Sheets[sheetName], { raw: false });
+    let workbook;
+    try {
+        workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+    } catch (e) {
+        return res.status(400).json({ error: 'El archivo no es un Excel válido.' });
+    }
+
+    const sheetName = workbook.SheetNames[0];
+    if (!sheetName) {
+        return res.status(400).json({ error: 'El Excel no contiene hojas.' });
+    }
+
+    // raw:true para que los números lleguen como Number nativos. Con raw:false
+    // los importes vienen formateados como " 3,026.83 " (formato contable) y
+    // Number(" 3,026.83 ") = NaN, que era el motivo por el que se tenía que
+    // "trabajar" el archivo manualmente antes de subirlo.
+    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true, defval: null });
+
+    const pickKey = (row, candidates) => {
+        const keys = Object.keys(row);
+        for (const cand of candidates) {
+            const found = keys.find(k => k.trim().toUpperCase() === cand);
+            if (found) return found;
+        }
+        return null;
+    };
+
+    // Parser tolerante: acepta número nativo o string con formato contable,
+    // signos $, paréntesis (negativos) y guiones largos/cortos como 0.
+    const parseImporte = (value) => {
+        if (value === null || value === undefined) return null;
+        if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+        const s = String(value).trim();
+        if (!s) return null;
+        if (s === '-' || s === '—' || s === '–') return 0;
+        const negativo = /^\(.*\)$/.test(s);
+        const cleaned = s.replace(/[,$\s()]/g, '');
+        const n = Number(cleaned);
+        if (!Number.isFinite(n)) return null;
+        return negativo ? -n : n;
+    };
 
     const db = getDb();
-    const bssCollection = await db.collection('bss');
-    for (const row of data) {
-        if (!row.EMPLEADO || row.BSS === undefined) continue;
-        const empleadoStr = String(row.EMPLEADO).padStart(3, '0');
-        await bssCollection.updateOne(
+    const bssCollection = db.collection('bss');
+
+    let actualizados = 0;
+    let noEncontrados = 0;
+    let omitidos = 0;
+    const noEncontradosList = [];
+
+    for (const row of rows) {
+        const empKey = pickKey(row, ['EMPLEADO']);
+        const bssKey = pickKey(row, ['BSS', 'BSS DEVENGADO', 'IMPORTE BSS']);
+        if (!empKey || !bssKey) { omitidos++; continue; }
+
+        const empRaw = row[empKey];
+        if (empRaw === null || empRaw === undefined || empRaw === '') { omitidos++; continue; }
+        const empleadoStr = String(empRaw).trim().padStart(3, '0');
+
+        const importe = parseImporte(row[bssKey]);
+        if (importe === null) { omitidos++; continue; }
+
+        const result = await bssCollection.updateOne(
             { empleado: empleadoStr },
-            { $set: { importe_new: Number(row.BSS) } }
+            { $set: { importe_new: importe } }
+        );
+        if (result.matchedCount === 0) {
+            noEncontrados++;
+            noEncontradosList.push(empleadoStr);
+        } else {
+            actualizados++;
+        }
+    }
+
+    // Snapshot de totales por banco para revisión rápida. Se agrupa según la
+    // misma regla que usan los exports: banco "012" -> BBVA, cualquier otro
+    // -> OTROS. Se suman solo importes > 0 (los que efectivamente se pagarían).
+    const agregados = await bssCollection.aggregate([
+        { $match: { importe_new: { $gt: 0 } } },
+        {
+            $group: {
+                _id: { $cond: [{ $eq: ['$banco', '012'] }, 'BBVA', 'OTROS'] },
+                total: { $sum: '$importe_new' },
+                empleados: { $sum: 1 },
+            }
+        }
+    ]).toArray();
+
+    const totalesPorBanco = { BBVA: { total: 0, empleados: 0 }, OTROS: { total: 0, empleados: 0 } };
+    for (const t of agregados) {
+        totalesPorBanco[t._id] = {
+            total: Math.round(t.total * 100) / 100,
+            empleados: t.empleados,
+        };
+    }
+
+    const totalesCollection = db.collection('bss_totales');
+    const ahora = new Date();
+    for (const banco of ['BBVA', 'OTROS']) {
+        await totalesCollection.updateOne(
+            { banco },
+            { $set: { ...totalesPorBanco[banco], actualizadoEn: ahora } },
+            { upsert: true }
         );
     }
-    res.json({ message: 'importe bss actualizado correctamente.' });
 
-}
+    res.json({
+        message: 'Importe BSS actualizado correctamente.',
+        total: rows.length,
+        actualizados,
+        noEncontrados,
+        omitidos,
+        empleadosNoEncontrados: noEncontradosList,
+        totalesPorBanco,
+    });
+};
 
 
 exports.exportarBssXml = async (req, res) => {
@@ -458,5 +567,101 @@ exports.actualizarBss = async (req, res) => {
         res.json({ message: 'Registro BSS actualizado correctamente.' });
     } catch (error) {
         res.status(500).json({ error: 'Error al actualizar el registro BSS.' });
+    }
+};
+
+// GET /api/backend/bss/reporte-pdf/:periodo
+// PDF de revisión con el estado actual de la colección bss, agrupado por banco
+// (BBVA = "012" / OTROS = resto). Solo entran empleados con importe_new > 0.
+exports.reporteBssPdf = async (req, res) => {
+    const { periodo } = req.params;
+    if (!periodo) {
+        return res.status(400).json({ error: 'El parámetro periodo es requerido.' });
+    }
+
+    try {
+        const db = getDb();
+        const registros = await db.collection('bss')
+            .find({ importe_new: { $gt: 0 } })
+            .sort({ empleado: 1 })
+            .toArray();
+
+        const bbvaRows = [];
+        const otrosRows = [];
+        let totalBBVA = 0;
+        let totalOtros = 0;
+
+        for (const r of registros) {
+            const importe = Number(r.importe_new) || 0;
+            const row = {
+                empleado: r.empleado || '',
+                nombre: r.nombre || '',
+                rfc: r.rfc || '',
+                clabe: r.clabe || '',
+                banco: r.banco || '',
+                importeFmt: fmtMxn(importe),
+            };
+            if (r.banco === '012') {
+                bbvaRows.push(row);
+                totalBBVA += importe;
+            } else {
+                otrosRows.push(row);
+                totalOtros += importe;
+            }
+        }
+
+        const totalGeneral = totalBBVA + totalOtros;
+        const empleadosTotal = bbvaRows.length + otrosRows.length;
+
+        const ahora = new Date();
+        const dia = String(ahora.getDate()).padStart(2, '0');
+        const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+        const anio = ahora.getFullYear();
+        const hh = String(ahora.getHours()).padStart(2, '0');
+        const mm = String(ahora.getMinutes()).padStart(2, '0');
+        const fechaEmision = `${dia}/${mes}/${anio} ${hh}:${mm}`;
+
+        const data = {
+            periodo,
+            fechaEmision,
+            bbva: {
+                rows: bbvaRows,
+                empleados: bbvaRows.length,
+                totalFmt: fmtMxn(totalBBVA),
+            },
+            otros: {
+                rows: otrosRows,
+                empleados: otrosRows.length,
+                totalFmt: fmtMxn(totalOtros),
+            },
+            totales: {
+                empleados: empleadosTotal,
+                totalFmt: fmtMxn(totalGeneral),
+            },
+        };
+
+        const templateHtml = fs.readFileSync(
+            path.join(__dirname, '../templates/bss-revision.html')
+        ).toString();
+
+        const jsreport = await initJsReport();
+        const result = await jsreport.render({
+            template: {
+                content: templateHtml,
+                engine: 'handlebars',
+                recipe: 'chrome-pdf',
+            },
+            data,
+        });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader(
+            'Content-Disposition',
+            `inline; filename=BSS_REVISION_${periodo}.pdf`
+        );
+        result.stream.pipe(res);
+    } catch (err) {
+        console.error('Error al generar PDF de revisión BSS:', err);
+        res.status(500).json({ error: err.message || 'Error al generar el PDF.' });
     }
 };

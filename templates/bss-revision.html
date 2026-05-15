@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte BSS - Revisión</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 10px; margin: 25px; color: #1f2937; }
+
+    .encabezado {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .encabezado img { max-height: 70px; max-width: 170px; }
+    .encabezado .titulos { text-align: center; flex-grow: 1; }
+    .encabezado .titulos .gob { font-weight: bold; font-size: 14px; }
+    .encabezado .titulos .org { font-weight: bold; font-size: 12px; }
+    .encabezado .titulos .doc { font-weight: bold; font-size: 13px; margin-top: 4px; }
+    .encabezado .titulos .meta { font-size: 10px; }
+
+    .meta-emision {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      border: 1px solid #999;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+    }
+    .meta-emision strong { color: #6e1e2a; }
+
+    .grupo { margin-bottom: 18px; page-break-inside: auto; }
+    .grupo h4 {
+      margin: 0 0 6px 0;
+      font-size: 12px;
+      background: #6e1e2a;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px 4px 0 0;
+    }
+    .grupo .conteo { font-size: 10px; font-weight: normal; color: #fde7ea; margin-left: 6px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+    th, td { border: 1px solid #d1d5db; padding: 4px 6px; }
+    th {
+      background: #f3e7ea;
+      color: #6e1e2a;
+      text-align: left;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tr.subtotal td {
+      background: #fdebed;
+      color: #6e1e2a;
+      font-weight: bold;
+      border-top: 2px solid #6e1e2a;
+    }
+
+    .totales {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border: 2px solid #6e1e2a;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .totales .label { font-weight: bold; color: #6e1e2a; }
+    .totales .valor { font-weight: bold; font-variant-numeric: tabular-nums; }
+
+    .nota-vacio { font-size: 10px; color: #6b7280; font-style: italic; padding: 8px; }
+
+    tfoot { display: table-row-group; }
+  </style>
+</head>
+<body>
+
+  <div class="encabezado">
+    <img src="http://localhost:3001/public/logo.png" alt="Logo Juventud BC" />
+    <div class="titulos">
+      <div class="gob">GOBIERNO DEL ESTADO DE BAJA CALIFORNIA</div>
+      <div class="org">INSTITUTO DE LA JUVENTUD DEL ESTADO DE BAJA CALIFORNIA</div>
+      <div class="doc">REPORTE DE REVISIÓN BSS · PERIODO {{periodo}}</div>
+      <div class="meta">Blvd. López Mateos S/N Fracc. Calis · R.F.C.: IJE110711724</div>
+    </div>
+    <img src="http://localhost:3001/public/logo-juventudbc.png" alt="Logo Gobierno BC" />
+  </div>
+
+  <div class="meta-emision">
+    <div><strong>Periodo:</strong> {{periodo}}</div>
+    <div><strong>Emitido:</strong> {{fechaEmision}}</div>
+    <div><strong>Empleados con importe:</strong> {{totales.empleados}}</div>
+    <div><strong>Total general:</strong> {{totales.totalFmt}}</div>
+  </div>
+
+  <div class="grupo">
+    <h4>BBVA (banco 012)<span class="conteo"> · {{bbva.empleados}} empleados</span></h4>
+    {{#if bbva.rows.length}}
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 60px;">EMPLEADO</th>
+          <th>NOMBRE</th>
+          <th style="width: 110px;">RFC</th>
+          <th style="width: 140px;">CLABE</th>
+          <th class="num" style="width: 95px;">IMPORTE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each bbva.rows}}
+        <tr>
+          <td>{{empleado}}</td>
+          <td>{{nombre}}</td>
+          <td>{{rfc}}</td>
+          <td>{{clabe}}</td>
+          <td class="num">{{importeFmt}}</td>
+        </tr>
+        {{/each}}
+        <tr class="subtotal">
+          <td colspan="4">SUBTOTAL BBVA</td>
+          <td class="num">{{bbva.totalFmt}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{else}}
+    <div class="nota-vacio">Sin registros para BBVA en este periodo.</div>
+    {{/if}}
+  </div>
+
+  <div class="grupo">
+    <h4>OTROS BANCOS<span class="conteo"> · {{otros.empleados}} empleados</span></h4>
+    {{#if otros.rows.length}}
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 60px;">EMPLEADO</th>
+          <th>NOMBRE</th>
+          <th style="width: 50px;">BANCO</th>
+          <th style="width: 110px;">RFC</th>
+          <th style="width: 140px;">CLABE</th>
+          <th class="num" style="width: 95px;">IMPORTE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each otros.rows}}
+        <tr>
+          <td>{{empleado}}</td>
+          <td>{{nombre}}</td>
+          <td>{{banco}}</td>
+          <td>{{rfc}}</td>
+          <td>{{clabe}}</td>
+          <td class="num">{{importeFmt}}</td>
+        </tr>
+        {{/each}}
+        <tr class="subtotal">
+          <td colspan="5">SUBTOTAL OTROS</td>
+          <td class="num">{{otros.totalFmt}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{else}}
+    <div class="nota-vacio">Sin registros para otros bancos en este periodo.</div>
+    {{/if}}
+  </div>
+
+  <div class="totales">
+    <div class="label">TOTAL GENERAL · {{totales.empleados}} empleados</div>
+    <div class="valor">{{totales.totalFmt}}</div>
+  </div>
+
+</body>
+</html>
