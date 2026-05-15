@@ -74,6 +74,24 @@
 
     .nota-vacio { font-size: 10px; color: #6b7280; font-style: italic; padding: 8px; }
 
+    .pa-detalle {
+      display: block;
+      font-size: 8.5px;
+      color: #6e1e2a;
+      font-weight: normal;
+      margin-top: 1px;
+      font-variant-numeric: tabular-nums;
+    }
+    .pa-detalle .label { font-weight: bold; letter-spacing: 0.3px; }
+
+    .leyenda {
+      margin-top: 10px;
+      font-size: 9px;
+      color: #6b7280;
+      font-style: italic;
+    }
+    .leyenda strong { color: #6e1e2a; font-style: normal; }
+
     tfoot { display: table-row-group; }
   </style>
 </head>
@@ -117,11 +135,19 @@
           <td>{{nombre}}</td>
           <td>{{rfc}}</td>
           <td>{{clabe}}</td>
-          <td class="num">{{importeFmt}}</td>
+          <td class="num">
+            {{importeFmt}}
+            {{#if tienePension}}
+            <span class="pa-detalle">
+              <span class="label">P.A.</span> −{{pensionFmt}}
+              <br><span style="color:#9ca3af;">bruto {{brutoFmt}}</span>
+            </span>
+            {{/if}}
+          </td>
         </tr>
         {{/each}}
         <tr class="subtotal">
-          <td colspan="4">SUBTOTAL BBVA</td>
+          <td colspan="4">SUBTOTAL BBVA (transferencia al empleado)</td>
           <td class="num">{{bbva.totalFmt}}</td>
         </tr>
       </tbody>
@@ -153,11 +179,19 @@
           <td>{{banco}}</td>
           <td>{{rfc}}</td>
           <td>{{clabe}}</td>
-          <td class="num">{{importeFmt}}</td>
+          <td class="num">
+            {{importeFmt}}
+            {{#if tienePension}}
+            <span class="pa-detalle">
+              <span class="label">P.A.</span> −{{pensionFmt}}
+              <br><span style="color:#9ca3af;">bruto {{brutoFmt}}</span>
+            </span>
+            {{/if}}
+          </td>
         </tr>
         {{/each}}
         <tr class="subtotal">
-          <td colspan="5">SUBTOTAL OTROS</td>
+          <td colspan="5">SUBTOTAL OTROS (transferencia al empleado)</td>
           <td class="num">{{otros.totalFmt}}</td>
         </tr>
       </tbody>
@@ -171,6 +205,13 @@
     <div class="label">TOTAL GENERAL · {{totales.empleados}} empleados</div>
     <div class="valor">{{totales.totalFmt}}</div>
   </div>
+
+  {{#if totales.tienePension}}
+  <div class="leyenda">
+    <strong>P.A.</strong> = Pensión Alimenticia descontada al empleado en el archivo BBVA/OTROS y pagada a la beneficiaria por el canal PENSION.
+    Total descontado por pensión: <strong>{{totales.pensionFmt}}</strong>.
+  </div>
+  {{/if}}
 
 </body>
 </html>

@@ -590,24 +590,44 @@ exports.reporteBssPdf = async (req, res) => {
         const otrosRows = [];
         let totalBBVA = 0;
         let totalOtros = 0;
+        let totalPensionDescontada = 0;
 
         for (const r of registros) {
-            const importe = Number(r.importe_new) || 0;
+            const importeBruto = Number(r.importe_new) || 0;
+
+            // Mismo cálculo que usan exportarBssXml / exportarBssTxt: si el
+            // empleado tiene pensión alimenticia, lo que se transfiere a su
+            // banco es bruto - (bruto * porcentaje / 100). Esa diferencia se
+            // paga aparte a la beneficiaria por el canal PENSION.
+            let pensionMonto = 0;
+            if (r.pensionAlimenticia && r.pensionAlimenticia.porcentaje) {
+                pensionMonto = Number(
+                    (importeBruto * r.pensionAlimenticia.porcentaje / 100).toFixed(2)
+                );
+            }
+            const importeNeto = Number((importeBruto - pensionMonto).toFixed(2));
+
+            const tienePension = pensionMonto > 0;
             const row = {
                 empleado: r.empleado || '',
                 nombre: r.nombre || '',
                 rfc: r.rfc || '',
                 clabe: r.clabe || '',
                 banco: r.banco || '',
-                importeFmt: fmtMxn(importe),
+                importeFmt: fmtMxn(importeNeto),
+                tienePension,
+                pensionFmt: tienePension ? fmtMxn(pensionMonto) : '',
+                brutoFmt: tienePension ? fmtMxn(importeBruto) : '',
             };
+
             if (r.banco === '012') {
                 bbvaRows.push(row);
-                totalBBVA += importe;
+                totalBBVA += importeNeto;
             } else {
                 otrosRows.push(row);
-                totalOtros += importe;
+                totalOtros += importeNeto;
             }
+            totalPensionDescontada += pensionMonto;
         }
 
         const totalGeneral = totalBBVA + totalOtros;
@@ -637,6 +657,8 @@ exports.reporteBssPdf = async (req, res) => {
             totales: {
                 empleados: empleadosTotal,
                 totalFmt: fmtMxn(totalGeneral),
+                pensionFmt: fmtMxn(totalPensionDescontada),
+                tienePension: totalPensionDescontada > 0,
             },
         };
 
