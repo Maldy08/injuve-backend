@@ -47,6 +47,7 @@ app.use(`${baseApiPath}/nivelesconfianza`, require('./routes/nivelesconfianza.ro
 app.use(`${baseApiPath}/sueldoprestacionesbase`, require('./routes/sueldoprestacionesbase.routes'));
 app.use(`${baseApiPath}/sueldoprestacionesconf`, require('./routes/sueldoprestacionesconf.routes'));
 app.use(`${baseApiPath}/usuarios`, require('./routes/usuarios.routes'));
+app.use(`${baseApiPath}/bitacora-envios`, require('./routes/bitacora.routes'));
 
 // Inicializaci�n del servidor con jsreport y MongoDB
 jsreport.init().then(() => {
