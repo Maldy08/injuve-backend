@@ -9,3 +9,143 @@ Error: net::ERR_ACCESS_DENIED at file:///C:/Users/CMALDO%7E1/AppData/Local/Temp/
     at async C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\@jsreport\jsreport-chrome-pdf\lib\conversion.js:227:5
     at async C:\Users\CMALDONADO\source\repos\injuve-backend\node_modules\@jsreport\jsreport-chrome-pdf\lib\conversion.js:432:22 rootId=5g14mf32pz7fykf, id=5g14mf32pz7fykf
 2026-03-05T17:12:41.221Z - error: Rendering request 1 finished with error in 2250 ms rootId=5g14mf32pz7fykf, id=5g14mf32pz7fykf
+2026-07-08T19:49:09.232Z - error: Error when processing render request 1
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=9ivbphq5zlk43rn, id=9ivbphq5zlk43rn
+2026-07-08T19:49:09.232Z - error: Rendering request 1 finished with error in 468 ms rootId=9ivbphq5zlk43rn, id=9ivbphq5zlk43rn
+2026-07-08T19:49:09.591Z - error: Error when processing render request 2
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=kih781wseklyiz2, id=kih781wseklyiz2
+2026-07-08T19:49:09.591Z - error: Rendering request 2 finished with error in 340 ms rootId=kih781wseklyiz2, id=kih781wseklyiz2
+2026-07-08T19:50:12.111Z - error: Error when processing render request 4
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=iapuc0cgqfn5c6o, id=iapuc0cgqfn5c6o
+2026-07-08T19:50:12.111Z - error: Rendering request 4 finished with error in 363 ms rootId=iapuc0cgqfn5c6o, id=iapuc0cgqfn5c6o
+2026-07-08T19:51:21.681Z - error: Error when processing render request 1
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=e65qz874jhy5ts4, id=e65qz874jhy5ts4
+2026-07-08T19:51:21.681Z - error: Rendering request 1 finished with error in 416 ms rootId=e65qz874jhy5ts4, id=e65qz874jhy5ts4
+2026-07-08T19:51:22.024Z - error: Error when processing render request 2
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=au0y9w5xmt7dkbz, id=au0y9w5xmt7dkbz
+2026-07-08T19:51:22.024Z - error: Rendering request 2 finished with error in 326 ms rootId=au0y9w5xmt7dkbz, id=au0y9w5xmt7dkbz
+2026-07-08T19:51:59.424Z - error: Error when processing render request 1
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=qpjx8gi0ankuyw6, id=qpjx8gi0ankuyw6
+2026-07-08T19:51:59.425Z - error: Rendering request 1 finished with error in 461 ms rootId=qpjx8gi0ankuyw6, id=qpjx8gi0ankuyw6
+2026-07-08T19:53:53.185Z - error: Error when processing render request 1
+(because) could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+Error: Could not find Chrome (ver. 114.0.5735.90). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npm install`) or
+ 2. your cache path is incorrectly configured (which is: /Users/carlosmaldonado/.cache/puppeteer).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:304:27)
+    at ChromeLauncher.executablePath (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:180:25)
+    at ChromeLauncher.computeLaunchArguments (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:97:37)
+    at async ChromeLauncher.launch (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:83:28)
+    at async createBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:98:26)
+    at async allocateBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:113:5)
+    at async getBrowser (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:23:30)
+    at async module.exports (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/conversion.js:11:19)
+    at async execute (/Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/chromePoolStrategy.js:20:22)
+    at async /Users/carlosmaldonado/Projects/reporte_nomina_jsreport/node_modules/@jsreport/jsreport-chrome-pdf/lib/lazyRecipe.js:73:20 rootId=37uqy0clzw0d93b, id=37uqy0clzw0d93b
+2026-07-08T19:53:53.187Z - error: Rendering request 1 finished with error in 510 ms rootId=37uqy0clzw0d93b, id=37uqy0clzw0d93b

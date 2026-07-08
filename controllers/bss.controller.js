@@ -335,7 +335,10 @@ exports.exportarBssTxt = async (req, res) => {
         );
     });
 
-    const txt = lines.join('\n');
+    // Los registros excluidos (importe 0, o PENSION sin pensión) regresan ''
+    // desde el .map. Hay que filtrarlos: si no, join('\n') los deja como
+    // líneas en blanco que rompen el layout de posiciones fijas del banco.
+    const txt = lines.filter(line => line !== '').join('\n');
     const filename = `BSS_${periodo}_${filtado}.txt`;
     res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -524,7 +527,10 @@ exports.exportarBssZip = async (req, res) => {
             fixed('001', 3, '0', 'left')
         );
     });
-    const txt = lines.join('\n');
+    // Los registros excluidos (importe 0, o PENSION sin pensión) regresan ''
+    // desde el .map. Hay que filtrarlos: si no, join('\n') los deja como
+    // líneas en blanco que rompen el layout de posiciones fijas del banco.
+    const txt = lines.filter(line => line !== '').join('\n');
     const txtFilename = `BSS_${periodo}_${filtado}.txt`;
 
     // --- Crea el ZIP y lo envía ---
