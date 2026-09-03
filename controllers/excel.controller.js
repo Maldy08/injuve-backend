@@ -47,7 +47,9 @@ exports.percepcionesPivotJsonPorPeriodo = async (req, res) => {
       empleados[p.EMPLEADO] = {
         EMPLEADO: p.EMPLEADO,
         RFC: p.RFC,
-        DIAS: p.PERCDESC === 1 ? p.DIASTRA / 8 : 0,
+        // Periodos especiales (>=100, ej. retroactivo/aguinaldo) traen DIASTRA ya en días;
+        // los periodos quincenales normales lo traen en horas, de ahí la división entre 8.
+        DIAS: p.PERCDESC === 1 ? (Number(periodo) >= 100 ? p.DIASTRA : p.DIASTRA / 8) : 0,
         TOTAL_PERCEPCIONES: 0,
       };
     }
@@ -96,13 +98,26 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
 
   const empleadosRFC = await db.collection('mnom01')
     .find({ EMPLEADO: { $in: percepciones.map(p => p.EMPLEADO) } })
-    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, _id: 0 })
+    .project({ EMPLEADO: 1, RFC: 1, CURP: 1, TIPOEMP: 1, _id: 0 })
     .toArray();
 
 
   const bssCollection = await db.collection('bss')
     .find()
     .toArray();
+
+  // SUELDOMES ("sueldo mensual ordinario") vive en sueldoprestacionesbase (TIPOEMP 'B')
+  // o sueldoprestacionesconf (el resto); se combinan en un solo mapa por EMPLEADO igual
+  // que en generarTimbrado / get-datos-nomina.js.
+  const empleadosIds = empleadosRFC.map(e => e.EMPLEADO);
+  const prestacionesBaseInfo = await db.collection('sueldoprestacionesbase')
+    .find({ EMPLEADO: { $in: empleadosIds } })
+    .project({ EMPLEADO: 1, SUELDOMES: 1, _id: 0 }).toArray();
+  const prestacionesConfInfo = await db.collection('sueldoprestacionesconf')
+    .find({ EMPLEADO: { $in: empleadosIds } })
+    .project({ EMPLEADO: 1, SUELDOMES: 1, _id: 0 }).toArray();
+  const sueldoMensualMap = {};
+  [...prestacionesBaseInfo, ...prestacionesConfInfo].forEach(p => { sueldoMensualMap[p.EMPLEADO] = p; });
 
   const empleadosMap = {};
   empleadosRFC.forEach(e => {
@@ -129,11 +144,16 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
         RFC: p.RFC,
         DIAS: 0,
         DIAS_PRIMA: 0,
+        // Sueldo mensual ordinario solo aplica a periodos especiales (>=100, ej.
+        // retroactivo/aguinaldo); en periodos quincenales normales queda en 0.
+        SUELDO_MENSUAL_ORDINARIO: Number(periodo) >= 100 ? (sueldoMensualMap[p.EMPLEADO]?.SUELDOMES || 0) : 0,
         TOTAL_PERCEPCIONES: 0,
       };
     }
     if (p.PERCDESC === 1) {
-      empleados[p.EMPLEADO].DIAS += p.DIASTRA / 8;
+      // Periodos especiales (>=100, ej. retroactivo/aguinaldo) traen DIASTRA ya en días;
+      // los periodos quincenales normales lo traen en horas, de ahí la división entre 8.
+      empleados[p.EMPLEADO].DIAS += Number(periodo) >= 100 ? p.DIASTRA : p.DIASTRA / 8;
     }
     if (p.PERCDESC === 5) {
       empleados[p.EMPLEADO].DIAS_PRIMA += p.DIASTRA; // O solo p.DIASTRA si así lo necesitas
@@ -150,6 +170,7 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
     { header: 'RFC', key: 'RFC', width: 15 },
     { header: 'DIAS', key: 'DIAS', width: 15 },
     { header: 'DIAS_PRIMA', key: 'DIAS_PRIMA', width: 15 },
+    { header: 'SUELDO_MENSUAL_ORDINARIO', key: 'SUELDO_MENSUAL_ORDINARIO', width: 20 },
     ...descripcionesUnicas.map(desc => ({ header: desc, key: desc, width: 20 })),
     { header: 'TOTAL_PERCEPCIONES', key: 'TOTAL_PERCEPCIONES', width: 20 }
   ];
@@ -177,6 +198,277 @@ exports.percepcionesPivotPorPeriodo = async (req, res) => {
   res.send(buffer);
 };
 
+const NOM_ORD_HEADER = 'ENTIDAD,NOM_FONDO,CLAVE_DEPEN,DEPEN,CCT,CENTRO_TRABAJO,TIPO_NOMINA,PERIODICIDAD_PAGO,RFC,CURP,NSS,NOMBRE_EMP,APELLIDO_1_EMP,APELLIDO_2_EMP,NUM_EMP,PLAZA,TIPO_DE_PERSONAL,CAT_PUESTO,CATEGORIA,DES_PUESTO,NIVEL_SALARIAL,ZE,HORAS,FECHA_ING,ANTIG,N_QUINQ,FECHA_INI,FECHA_FIN,FECHA_PROC,PERIODO_INI,PERIODO_FIN,PERIODO_PROC,DIAS_PAG,TIPO_PAGO,NUM_CHEQUE_TRANSF,NUM_CTA _PAG,CVE_BANCO_PAG,NOM_BANCO_PAG,NUM_CTA_EMP,CVE_BANCO_EMP,NOM_BANCO_EMP,ORIGEN_RECURSO,UUID,T_PERCCHEQ,T_DEDCHEQ,T_NETOCHEQ,PERCEPCION_N,DEDUCCION_N,NUM_POL_EGRE,NUM_POL_PRES,NUM_CLC,ADIC_TEXTO_N';
+
+function csvField(value) {
+  const str = value === undefined || value === null ? '' : String(value);
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+}
+
+// Los campos de fecha en mnom01/mnom12 vienen en DOS formatos distintos según la época
+// en que se cargó el periodo (no hay campo AÑO confiable en mnom12 - siempre '0'):
+//   - Periodos antiguos: "DD/MM/YYYY" sin hora (ej. periodo 3: "06/02/2026")
+//   - Periodos recientes: "MM/DD/YY 00:00:00" (ej. periodo 14: "07/10/26 00:00:00")
+// Detectamos el formato por la longitud del año para no invertir día/mes.
+function parseFechaSirh(fechaStr) {
+  if (!fechaStr) return null;
+  const partes = fechaStr.split(' ')[0].split('/');
+  if (partes.length !== 3) return null;
+  const [a, b, c] = partes;
+  let dia, mes, anio;
+  if (c.length === 4) {
+    dia = a; mes = b; anio = c;
+  } else {
+    mes = a; dia = b;
+    anio = Number(c) >= 50 ? `19${c}` : `20${c}`;
+  }
+  const date = new Date(Number(anio), Number(mes) - 1, Number(dia));
+  return isNaN(date.getTime()) ? null : date;
+}
+
+function formatDDMMYYYY(date) {
+  if (!date) return '';
+  return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+}
+
+// mnom12 no tiene campo AÑO confiable (siempre '0'), así que el año de cada PERIODO se
+// deriva de sus fechas. Un periodo pertenece al ejercicio si su inicio (FECHDES) O su fin
+// (FECHHAS) cae en ese año - así no se pierden los periodos que cruzan el límite del año
+// (ej. el periodo que empieza el 27/dic/25 y termina el 09/ene/26 debe contar en AMBOS
+// ejercicios si se piden). Mismo criterio que usa AgenteNomina/ObtenerPeriodosDelEjercicio
+// contra PERCERRADOS, para que agente y backend no se contradigan sobre qué periodo
+// pertenece a qué año.
+async function obtenerPeriodosDelAnio(db, collectionName, anio) {
+  const periodosConFecha = await db.collection(collectionName)
+    .aggregate([
+      { $group: { _id: '$PERIODO', FECHDES: { $first: '$FECHDES' }, FECHHAS: { $first: '$FECHHAS' } } }
+    ]).toArray();
+
+  return periodosConFecha
+    .filter(p => {
+      const inicioEnAnio = parseFechaSirh(p.FECHDES)?.getFullYear() === Number(anio);
+      const finEnAnio = parseFechaSirh(p.FECHHAS)?.getFullYear() === Number(anio);
+      return inicioEnAnio || finEnAnio;
+    })
+    .map(p => p._id);
+}
+
+// Arma las 51 columnas de NOM_ORD para un empleado+periodo. `percepcionN`/`deduccionN`
+// quedan parametrizados porque generarNomOrd (agregado) los deja vacíos, mientras que
+// generarNomOrdDetalle (detalle) los llena con el importe de UN concepto por fila.
+function construirFilaNomOrd(emp, item, lookups, totales, percepcionN, deduccionN) {
+  const { departamentosInfo, puestosInfo, categoriasInfo, diasPagadosEmpleados } = lookups;
+
+  const fechaAltaDate = parseFechaSirh(emp.FECHAALTA);
+  const fechaHastaDate = parseFechaSirh(item.FECHHAS);
+  const fechaAlta = formatDDMMYYYY(fechaAltaDate);
+
+  let antig = '';
+  if (fechaAltaDate && fechaHastaDate) {
+    antig = Math.floor((fechaHastaDate - fechaAltaDate) / (1000 * 60 * 60 * 24 * 365.25));
+  }
+
+  const fields = [
+    '', // ENTIDAD
+    '', // NOM_FONDO
+    '', // CLAVE_DEPEN
+    departamentosInfo.find(d => d.DEPTO === emp.DEPTO)?.DESCRIPCION || '', // DEPEN
+    '', // CCT
+    '', // CENTRO_TRABAJO
+    1, // TIPO_NOMINA
+    14, // PERIODICIDAD_PAGO
+    emp.RFC || '', // RFC
+    emp.CURP || '', // CURP
+    emp.REGIMSS || '', // NSS (ISSSTECALI)
+    emp.NOMBRE || '', // NOMBRE_EMP
+    emp.APPAT || '', // APELLIDO_1_EMP
+    emp.APMAT || '', // APELLIDO_2_EMP
+    emp.EMPLEADO, // NUM_EMP
+    '', // PLAZA
+    emp.TIPOEMP || '', // TIPO_DE_PERSONAL
+    emp.CAT || '', // CAT_PUESTO
+    categoriasInfo.find(c => c.CATEGORIA === emp.CAT)?.DESCRIPCION || '', // CATEGORIA
+    puestosInfo.find(p => p.PUESTO === emp.PUESTO)?.DESCRIPCION || '', // DES_PUESTO
+    emp.NIVEL || '', // NIVEL_SALARIAL
+    '', // ZE
+    '', // HORAS
+    fechaAlta, // FECHA_ING
+    antig, // ANTIG
+    '', // N_QUINQ
+    formatDDMMYYYY(parseFechaSirh(item.FECHDES)), // FECHA_INI
+    formatDDMMYYYY(fechaHastaDate), // FECHA_FIN
+    formatDDMMYYYY(parseFechaSirh(item.FECHAP)), // FECHA_PROC
+    item.PERIODO, // PERIODO_INI
+    item.PERIODO, // PERIODO_FIN
+    item.PERIODO, // PERIODO_PROC
+    diasPagadosEmpleados[`${item.EMPLEADO}_${item.PERIODO}`] || 0, // DIAS_PAG
+    '', // TIPO_PAGO
+    '', // NUM_CHEQUE_TRANSF
+    '', // NUM_CTA_PAG
+    '', // CVE_BANCO_PAG
+    '', // NOM_BANCO_PAG
+    emp.CTABANCO || '', // NUM_CTA_EMP
+    '', // CVE_BANCO_EMP
+    '', // NOM_BANCO_EMP
+    '', // ORIGEN_RECURSO
+    '', // UUID
+    totales.TotalPercepciones.toFixed(2), // T_PERCCHEQ
+    totales.TotalDeducciones.toFixed(2), // T_DEDCHEQ
+    (totales.TotalPercepciones - totales.TotalDeducciones).toFixed(2), // T_NETOCHEQ
+    percepcionN, // PERCEPCION_N
+    deduccionN, // DEDUCCION_N
+    '', // NUM_POL_EGRE
+    '', // NUM_POL_PRES
+    '', // NUM_CLC
+    '', // ADIC_TEXTO_N
+  ];
+
+  return fields.map(csvField).join(',');
+}
+
+// Junta lo que generarNomOrd/generarNomOrdDetalle necesitan en común: datos del ejercicio,
+// empleados y catálogos (departamentos/puestos/categorías), más los totales T_PERCCHEQ/
+// T_DEDCHEQ por empleado+periodo (que ambos reportes muestran igual, agregado o no).
+async function prepararDatosNomOrd(db, anio, tipo) {
+  const collectionName = tipo == 1 ? 'mnom12' : 'mnom12h';
+  const empleadosCollection = tipo == 1 ? 'mnom01' : 'mnom01h';
+
+  const periodosDelAnio = await obtenerPeriodosDelAnio(db, collectionName, anio);
+  if (periodosDelAnio.length === 0) return null;
+
+  const data = await db.collection(collectionName)
+    .find({ PERIODO: { $in: periodosDelAnio } })
+    .sort({ EMPLEADO: 1, PERIODO: 1 })
+    .toArray();
+
+  const totalesPorEmpleadoPeriodo = {};
+  data.forEach(item => {
+    const key = `${item.EMPLEADO}_${item.PERIODO}`;
+    if (!totalesPorEmpleadoPeriodo[key]) {
+      totalesPorEmpleadoPeriodo[key] = { TotalPercepciones: 0, TotalDeducciones: 0 };
+    }
+    if (item.PERCDESC < 500) {
+      totalesPorEmpleadoPeriodo[key].TotalPercepciones += Number(item.IMPORTE || 0);
+    } else {
+      totalesPorEmpleadoPeriodo[key].TotalDeducciones += Number(item.IMPORTE || 0);
+    }
+  });
+
+  const diasPagadosEmpleados = data.reduce((acc, item) => {
+    if (item.PERCDESC === 1 || item.PERCDESC === 23) {
+      const key = `${item.EMPLEADO}_${item.PERIODO}`;
+      // Periodos especiales (>=100, ej. retroactivo/aguinaldo) traen DIASTRA ya en días;
+      // los periodos quincenales normales lo traen en horas, de ahí la división entre 8.
+      acc[key] = item.PERCDESC === 1
+        ? (Number(item.PERIODO) >= 100 ? item.DIASTRA : item.DIASTRA / 8)
+        : item.DIASTRA || 0;
+    }
+    return acc;
+  }, {});
+
+  const empleadosIds = [...new Set(data.map(d => d.EMPLEADO))];
+  const empleadosInfo = await db.collection(empleadosCollection)
+    .find({ EMPLEADO: { $in: empleadosIds } })
+    .project({ EMPLEADO: 1, NOMBRE: 1, APPAT: 1, APMAT: 1, RFC: 1, CURP: 1, REGIMSS: 1, DEPTO: 1, CAT: 1, PUESTO: 1, CTABANCO: 1, NIVEL: 1, FECHAALTA: 1, TIPOEMP: 1, _id: 0 })
+    .toArray();
+
+  const departamentosInfo = await db.collection('mnom04')
+    .find().project({ DEPTO: 1, DESCRIPCION: 1, _id: 0 }).toArray();
+
+  const puestosInfo = await db.collection('mnom90')
+    .find().project({ PUESTO: 1, DESCRIPCION: 1, _id: 0 }).toArray();
+
+  const categoriasInfo = await db.collection('mnom03')
+    .find().project({ CATEGORIA: 1, DESCRIPCION: 1, _id: 0 }).toArray();
+
+  const empleadosInfoMap = {};
+  empleadosInfo.forEach(e => { empleadosInfoMap[e.EMPLEADO] = e; });
+
+  return {
+    data,
+    totalesPorEmpleadoPeriodo,
+    empleadosInfoMap,
+    lookups: { departamentosInfo, puestosInfo, categoriasInfo, diasPagadosEmpleados },
+  };
+}
+
+// Genera el CSV de "Nómina Ordinaria" en el formato homologado (NOM_ORD) para TODOS los
+// periodos de un año/ejercicio. Cada fila es un empleado x periodo (un empleado con
+// 24-26 periodos pagados en el año aparece 24-26 veces). Campos sin fuente en el sistema
+// (ENTIDAD, NOM_FONDO, CLAVE_DEPEN, CCT, CENTRO_TRABAJO, ZE, HORAS, PLAZA, N_QUINQ, banco
+// de pago, UUID, pólizas contables, PERCEPCION_N/DEDUCCION_N) se dejan vacíos porque no
+// existen catálogos equivalentes en mnom01/mnom04/mnom90/mnom12.
+exports.generarNomOrd = async (req, res) => {
+  const db = getDb();
+  const { anio, tipo } = req.params;
+  if (!anio || !tipo) {
+    return res.status(400).json({ error: "Parámetros inválidos" });
+  }
+
+  const datos = await prepararDatosNomOrd(db, anio, tipo);
+  if (!datos) {
+    return res.status(404).json({ error: `No hay periodos con datos para el ejercicio ${anio}` });
+  }
+  const { data, totalesPorEmpleadoPeriodo, empleadosInfoMap, lookups } = datos;
+
+  const vistos = new Set();
+  const rows = [];
+  data.forEach(item => {
+    const key = `${item.EMPLEADO}_${item.PERIODO}`;
+    if (vistos.has(key)) return;
+    vistos.add(key);
+
+    const emp = empleadosInfoMap[item.EMPLEADO] || {};
+    const totales = totalesPorEmpleadoPeriodo[key];
+    rows.push(construirFilaNomOrd(emp, item, lookups, totales, '', ''));
+  });
+
+  const csv = '﻿' + NOM_ORD_HEADER + '\n' + rows.join('\n') + '\n';
+  const fileName = `NOM_ORD_${anio}_${tipo}.csv`;
+  res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.send(csv);
+};
+
+// Mismo formato de 51 columnas que NOM_ORD, mismo alcance (todos los periodos de un
+// ejercicio), pero SIN agrupar: una fila por CADA concepto de percepción/deducción tal
+// como viene en mnom12/mnom12h. PERCEPCION_N lleva el importe si el concepto es percepción
+// (PERCDESC<500) y DEDUCCION_N si es deducción, dejando el otro vacío en esa fila.
+// T_PERCCHEQ/T_DEDCHEQ/T_NETOCHEQ siguen siendo el total del periodo (se repiten en cada
+// fila del mismo empleado+periodo) para poder cuadrar el detalle contra el total.
+// Ojo: el formato NOM_ORD no tiene columna de clave/descripción de concepto, así que estas
+// filas de detalle no identifican DE QUÉ concepto es cada importe, solo el monto y si es
+// percepción o deducción.
+exports.generarNomOrdDetalle = async (req, res) => {
+  const db = getDb();
+  const { anio, tipo } = req.params;
+  if (!anio || !tipo) {
+    return res.status(400).json({ error: "Parámetros inválidos" });
+  }
+
+  const datos = await prepararDatosNomOrd(db, anio, tipo);
+  if (!datos) {
+    return res.status(404).json({ error: `No hay periodos con datos para el ejercicio ${anio}` });
+  }
+  const { data, totalesPorEmpleadoPeriodo, empleadosInfoMap, lookups } = datos;
+
+  const rows = data.map(item => {
+    const key = `${item.EMPLEADO}_${item.PERIODO}`;
+    const emp = empleadosInfoMap[item.EMPLEADO] || {};
+    const totales = totalesPorEmpleadoPeriodo[key];
+    const importe = Number(item.IMPORTE || 0).toFixed(2);
+    const esPercepcion = item.PERCDESC < 500;
+
+    return construirFilaNomOrd(emp, item, lookups, totales, esPercepcion ? importe : '', esPercepcion ? '' : importe);
+  });
+
+  const csv = '﻿' + NOM_ORD_HEADER + '\n' + rows.join('\n') + '\n';
+  const fileName = `NOM_ORD_DETALLE_${anio}_${tipo}.csv`;
+  res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.send(csv);
+};
+
 exports.generarTimbrado = async (req, res) => {
   const db = getDb();
   const { periodo, tipo } = req.params;
@@ -202,7 +494,11 @@ exports.generarTimbrado = async (req, res) => {
     if (percepcion === 1 || percepcion === 23) {
       const empleado = item.EMPLEADO;
 
-      acc[empleado] = percepcion === 1 ? item.DIASTRA / 8 : item.DIASTRA || 0;
+      // Periodos especiales (>=100, ej. retroactivo/aguinaldo) traen DIASTRA ya en días;
+      // los periodos quincenales normales lo traen en horas, de ahí la división entre 8.
+      acc[empleado] = percepcion === 1
+        ? (Number(periodo) >= 100 ? item.DIASTRA : item.DIASTRA / 8)
+        : item.DIASTRA || 0;
     }
     return acc;
   }, {});

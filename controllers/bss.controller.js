@@ -202,7 +202,7 @@ exports.exportarBssXml = async (req, res) => {
         });
 
     bssCollection.forEach(item => {
-        if (item.importe_new === 0) return;
+        if (!(Number(item.importe_new) > 0)) return;
 
         if (filtado === 'PENSION') {
             if (!item.pensionAlimenticia) return;
@@ -231,7 +231,7 @@ exports.exportarBssXml = async (req, res) => {
                 importeExcento: importePension.toFixed(2),
             });
         } else {
-            let importeEmpleado = item.importe_new;
+            let importeEmpleado = Number(item.importe_new) || 0;
             if (item.pensionAlimenticia) {
                 const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
                 importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
@@ -299,7 +299,7 @@ exports.exportarBssTxt = async (req, res) => {
 
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
-        if (item.importe_new === 0) return '';
+        if (!(Number(item.importe_new) > 0)) return '';
         if (filtado === 'PENSION') {
             if (!item.pensionAlimenticia) return '';
             const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
@@ -315,7 +315,7 @@ exports.exportarBssTxt = async (req, res) => {
                 fixed('001', 3, '0', 'left')
             );
         }
-        let importeEmpleado = item.importe_new;
+        let importeEmpleado = Number(item.importe_new) || 0;
         if (item.pensionAlimenticia) {
             const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
             importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
@@ -420,7 +420,7 @@ exports.exportarBssZip = async (req, res) => {
         });
 
     bssCollection.forEach(item => {
-        if (item.importe_new === 0) return;
+        if (!(Number(item.importe_new) > 0)) return;
 
         if (filtado === 'PENSION') {
             if (!item.pensionAlimenticia) return;
@@ -449,7 +449,7 @@ exports.exportarBssZip = async (req, res) => {
                 importeExcento: importePension.toFixed(2),
             });
         } else {
-            let importeEmpleado = item.importe_new;
+            let importeEmpleado = Number(item.importe_new) || 0;
             if (item.pensionAlimenticia) {
                 const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
                 importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
@@ -492,7 +492,7 @@ exports.exportarBssZip = async (req, res) => {
     }
     let consecutivo = 1;
     const lines = bssCollection.map(item => {
-        if (item.importe_new === 0) return '';
+        if (!(Number(item.importe_new) > 0)) return '';
         if (filtado === 'PENSION') {
             if (!item.pensionAlimenticia) return '';
             const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
@@ -508,7 +508,7 @@ exports.exportarBssZip = async (req, res) => {
                 fixed('001', 3, '0', 'left')
             );
         }
-        let importeEmpleado = item.importe_new;
+        let importeEmpleado = Number(item.importe_new) || 0;
         if (item.pensionAlimenticia) {
             const importePension = Number((item.importe_new * item.pensionAlimenticia.porcentaje / 100).toFixed(2));
             importeEmpleado = Number((item.importe_new - importePension).toFixed(2));
